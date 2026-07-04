@@ -3,28 +3,28 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:soco/utils/constants/assets.dart';
 import 'package:soco/ui/core/styles/sizes.dart';
 import 'package:soco/ui/core/styles/elevation.dart';
-import '../models/coffee.dart';
-import '../viewmodels/coffee_library_viewmodel.dart';
+import '../models/bean.dart';
+import '../viewmodels/bean_library_viewmodel.dart';
 
-class CoffeeLibraryView extends StatefulWidget {
-  const CoffeeLibraryView({super.key});
+class BeanLibraryView extends StatefulWidget {
+  const BeanLibraryView({super.key});
 
   @override
-  State<CoffeeLibraryView> createState() => _CoffeeLibraryViewState();
+  State<BeanLibraryView> createState() => _BeanLibraryViewState();
 }
 
-class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
-  late final CoffeeLibraryViewModel _viewModel;
+class _BeanLibraryViewState extends State<BeanLibraryView> {
+  late final BeanLibraryViewModel _viewModel;
   late final TextEditingController _searchController;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = CoffeeLibraryViewModel();
+    _viewModel = BeanLibraryViewModel();
     _searchController = TextEditingController();
 
     // Fetch initial list
-    _viewModel.fetchCoffees();
+    _viewModel.fetchBeans();
   }
 
   @override
@@ -35,6 +35,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
   }
 
   // Helper for roast level colors
+  // TODO change colors
   Color _getRoastBgColor(RoastLevel level, bool isDarkTheme) {
     if (isDarkTheme) {
       switch (level) {
@@ -57,6 +58,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
     }
   }
 
+  // TODO change colors
   Color _getRoastTextColor(RoastLevel level, bool isDarkTheme) {
     if (isDarkTheme) {
       switch (level) {
@@ -79,7 +81,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
     }
   }
 
-  void _showAddCoffeeDialog() {
+  void _showAddBeanDialog() {
     final formKey = GlobalKey<FormState>();
     String name = '';
     String brand = '';
@@ -97,7 +99,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              title: const Text('Add Coffee to Library'),
+              title: const Text('Add Bean to Library'),
               content: SingleChildScrollView(
                 child: Form(
                   key: formKey,
@@ -106,7 +108,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
                     children: [
                       TextFormField(
                         decoration: const InputDecoration(
-                          labelText: 'Coffee Name',
+                          labelText: 'Bean Name',
                           hintText: 'e.g. Geisha Natural',
                         ),
                         validator: (v) => v == null || v.isEmpty ? 'Please enter a name' : null,
@@ -230,7 +232,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
                   onPressed: () {
                     if (formKey.currentState?.validate() ?? false) {
                       formKey.currentState?.save();
-                      final newCoffee = Coffee(
+                      final newBean = Bean(
                         id: DateTime.now().millisecondsSinceEpoch.toString(),
                         name: name,
                         brand: brand,
@@ -242,7 +244,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
                         grinder: grinder,
                         machine: machine,
                       );
-                      _viewModel.addCoffee(newCoffee);
+                      _viewModel.addBean(newBean);
                       Navigator.of(context).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -272,7 +274,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
         title: Row(
           children: [
             SvgPicture.asset(
-              AppAssets.icons.coffee,
+              AppAssets.icons.coffeeBean,
               height: 24,
               width: 24,
               colorFilter: ColorFilter.mode(
@@ -282,7 +284,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
             ),
             AppSizes.gap.small,
             Text(
-              'Coffee Library',
+              'Bean Library',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -293,7 +295,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
         backgroundColor: Colors.transparent,
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _showAddCoffeeDialog,
+        onPressed: _showAddBeanDialog,
         icon: SvgPicture.asset(
           AppAssets.icons.add,
           colorFilter: ColorFilter.mode(
@@ -301,7 +303,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
             BlendMode.srcIn,
           ),
         ),
-        label: const Text('Add Coffee'),
+        label: const Text('Add Bean'),
       ),
       body: ListenableBuilder(
         listenable: _viewModel,
@@ -314,7 +316,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
                   const CircularProgressIndicator(),
                   AppSizes.gap.medium,
                   Text(
-                    'Brewing list...',
+                    'Loading beans...',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: colorScheme.outline,
                         ),
@@ -372,9 +374,9 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
                 ),
               ),
 
-              // Coffee List
+              // Bean List
               Expanded(
-                child: _viewModel.coffees.isEmpty
+                child: _viewModel.beans.isEmpty
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -390,7 +392,7 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
                             AppSizes.gap.medium,
                             Text(
                               _viewModel.searchQuery.trim().isNotEmpty
-                                  ? 'No coffees match your search.'
+                                  ? 'No beans match your search.'
                                   : 'Your library is empty.',
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: colorScheme.outline,
@@ -406,12 +408,12 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
                           top: AppSizes.spacing.small,
                           bottom: AppSizes.spacing.extraLarge2 + 16.0,
                         ),
-                        itemCount: _viewModel.coffees.length,
+                        itemCount: _viewModel.beans.length,
                         itemBuilder: (context, index) {
-                          final coffee = _viewModel.coffees[index];
+                          final bean = _viewModel.beans[index];
 
                           return Dismissible(
-                            key: Key(coffee.id),
+                            key: Key(bean.id),
                             direction: DismissDirection.endToStart,
                             background: Container(
                               alignment: Alignment.centerRight,
@@ -428,23 +430,23 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
                               ),
                             ),
                             onDismissed: (direction) {
-                              _viewModel.removeCoffee(coffee.id);
+                              _viewModel.removeBean(bean.id);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('${coffee.name} removed'),
+                                  content: Text('${bean.name} removed'),
                                   action: SnackBarAction(
                                     label: 'Undo',
-                                    onPressed: () => _viewModel.addCoffee(coffee),
+                                    onPressed: () => _viewModel.addBean(bean),
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                 ),
                               );
                             },
-                            child: _CoffeeCard(
-                              coffee: coffee,
+                            child: _BeanCard(
+                              bean: bean,
                               isDarkTheme: isDarkTheme,
-                              roastBgColor: _getRoastBgColor(coffee.roastLevel, isDarkTheme),
-                              roastTextColor: _getRoastTextColor(coffee.roastLevel, isDarkTheme),
+                              roastBgColor: _getRoastBgColor(bean.roastLevel, isDarkTheme),
+                              roastTextColor: _getRoastTextColor(bean.roastLevel, isDarkTheme),
                             ),
                           );
                         },
@@ -458,14 +460,14 @@ class _CoffeeLibraryViewState extends State<CoffeeLibraryView> {
   }
 }
 
-class _CoffeeCard extends StatelessWidget {
-  final Coffee coffee;
+class _BeanCard extends StatelessWidget {
+  final Bean bean;
   final bool isDarkTheme;
   final Color roastBgColor;
   final Color roastTextColor;
 
-  const _CoffeeCard({
-    required this.coffee,
+  const _BeanCard({
+    required this.bean,
     required this.isDarkTheme,
     required this.roastBgColor,
     required this.roastTextColor,
@@ -498,7 +500,7 @@ class _CoffeeCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          coffee.name,
+                          bean.name,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: colorScheme.onSurface,
@@ -506,7 +508,7 @@ class _CoffeeCard extends StatelessWidget {
                         ),
                         AppSizes.gap.extraSmall,
                         Text(
-                          '${coffee.brand} • ${coffee.origin}',
+                          '${bean.brand} • ${bean.origin}',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 color: colorScheme.outline,
                               ),
@@ -524,7 +526,7 @@ class _CoffeeCard extends StatelessWidget {
                   AppSizes.gap.extraSmall,
                   Expanded(
                     child: Text(
-                      'Grinder: ${coffee.grinder}',
+                      'Grinder: ${bean.grinder}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                           ),
@@ -537,7 +539,7 @@ class _CoffeeCard extends StatelessWidget {
                   AppSizes.gap.extraSmall,
                   Expanded(
                     child: Text(
-                      'Machine: ${coffee.machine}',
+                      'Machine: ${bean.machine}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                           ),
@@ -550,7 +552,7 @@ class _CoffeeCard extends StatelessWidget {
               AppSizes.gap.small,
               // Description
               Text(
-                coffee.description,
+                bean.description,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -569,7 +571,7 @@ class _CoffeeCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(AppSizes.radius.small),
                         ),
                         child: Text(
-                          coffee.roastLevel.displayName,
+                          bean.roastLevel.displayName,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 color: roastTextColor,
                                 fontWeight: FontWeight.bold,
@@ -584,7 +586,7 @@ class _CoffeeCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(AppSizes.radius.small),
                         ),
                         child: Text(
-                          'Grind: ${coffee.grindSize.toStringAsFixed(2)}',
+                          'Grind: ${bean.grindSize.toStringAsFixed(2)}',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 color: colorScheme.onSurfaceVariant,
                                 fontWeight: FontWeight.bold,
@@ -606,7 +608,7 @@ class _CoffeeCard extends StatelessWidget {
                       ),
                       AppSizes.gap.extraSmall,
                       Text(
-                        coffee.rating.toStringAsFixed(1),
+                        bean.rating.toStringAsFixed(1),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: colorScheme.onSurface,
