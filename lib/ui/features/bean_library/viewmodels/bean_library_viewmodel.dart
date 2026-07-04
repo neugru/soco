@@ -1,20 +1,20 @@
 import 'package:flutter/foundation.dart';
-import '../models/coffee.dart';
+import '../models/bean.dart';
 
-class CoffeeLibraryViewModel extends ChangeNotifier {
-  final List<Coffee> _allCoffees = [];
-  List<Coffee> _filteredCoffees = [];
+class BeanLibraryViewModel extends ChangeNotifier {
+  final List<Bean> _allBeans = [];
+  List<Bean> _filteredBeans = [];
   bool _isLoading = false;
   String _searchQuery = '';
 
   // Getters
   bool get isLoading => _isLoading;
-  List<Coffee> get coffees => _filteredCoffees;
+  List<Bean> get beans => _filteredBeans;
   String get searchQuery => _searchQuery;
 
-  /// Simulates fetching coffees from a repository or API
-  Future<void> fetchCoffees() async {
-    if (_allCoffees.isNotEmpty) return; // Prevent double loading if already loaded
+  /// Simulates fetching beans from a repository or API
+  Future<void> fetchBeans() async {
+    if (_allBeans.isNotEmpty) return; // Prevent double loading if already loaded
 
     _isLoading = true;
     notifyListeners();
@@ -22,9 +22,9 @@ class CoffeeLibraryViewModel extends ChangeNotifier {
     // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 1000));
 
-    // Populate with mockup coffees matching the new Coffee model
-    _allCoffees.addAll([
-      const Coffee(
+    // Populate with mockup beans matching the new Bean model
+    _allBeans.addAll([
+      const Bean(
         id: '1',
         name: 'Ethiopia Yirgacheffe',
         brand: 'Sey Coffee',
@@ -36,7 +36,7 @@ class CoffeeLibraryViewModel extends ChangeNotifier {
         grinder: 'Comandante C40',
         machine: 'La Marzocco Linea Micra',
       ),
-      const Coffee(
+      const Bean(
         id: '2',
         name: 'Bella Vista Bourbon',
         brand: 'Intelligentsia',
@@ -48,7 +48,7 @@ class CoffeeLibraryViewModel extends ChangeNotifier {
         grinder: 'Fellow Ode Gen 2',
         machine: 'Sage Barista Express',
       ),
-      const Coffee(
+      const Bean(
         id: '3',
         name: 'Three Mules Blend',
         brand: 'Blue Bottle',
@@ -60,7 +60,7 @@ class CoffeeLibraryViewModel extends ChangeNotifier {
         grinder: 'Mahlkönig EK43',
         machine: 'Slayer Espresso Single Group',
       ),
-      const Coffee(
+      const Bean(
         id: '4',
         name: 'Pacamara Natural',
         brand: 'Onyx Coffee Lab',
@@ -79,44 +79,44 @@ class CoffeeLibraryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Filters the coffee list based on the search query
+  /// Filters the bean list based on the search query
   void search(String query) {
     _searchQuery = query;
     _applyFilterAndSort();
     notifyListeners();
   }
 
-  /// Adds a new coffee to the library
-  void addCoffee(Coffee coffee) {
-    _allCoffees.add(coffee);
+  /// Adds a new bean to the library
+  void addBean(Bean bean) {
+    _allBeans.add(bean);
     _applyFilterAndSort();
     notifyListeners();
   }
 
-  /// Removes a coffee from the library
-  void removeCoffee(String id) {
-    _allCoffees.removeWhere((c) => c.id == id);
+  /// Removes a bean from the library
+  void removeBean(String id) {
+    _allBeans.removeWhere((b) => b.id == id);
     _applyFilterAndSort();
     notifyListeners();
   }
 
-  /// Helper to filter and sort coffees based on search query
+  /// Helper to filter and sort beans based on search query
   void _applyFilterAndSort() {
     if (_searchQuery.trim().isEmpty) {
-      _filteredCoffees = List.from(_allCoffees);
+      _filteredBeans = List.from(_allBeans);
     } else {
       final query = _searchQuery.toLowerCase();
-      _filteredCoffees = _allCoffees.where((coffee) {
-        return coffee.name.toLowerCase().contains(query) ||
-            coffee.brand.toLowerCase().contains(query) ||
-            coffee.origin.toLowerCase().contains(query) ||
-            coffee.grinder.toLowerCase().contains(query) ||
-            coffee.machine.toLowerCase().contains(query) ||
-            coffee.description.toLowerCase().contains(query);
+      _filteredBeans = _allBeans.where((bean) {
+        return bean.name.toLowerCase().contains(query) ||
+            bean.brand.toLowerCase().contains(query) ||
+            bean.origin.toLowerCase().contains(query) ||
+            bean.grinder.toLowerCase().contains(query) ||
+            bean.machine.toLowerCase().contains(query) ||
+            bean.description.toLowerCase().contains(query);
       }).toList();
     }
 
     // Sort alphabetically by name
-    _filteredCoffees.sort((a, b) => a.name.compareTo(b.name));
+    _filteredBeans.sort((a, b) => a.name.compareTo(b.name));
   }
 }

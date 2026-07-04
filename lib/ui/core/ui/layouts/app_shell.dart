@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:soco/ui/features/coffee_library/views/coffee_library_view.dart';
+import 'package:soco/ui/features/bean_library/views/bean_library_view.dart';
 
 import 'package:soco/utils/constants/assets.dart';
 import 'package:soco/ui/core/styles/sizes.dart';
@@ -24,8 +24,8 @@ class _AppShellState extends State<AppShell> {
   // ── Pages ─────────────────────────────────────────────────────────────────
   // Replace placeholders with your real screen widgets as you build them.
   static const List<Widget> _pages = [
-    CoffeeLibraryView(),
-    _PlaceholderPage(label: 'Bean Library'),
+    _PlaceholderPage(label: 'Group Libray'),
+    BeanLibraryView(),
     _PlaceholderPage(label: 'Machine Library'),
     _PlaceholderPage(label: 'Profile Page'),
   ];

@@ -15,7 +15,7 @@ enum RoastLevel {
   }
 }
 
-class Coffee {
+class Bean {
   final String id;
   final String name;
   final String brand;
@@ -28,7 +28,7 @@ class Coffee {
   final String grinder;   // TODO link to Grinder entity
   final String machine;   // TODO link to Machine entity
 
-  const Coffee({
+  const Bean({
     required this.id,
     required this.name,
     required this.brand,
@@ -41,7 +41,7 @@ class Coffee {
     required this.machine,
   });
 
-  Coffee copyWith({
+  Bean copyWith({
     String? id,
     String? name,
     String? brand,
@@ -53,7 +53,7 @@ class Coffee {
     String? grinder,
     String? machine,
   }) {
-    return Coffee(
+    return Bean(
       id: id ?? this.id,
       name: name ?? this.name,
       brand: brand ?? this.brand,
