@@ -46,9 +46,14 @@ To maintain a clean repository history and automate our versioning, please follo
 ### 1. Work on a Feature Branch
 Never commit directly to the `main` branch. Always create a descriptive feature branch:
 ```bash
-git checkout -b feature/your-feature-name
+git checkout -b feat/your-feature-name
+# git checkout -b fix/your-fix-name
+# ...
+
 # or using modern git:
-git switch -c feature/your-feature-name
+git switch -c feat/your-feature-name
+# git switch -c fix/your-fix-name
+# ...
 ```
 
 ### 2. Code Formatting

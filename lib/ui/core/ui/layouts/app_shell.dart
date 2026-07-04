@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:soco/ui/features/coffee_library/views/coffee_library_view.dart';
 
-import 'package:soco/core/constants/assets.dart';
-import 'package:soco/styles/sizes.dart' as soco_sizes;
-import 'package:soco/styles/elevation.dart';
+import 'package:soco/utils/constants/assets.dart';
+import 'package:soco/ui/core/styles/sizes.dart';
+import 'package:soco/ui/core/styles/elevation.dart';
 
 /// The main scaffold of the app. Wraps each top-level screen with
 /// a shared [BottomNavigationBar].
@@ -23,7 +24,7 @@ class _AppShellState extends State<AppShell> {
   // ── Pages ─────────────────────────────────────────────────────────────────
   // Replace placeholders with your real screen widgets as you build them.
   static const List<Widget> _pages = [
-    _PlaceholderPage(label: 'Coffee Library'),
+    CoffeeLibraryView(),
     _PlaceholderPage(label: 'Bean Library'),
     _PlaceholderPage(label: 'Machine Library'),
     _PlaceholderPage(label: 'Profile Page'),
