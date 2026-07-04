@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:soco/styles/colors.dart';
-import 'package:soco/styles/sizes.dart';
-import 'package:soco/styles/typography.dart';
+import 'package:soco/ui/core/styles/colors.dart';
+import 'package:soco/ui/core/styles/sizes.dart';
+import 'package:soco/ui/core/styles/typography.dart';
 
 class AppTheme {
   AppTheme._();

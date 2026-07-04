@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:soco/styles/themes.dart';
-import 'package:soco/shared/layouts/app_shell.dart';
+import 'package:soco/ui/core/styles/themes.dart';
+import 'package:soco/ui/core/ui/layouts/app_shell.dart';
 
 void main() {
   runApp(const MainApp());
