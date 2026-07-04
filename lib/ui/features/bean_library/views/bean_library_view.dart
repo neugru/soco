@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:soco/utils/constants/assets.dart';
 import 'package:soco/ui/core/styles/sizes.dart';
 import 'package:soco/ui/core/styles/elevation.dart';
+import 'package:soco/ui/core/ui/widgets/library_search_bar.dart';
+import 'package:soco/ui/core/ui/widgets/library_app_bar.dart';
 import '../models/bean.dart';
 import '../viewmodels/bean_library_viewmodel.dart';
 
@@ -270,29 +272,9 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            SvgPicture.asset(
-              AppAssets.icons.coffeeBean,
-              height: 24,
-              width: 24,
-              colorFilter: ColorFilter.mode(
-                colorScheme.primary,
-                BlendMode.srcIn,
-              ),
-            ),
-            AppSizes.gap.small,
-            Text(
-              'Bean Library',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ],
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
+      appBar: LibraryAppBar(
+        title: 'Bean Library',
+        iconPath: AppAssets.icons.coffeeBean,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showAddBeanDialog,
@@ -334,43 +316,14 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                   horizontal: AppSizes.spacing.medium,
                   vertical: AppSizes.spacing.small,
                 ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: colorScheme.surfaceContainerLow,
-                    borderRadius: BorderRadius.circular(AppSizes.radius.large),
-                    boxShadow: AppElevation.shadows.low,
-                  ),
-                  child: TextField(
-                    controller: _searchController,
-                    onChanged: (val) => _viewModel.search(val),
-                    decoration: InputDecoration(
-                      hintText: 'Search brand, name, machine...',
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: SvgPicture.asset(
-                          AppAssets.icons.search,
-                          colorFilter: ColorFilter.mode(
-                            colorScheme.outline,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
-                      suffixIcon: _viewModel.searchQuery.isNotEmpty
-                          ? IconButton(
-                              icon: const Icon(Icons.clear),
-                              onPressed: () {
-                                _searchController.clear();
-                                _viewModel.search('');
-                              },
-                            )
-                          : null,
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 14,
-                        horizontal: 16,
-                      ),
-                    ),
-                  ),
+                child: LibrarySearchBar(
+                  controller: _searchController,
+                  hintText: 'Search brand, name, machine...',
+                  onChanged: (val) => _viewModel.search(val),
+                  onClear: () {
+                    _searchController.clear();
+                    _viewModel.search('');
+                  },
                 ),
               ),
 
@@ -460,6 +413,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   }
 }
 
+// TODO re-design cards
 class _BeanCard extends StatelessWidget {
   final Bean bean;
   final bool isDarkTheme;
