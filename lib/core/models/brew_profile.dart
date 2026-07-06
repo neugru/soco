@@ -1,7 +1,8 @@
 import 'package:uuid/uuid.dart';
-import 'bean.dart';
-import 'grinder.dart';
-import 'machine.dart';
+
+import 'package:soco/core/models/bean.dart';
+import 'package:soco/core/models/grinder.dart';
+import 'package:soco/core/models/machine.dart';
 
 class BrewProfile {
   final String id;
