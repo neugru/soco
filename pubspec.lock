@@ -9,6 +9,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "100.0.0"
+<<<<<<< HEAD
   analysis_server_plugin:
     dependency: transitive
     description:
@@ -17,6 +18,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.15"
+=======
+>>>>>>> 2263fd5 (adjust list format)
   analyzer:
     dependency: transitive
     description:
@@ -25,6 +28,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "13.0.0"
+<<<<<<< HEAD
   analyzer_plugin:
     dependency: transitive
     description:
@@ -33,6 +37,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.14.9"
+=======
+>>>>>>> 2263fd5 (adjust list format)
   args:
     dependency: transitive
     description:
@@ -203,6 +209,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.2"
+  icon_font_generator:
+    dependency: "direct dev"
+    description:
+      name: icon_font_generator
+      sha256: ee807b461e5cd6c543cf55fd41298158837e18d70014dfeb6f7d285647e83235
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   jni:
     dependency: transitive
     description:
@@ -251,6 +265,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
+  logger:
+    dependency: transitive
+    description:
+      name: logger
+      sha256: "25aee487596a6257655a1e091ec2ae66bc30e7af663592cc3a27e6591e05035c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.0"
   logging:
     dependency: transitive
     description:
@@ -395,6 +417,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  recase:
+    dependency: transitive
+    description:
+      name: recase
+      sha256: e4eb4ec2dcdee52dcf99cb4ceabaffc631d7424ee55e56f280bc039737f89213
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   record_use:
     dependency: transitive
     description:
@@ -539,10 +569,10 @@ packages:
     dependency: transitive
     description:
       name: xml
-      sha256: "67f0aff7be013d107995e9b75bf4e7f2c3ef2dfdb2c8e68024bba0a7fd5756a4"
+      sha256: "971043b3a0d3da28727e40ed3e0b5d18b742fa5a68665cca88e74b7876d5e025"
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.1"
+    version: "6.6.1"
   yaml:
     dependency: transitive
     description:

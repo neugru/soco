@@ -8,4 +8,8 @@ plugins:
 
 formatter:
   page_width: 120
+<<<<<<< HEAD
   trailing_commas: preserve
+=======
+  trailing_commas: preserve
+>>>>>>> 2263fd5 (adjust list format)

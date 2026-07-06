@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:soco/utils/constants/assets.dart';
-import 'package:soco/ui/core/styles/sizes.dart';
+
 import 'package:soco/ui/core/styles/elevation.dart';
-import 'package:soco/ui/core/ui/widgets/library_search_bar.dart';
+import 'package:soco/ui/core/styles/sizes.dart';
+import 'package:soco/ui/core/styles/soco_icons.dart';
 import 'package:soco/ui/core/ui/widgets/library_app_bar.dart';
-import '../models/bean.dart';
-import '../viewmodels/bean_library_viewmodel.dart';
+import 'package:soco/ui/core/ui/widgets/library_search_bar.dart';
+import 'package:soco/ui/features/bean_library/models/bean.dart';
+import 'package:soco/ui/features/bean_library/viewmodels/bean_library_viewmodel.dart';
 
 class BeanLibraryView extends StatefulWidget {
   const BeanLibraryView({super.key});
@@ -18,12 +18,14 @@ class BeanLibraryView extends StatefulWidget {
 class _BeanLibraryViewState extends State<BeanLibraryView> {
   late final BeanLibraryViewModel _viewModel;
   late final TextEditingController _searchController;
+  late final ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
     _viewModel = BeanLibraryViewModel();
     _searchController = TextEditingController();
+    _scrollController = ScrollController();
 
     // Fetch initial list
     _viewModel.fetchBeans();
@@ -32,6 +34,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   @override
   void dispose() {
     _searchController.dispose();
+    _scrollController.dispose();
     _viewModel.dispose();
     super.dispose();
   }
@@ -271,21 +274,31 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
 
+    final navBarVerticalSpacing = AppSizes.spacing.medium;  // spacing above the BottomNavBar
+    final safeAreaBottom = MediaQuery.paddingOf(context).bottom;
+    // The "fabPadding" will level the FAB with the top of the BottomNavBar.
+    // The FAB has 16px (additional) bottom padding by default (defined in
+    // "kFloatingActionButtonMargin" by flutter itself), creating a gap of 16px
+    // between the FAB and the BottomNavBar.
+    // To set a custom gap, replace the fabPadding with the code below:
+    // final fabGap = 12.0;  // custom gap
+    // final fabPadding = safeAreaBottom - navBarVerticalSpacing - kFloatingActionButtonMargin + fabGap;
+    final fabPadding = safeAreaBottom - navBarVerticalSpacing;
+    final pageContentBottomPadding = safeAreaBottom + AppSizes.spacing.medium;
+
     return Scaffold(
-      appBar: LibraryAppBar(
+      appBar: const LibraryAppBar(
         title: 'Bean Library',
-        iconPath: AppAssets.icons.coffeeBean,
+        icon: SocoIcons.coffeeBean,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _showAddBeanDialog,
-        icon: SvgPicture.asset(
-          AppAssets.icons.add,
-          colorFilter: ColorFilter.mode(
-            colorScheme.onPrimary,
-            BlendMode.srcIn,
-          ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: fabPadding), // Push FAB above the floating NavBar
+        child: FloatingActionButton.extended(
+          onPressed: _showAddBeanDialog,
+          icon: Icon(SocoIcons.add),
+          label: const Text('Add Bean'),
+          foregroundColor: colorScheme.onPrimaryContainer,  // will be used by text and icon
         ),
-        label: const Text('Add Bean'),
       ),
       body: ListenableBuilder(
         listenable: _viewModel,
@@ -334,19 +347,17 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(
-                              AppAssets.icons.noImage,
-                              height: 64,
-                              colorFilter: ColorFilter.mode(
-                                colorScheme.outline.withValues(alpha: 0.5),
-                                BlendMode.srcIn,
-                              ),
+                            // TODO replace empty list icon
+                            Icon(
+                              SocoIcons.noImage,
+                              size: 64,
+                              color: colorScheme.outline.withValues(alpha: 0.5),
                             ),
                             AppSizes.gap.medium,
                             Text(
                               _viewModel.searchQuery.trim().isNotEmpty
-                                  ? 'No beans match your search.'
-                                  : 'Your library is empty.',
+                                  ? 'No beans matching your search'
+                                  : 'Your bean library is empty',
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: colorScheme.outline,
                                   ),
@@ -354,55 +365,78 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                           ],
                         ),
                       )
-                    : ListView.builder(
-                        padding: EdgeInsets.only(
-                          left: AppSizes.spacing.medium,
-                          right: AppSizes.spacing.medium,
-                          top: AppSizes.spacing.small,
-                          bottom: AppSizes.spacing.extraLarge2 + 16.0,
-                        ),
-                        itemCount: _viewModel.beans.length,
-                        itemBuilder: (context, index) {
-                          final bean = _viewModel.beans[index];
+                    : Scrollbar(
+                        controller: _scrollController,
+                        child: ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            final topFadeHeight = AppSizes.spacing.medium;
+                            final fadeEnd = (topFadeHeight / bounds.height).clamp(0.0, 1.0);
 
-                          return Dismissible(
-                            key: Key(bean.id),
-                            direction: DismissDirection.endToStart,
-                            background: Container(
-                              alignment: Alignment.centerRight,
-                              padding: EdgeInsets.symmetric(horizontal: AppSizes.spacing.large),
-                              margin: EdgeInsets.only(bottom: AppSizes.spacing.medium),
-                              decoration: BoxDecoration(
-                                color: colorScheme.errorContainer,
-                                borderRadius: BorderRadius.circular(AppSizes.radius.large),
-                              ),
-                              child: Icon(
-                                Icons.delete_outline,
-                                color: colorScheme.onErrorContainer,
-                                size: 28,
-                              ),
+                            return LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: const [
+                                Colors.transparent,
+                                Colors.black,
+                              ],
+                              stops: [0, fadeEnd],
+                            ).createShader(bounds);
+                          },
+                          blendMode: BlendMode.dstIn,
+                          child: ListView.separated(
+                            controller: _scrollController,
+                            padding: EdgeInsets.only(
+                              left: AppSizes.spacing.medium,
+                              right: AppSizes.spacing.medium,
+                              top: AppSizes.spacing.medium, // Keep top padding matching the fade zone
+                              bottom: pageContentBottomPadding,
                             ),
-                            onDismissed: (direction) {
-                              _viewModel.removeBean(bean.id);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('${bean.name} removed'),
-                                  action: SnackBarAction(
-                                    label: 'Undo',
-                                    onPressed: () => _viewModel.addBean(bean),
+                            itemCount: _viewModel.beans.length,
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: AppSizes.spacing.medium,
+                            ),
+                            itemBuilder: (context, index) {
+                              final bean = _viewModel.beans[index];
+
+                              return Dismissible(
+                                key: Key(bean.id),
+                                direction: DismissDirection.endToStart,
+                                background: Container(
+                                  alignment: Alignment.centerRight,
+                                  padding: EdgeInsets.symmetric(horizontal: AppSizes.spacing.large),
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.errorContainer,
+                                    borderRadius: BorderRadius.circular(AppSizes.radius.large),
                                   ),
-                                  behavior: SnackBarBehavior.floating,
+                                  child: Icon(
+                                    Icons.delete_outline,
+                                    color: colorScheme.onErrorContainer,
+                                    size: 28,
+                                  ),
+                                ),
+                                onDismissed: (direction) {
+                                  _viewModel.removeBean(bean.id);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('${bean.name} removed'),
+                                      action: SnackBarAction(
+                                        label: 'Undo',
+                                        onPressed: () => _viewModel.addBean(bean),
+                                      ),
+                                      behavior: SnackBarBehavior.floating,
+                                    ),
+                                  );
+                                },
+                                child: _BeanCard(
+                                  bean: bean,
+                                  isDarkTheme: isDarkTheme,
+                                  roastBgColor: _getRoastBgColor(bean.roastLevel, isDarkTheme),
+                                  roastTextColor: _getRoastTextColor(bean.roastLevel, isDarkTheme),
                                 ),
                               );
                             },
-                            child: _BeanCard(
-                              bean: bean,
-                              isDarkTheme: isDarkTheme,
-                              roastBgColor: _getRoastBgColor(bean.roastLevel, isDarkTheme),
-                              roastTextColor: _getRoastTextColor(bean.roastLevel, isDarkTheme),
-                            ),
-                          );
-                        },
+                          ),
+                        ),
                       ),
               ),
             ],
@@ -432,7 +466,6 @@ class _BeanCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      margin: EdgeInsets.only(bottom: AppSizes.spacing.medium),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(AppSizes.radius.large),
@@ -513,10 +546,15 @@ class _BeanCard extends StatelessWidget {
               ),
               AppSizes.gap.medium,
               // Footer: roast badge, grind size badge & star rating
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: AppSizes.spacing.small,
+                runSpacing: AppSizes.spacing.small,
                 children: [
-                  Row(
+                  Wrap(
+                    spacing: AppSizes.spacing.small,
+                    runSpacing: AppSizes.spacing.small,
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -532,7 +570,6 @@ class _BeanCard extends StatelessWidget {
                               ),
                         ),
                       ),
-                      AppSizes.gap.small,
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
@@ -550,15 +587,12 @@ class _BeanCard extends StatelessWidget {
                     ],
                   ),
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      SvgPicture.asset(
-                        AppAssets.icons.starRate,
-                        colorFilter: const ColorFilter.mode(
-                          Colors.amber,
-                          BlendMode.srcIn,
-                        ),
-                        height: 16,
-                        width: 16,
+                      const Icon(
+                        SocoIcons.starRate,
+                        color: Colors.amber,
+                        size: 16,
                       ),
                       AppSizes.gap.extraSmall,
                       Text(

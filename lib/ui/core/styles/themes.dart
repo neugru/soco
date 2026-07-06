@@ -62,17 +62,25 @@ class AppTheme {
         surfaceContainerHigh: AppColors.lightSurfaceContainerHigh,
         surfaceContainerHighest: AppColors.lightSurfaceContainerHighest,
       ),
+
       // TODO
       scaffoldBackgroundColor: AppColors.lightSurface,
       textTheme: AppStyles.textTheme.apply(
         bodyColor: AppColors.lightOnSurface,
         displayColor: AppColors.lightOnSurface,
       ),
+
       // TODO check NavBar design
-      navigationBarTheme: const NavigationBarThemeData(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: AppColors.lightSurfaceContainer.withValues(alpha: 0.65),
         height: 64,
+      ),
+
+      // FloatingActionButton Theme
+      // TODO
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: AppColors.lightOnPrimaryContainer,
+        backgroundColor: AppColors.lightPrimaryContainer,
       ),
 
       // AppBar Theme
@@ -204,17 +212,25 @@ class AppTheme {
         surfaceContainerHigh: AppColors.darkSurfaceContainerHigh,
         surfaceContainerHighest: AppColors.darkSurfaceContainerHighest,
       ),
+
       // TODO
       scaffoldBackgroundColor: AppColors.darkSurface,
       textTheme: AppStyles.textTheme.apply(
         bodyColor: AppColors.darkOnSurface,
         displayColor: AppColors.darkOnSurface,
       ),
+
       // TODO check NavBar design
-      navigationBarTheme: const NavigationBarThemeData(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: AppColors.darkSurfaceContainer.withValues(alpha: 0.65),
         height: 64,
+      ),
+
+      // FloatingActionButton Theme
+      // TODO
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: AppColors.darkOnPrimaryContainer,
+        backgroundColor: AppColors.darkPrimaryContainer,
       ),
 
       // AppBar Theme

@@ -16,10 +16,18 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+<<<<<<< HEAD
   soco_lints:
     path: ./soco_lints
+=======
+  icon_font_generator: ^4.1.0
+>>>>>>> 2263fd5 (adjust list format)
 
 flutter:
   uses-material-design: true
   assets:
     - assets/icons/
+  fonts:
+    - family: Soco Icons
+      fonts:
+        - asset: assets/fonts/SocoIcons.otf

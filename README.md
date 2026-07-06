@@ -10,7 +10,6 @@ If you are checking out this repository for the first time, follow these steps t
 
 ### Prerequisites
 * Install the [Flutter SDK](https://docs.flutter.dev/get-started/install) (Ensure you are on the `stable` channel).
-* A mobile emulator (Android/iOS) or a connected physical test device.
 
 ### Setup Instructions
 
@@ -43,7 +42,22 @@ If you are checking out this repository for the first time, follow these steps t
 
 To maintain a clean repository history and automate our versioning, please follow these guidelines when contributing:
 
-### 1. Work on a Feature Branch
+### Updating Custom Icons
+
+To update or add new custom icons to the application:
+
+1. **Prepare:** Save your icons as `.svg` files.
+2. **Place:** Add the SVG files to the `assets/icons/` directory.
+3. **Compile:** Run the generation command to rebuild the icon font:
+   ```bash
+   dart run icon_font_generator:generator && sed -i '1s/^/\/\/ ignore_for_file: unintended_html_in_doc_comment\n/' lib/ui/core/styles/soco_icons.dart
+   ```
+
+> This script compiles the SVG vectors into the binary font file (`assets/fonts/SocoIcons.otf`) and updates the generated Dart helper class (`lib/ui/core/styles/soco_icons.dart`) with the corresponding `IconData` mappings.
+
+### How to add a Feature
+
+#### 1. Work on a Feature Branch
 Never commit directly to the `main` branch. Always create a descriptive feature branch:
 ```bash
 git checkout -b feat/your-feature-name
@@ -56,7 +70,7 @@ git switch -c feat/your-feature-name
 # ...
 ```
 
-### 2. Code Formatting
+#### 2. Code Formatting
 
 Ensure all your Dart files are formatted according to the standard style guidelines before committing. You can format the entire repository by running:
 ```bash
@@ -69,9 +83,9 @@ dart format -o none .
 # Changed lib/main.dart
 # ...
 ```
-*(Note: The CI verification workflow runs `dart format -o none --set-exit-if-changed .` on every Pull Request. Commits with unformatted code will fail validation).*
+> The CI verification workflow runs `dart format -o none --set-exit-if-changed .` on every Pull Request. Commits with unformatted code will fail validation.
 
-#### Disabling the Formatter
+##### Disabling the Formatter
 
 To prevent the formatter from modifying specific sections of code, wrap the block with formatting comments:
 ```dart
@@ -84,7 +98,7 @@ final matrix = [
 // dart format on
 ```
 
-### 3. Code Analysis
+#### 3. Code Analysis
 
 Ensure your code passes static analysis checks without any errors or warnings. 
 
@@ -105,7 +119,7 @@ Depending on your operating system, use one of the following commands:
 *(Note: The CI verification workflow runs this individual file analysis on every Pull Request. Commits with warnings or errors will fail validation).*
 
 
-#### Disabling Linter Warnings
+##### Disabling Linter Warnings
 
 In rare cases where a specific linter rule should be bypassed, use the `ignore` comment syntax:
 *   **For a single line:**
@@ -118,7 +132,7 @@ In rare cases where a specific linter rule should be bypassed, use the `ignore` 
     // ignore_for_file: unused_local_variable
     ```
 
-### 4. Squash and Merge Pull Requests
+#### 4. Squash and Merge Pull Requests
 
 When merging your Pull Request into `main`:
 1. **Always use "Squash and Merge"** in the GitHub interface.
@@ -126,7 +140,7 @@ When merging your Pull Request into `main`:
 3. Ensure the **squashed commit message** starts with the appropriate [Conventional Commit prefix](#conventional-commit-message-rules) (e.g., `feat: add beans search`).
 > This single squashed commit will trigger the CI release runner to update `pubspec.yaml`, write to `CHANGELOG.md`, and deploy the release tag.
 
-### Conventional Commit Message Rules
+#### Conventional Commit Message Rules
 
 | Prefix | Type of Change | Version Bump |
 | :--- | :--- | :--- |

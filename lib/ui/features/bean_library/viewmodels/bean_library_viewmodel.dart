@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
-import '../models/bean.dart';
+
+import 'package:soco/ui/features/bean_library/models/bean.dart';
 
 class BeanLibraryViewModel extends ChangeNotifier {
   final List<Bean> _allBeans = [];
@@ -20,7 +21,7 @@ class BeanLibraryViewModel extends ChangeNotifier {
     notifyListeners();
 
     // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 1000));
+    // await Future.delayed(const Duration(milliseconds: 1000));
 
     // Populate with mockup beans matching the new Bean model
     _allBeans.addAll([
