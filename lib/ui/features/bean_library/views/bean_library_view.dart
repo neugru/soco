@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:soco/core/models/brew_profile.dart';
+import 'package:soco/core/models/roast_level.dart';
 import 'package:soco/ui/core/styles/elevation.dart';
 import 'package:soco/ui/core/styles/sizes.dart';
 import 'package:soco/ui/core/styles/soco_icons.dart';
 import 'package:soco/ui/core/ui/widgets/library_app_bar.dart';
 import 'package:soco/ui/core/ui/widgets/library_search_bar.dart';
-import 'package:soco/core/models/brew_profile.dart';
-import 'package:soco/core/models/roast_level.dart';
 import 'package:soco/ui/features/bean_library/viewmodels/bean_library_viewmodel.dart';
 import 'package:soco/ui/features/bean_library/views/add_bean_dialog.dart';
 
