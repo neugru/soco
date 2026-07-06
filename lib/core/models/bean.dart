@@ -1,5 +1,6 @@
 import 'package:uuid/uuid.dart';
-import 'roast_level.dart';
+
+import 'package:soco/core/models/roast_level.dart';
 
 class Bean {
   final String id;
