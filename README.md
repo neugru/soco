@@ -104,7 +104,7 @@ Ensure your code passes static analysis checks without any errors or warnings. Y
 ```bash
 flutter analyze
 ```
-*(Note: The CI verification workflow runs `flutter analyze` on every Pull Request. Commits with warnings or errors will fail validation).*
+> The CI verification workflow runs `flutter analyze` on every Pull Request. Commits with warnings or errors will fail validation.
 
 ##### Disabling Linter Warnings
 
@@ -125,6 +125,7 @@ When merging your Pull Request into `main`:
 1. **Always use "Squash and Merge"** in the GitHub interface.
 2. Ensure the **Verify Code Quality** check passes.
 3. Ensure the **squashed commit message** starts with the appropriate [Conventional Commit prefix](#conventional-commit-message-rules) (e.g., `feat: add beans search`).
+
 > This single squashed commit will trigger the CI release runner to update `pubspec.yaml`, write to `CHANGELOG.md`, and deploy the release tag.
 
 #### Conventional Commit Message Rules

@@ -1,123 +1,152 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:soco/ui/features/bean_library/models/bean.dart';
+import 'package:soco/core/models/bean.dart';
+import 'package:soco/core/models/brew_profile.dart';
+import 'package:soco/core/models/grinder.dart';
+import 'package:soco/core/models/machine.dart';
+import 'package:soco/core/models/roast_level.dart';
 
 class BeanLibraryViewModel extends ChangeNotifier {
-  final List<Bean> _allBeans = [];
-  List<Bean> _filteredBeans = [];
+  final List<BrewProfile> _allBrewProfiles = [];
+  List<BrewProfile> _filteredBrewProfiles = [];
   bool _isLoading = false;
   String _searchQuery = '';
 
   // Getters
   bool get isLoading => _isLoading;
-  List<Bean> get beans => _filteredBeans;
+  List<BrewProfile> get brewProfiles => _filteredBrewProfiles;
   String get searchQuery => _searchQuery;
 
-  /// Simulates fetching beans from a repository or API
+  // Track if VM is disposed to prevent notifyListeners() crashes
+  bool _isDisposed = false;
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+
+  /// Simulates fetching recipes from a repository or API
   Future<void> fetchBeans() async {
-    if (_allBeans.isNotEmpty) return; // Prevent double loading if already loaded
+    if (_allBrewProfiles.isNotEmpty) return; // Prevent double loading if already loaded
 
     _isLoading = true;
-    notifyListeners();
+    if (!_isDisposed) notifyListeners();
 
     // Simulate network delay
     // await Future.delayed(const Duration(milliseconds: 1000));
 
-    // Populate with mockup beans matching the new Bean model
-    _allBeans.addAll([
-      const Bean(
+    // Populate with mockup recipes matching the new BrewProfile model
+    _allBrewProfiles.addAll([
+      const BrewProfile(
         id: '1',
-        name: 'Ethiopia Yirgacheffe',
-        brand: 'Sey Coffee',
+        bean: Bean(
+          id: 'b1',
+          name: 'Ethiopia Yirgacheffe',
+          brand: 'Sey Coffee',
+          origin: 'Ethiopia (Single Origin)',
+          roastLevel: RoastLevel.light,
+        ),
         grindSize: 12.50,
-        origin: 'Ethiopia (Single Origin)',
-        roastLevel: RoastLevel.light,
         description: 'Floral jasmine aroma with bright bergamot acidity and peach sweetness. High clarity.',
         rating: 4.9,
-        grinder: 'Comandante C40',
-        machine: 'La Marzocco Linea Micra',
+        strength: 2,
+        grinder: Grinder(id: 'g1', brand: 'Comandante', name: 'C40'),
+        machine: Machine(id: 'm1', brand: 'La Marzocco', name: 'Linea Micra'),
       ),
-      const Bean(
+      const BrewProfile(
         id: '2',
-        name: 'Bella Vista Bourbon',
-        brand: 'Intelligentsia',
+        bean: Bean(
+          id: 'b2',
+          name: 'Bella Vista Bourbon',
+          brand: 'Intelligentsia',
+          origin: 'Guatemala',
+          roastLevel: RoastLevel.medium,
+        ),
         grindSize: 14.20,
-        origin: 'Guatemala',
-        roastLevel: RoastLevel.medium,
         description: 'Smooth honey processing yields tasting notes of red apple, sweet plum, and rich caramel.',
         rating: 4.7,
-        grinder: 'Fellow Ode Gen 2',
-        machine: 'Sage Barista Express',
+        strength: 3,
+        grinder: Grinder(id: 'g2', brand: 'Fellow', name: 'Ode Gen 2'),
+        machine: Machine(id: 'm2', brand: 'Sage', name: 'Barista Express'),
       ),
-      const Bean(
+      const BrewProfile(
         id: '3',
-        name: 'Three Mules Blend',
-        brand: 'Blue Bottle',
+        bean: Bean(
+          id: 'b3',
+          name: 'Three Mules Blend',
+          brand: 'Blue Bottle',
+          origin: 'Colombia & Sumatra',
+          roastLevel: RoastLevel.dark,
+        ),
         grindSize: 18.00,
-        origin: 'Colombia & Sumatra',
-        roastLevel: RoastLevel.dark,
         description: 'Heavy body with robust notes of dark chocolate, peat moss, toasted marshmallow, and spice.',
         rating: 4.5,
-        grinder: 'Mahlkönig EK43',
-        machine: 'Slayer Espresso Single Group',
+        strength: 5,
+        grinder: Grinder(id: 'g3', brand: 'Mahlkönig', name: 'EK43'),
+        machine: Machine(id: 'm3', brand: 'Slayer', name: 'Espresso Single Group'),
       ),
-      const Bean(
+      const BrewProfile(
         id: '4',
-        name: 'Pacamara Natural',
-        brand: 'Onyx Coffee Lab',
+        bean: Bean(
+          id: 'b4',
+          name: 'Pacamara Natural',
+          brand: 'Onyx Coffee Lab',
+          origin: 'El Salvador',
+          roastLevel: RoastLevel.light,
+        ),
         grindSize: 11.55,
-        origin: 'El Salvador',
-        roastLevel: RoastLevel.light,
         description: 'Complex tropical fruit acidity, dried mango, red wine notes, and a velvety chocolate finish.',
         rating: 4.8,
-        grinder: 'Lagom P64',
-        machine: 'Decent DE1PRO',
+        strength: 2,
+        grinder: Grinder(id: 'g4', brand: 'Lagom', name: 'P64'),
+        machine: Machine(id: 'm4', brand: 'Decent', name: 'DE1PRO'),
       ),
     ]);
 
     _applyFilterAndSort();
     _isLoading = false;
-    notifyListeners();
+    if (!_isDisposed) notifyListeners();
   }
 
-  /// Filters the bean list based on the search query
+  /// Filters the recipe list based on the search query
   void search(String query) {
     _searchQuery = query;
     _applyFilterAndSort();
     notifyListeners();
   }
 
-  /// Adds a new bean to the library
-  void addBean(Bean bean) {
-    _allBeans.add(bean);
+  /// Adds a new recipe to the library
+  void addBrewProfile(BrewProfile profile) {
+    _allBrewProfiles.add(profile);
     _applyFilterAndSort();
     notifyListeners();
   }
 
-  /// Removes a bean from the library
-  void removeBean(String id) {
-    _allBeans.removeWhere((b) => b.id == id);
+  /// Removes a recipe from the library
+  void removeBrewProfile(String id) {
+    _allBrewProfiles.removeWhere((p) => p.id == id);
     _applyFilterAndSort();
     notifyListeners();
   }
 
-  /// Helper to filter and sort beans based on search query
+  /// Helper to filter and sort recipes based on search query
   void _applyFilterAndSort() {
     if (_searchQuery.trim().isEmpty) {
-      _filteredBeans = List.from(_allBeans);
+      _filteredBrewProfiles = List.from(_allBrewProfiles);
     } else {
       final query = _searchQuery.toLowerCase();
-      _filteredBeans = _allBeans.where((bean) {
-        return bean.name.toLowerCase().contains(query) ||
-            bean.brand.toLowerCase().contains(query) ||
-            bean.origin.toLowerCase().contains(query) ||
-            bean.grinder.toLowerCase().contains(query) ||
-            bean.machine.toLowerCase().contains(query) ||
-            bean.description.toLowerCase().contains(query);
+      _filteredBrewProfiles = _allBrewProfiles.where((profile) {
+        return profile.bean.name.toLowerCase().contains(query) ||
+            profile.bean.brand.toLowerCase().contains(query) ||
+            profile.bean.origin.toLowerCase().contains(query) ||
+            profile.grinder.displayName.toLowerCase().contains(query) ||
+            profile.machine.displayName.toLowerCase().contains(query) ||
+            profile.description.toLowerCase().contains(query);
       }).toList();
     }
 
-    // Sort alphabetically by name
-    _filteredBeans.sort((a, b) => a.name.compareTo(b.name));
+    // Sort alphabetically by bean name
+    _filteredBrewProfiles.sort((a, b) => a.bean.name.compareTo(b.bean.name));
   }
 }

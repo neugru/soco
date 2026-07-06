@@ -5,8 +5,10 @@ import 'package:soco/ui/core/styles/sizes.dart';
 import 'package:soco/ui/core/styles/soco_icons.dart';
 import 'package:soco/ui/core/ui/widgets/library_app_bar.dart';
 import 'package:soco/ui/core/ui/widgets/library_search_bar.dart';
-import 'package:soco/ui/features/bean_library/models/bean.dart';
+import 'package:soco/core/models/brew_profile.dart';
+import 'package:soco/core/models/roast_level.dart';
 import 'package:soco/ui/features/bean_library/viewmodels/bean_library_viewmodel.dart';
+import 'package:soco/ui/features/bean_library/views/add_bean_dialog.dart';
 
 class BeanLibraryView extends StatefulWidget {
   const BeanLibraryView({super.key});
@@ -86,187 +88,21 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
     }
   }
 
-  void _showAddBeanDialog() {
-    final formKey = GlobalKey<FormState>();
-    String name = '';
-    String brand = '';
-    double grindSize = 14.00;
-    String origin = '';
-    String description = '';
-    RoastLevel roastLevel = RoastLevel.medium;
-    double rating = 4.5;
-    String grinder = '';
-    String machine = '';
-
-    showDialog(
+  void _showAddBeanDialog() async {
+    final newProfile = await showDialog<BrewProfile>(
       context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            return AlertDialog(
-              title: const Text('Add Bean to Library'),
-              content: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Bean Name',
-                          hintText: 'e.g. Geisha Natural',
-                        ),
-                        validator: (v) => v == null || v.isEmpty ? 'Please enter a name' : null,
-                        onSaved: (v) => name = v ?? '',
-                      ),
-                      AppSizes.gap.small,
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Brand',
-                          hintText: 'e.g. Sey Coffee',
-                        ),
-                        validator: (v) => v == null || v.isEmpty ? 'Please enter a brand' : null,
-                        onSaved: (v) => brand = v ?? '',
-                      ),
-                      AppSizes.gap.small,
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Grind Size',
-                          hintText: 'e.g. 14.50',
-                        ),
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        validator: (v) {
-                          if (v == null || v.isEmpty) return 'Please enter grind size';
-                          if (double.tryParse(v) == null) return 'Please enter a valid number';
-                          return null;
-                        },
-                        onSaved: (v) => grindSize = double.tryParse(v ?? '') ?? 14.00,
-                      ),
-                      AppSizes.gap.small,
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Origin',
-                          hintText: 'e.g. Panama (Single Origin)',
-                        ),
-                        validator: (v) => v == null || v.isEmpty ? 'Please enter origin' : null,
-                        onSaved: (v) => origin = v ?? '',
-                      ),
-                      AppSizes.gap.small,
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Grinder Used',
-                          hintText: 'e.g. Comandante C40',
-                        ),
-                        validator: (v) => v == null || v.isEmpty ? 'Please enter grinder' : null,
-                        onSaved: (v) => grinder = v ?? '',
-                      ),
-                      AppSizes.gap.small,
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Machine Used',
-                          hintText: 'e.g. Decent DE1PRO',
-                        ),
-                        validator: (v) => v == null || v.isEmpty ? 'Please enter machine' : null,
-                        onSaved: (v) => machine = v ?? '',
-                      ),
-                      AppSizes.gap.small,
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Description / Tasting Notes',
-                          hintText: 'e.g. Bergamot, peach, black tea finish.',
-                        ),
-                        maxLines: 2,
-                        onSaved: (v) => description = v ?? '',
-                      ),
-                      AppSizes.gap.medium,
-                      // Roast Level selection
-                      Row(
-                        children: [
-                          const Text('Roast Level: '),
-                          AppSizes.gap.medium,
-                          Expanded(
-                            child: DropdownButton<RoastLevel>(
-                              value: roastLevel,
-                              isExpanded: true,
-                              items: RoastLevel.values.map((level) {
-                                return DropdownMenuItem(
-                                  value: level,
-                                  child: Text(level.displayName),
-                                );
-                              }).toList(),
-                              onChanged: (val) {
-                                if (val != null) {
-                                  setDialogState(() {
-                                    roastLevel = val;
-                                  });
-                                }
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      AppSizes.gap.medium,
-                      // Rating slider
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Rating: ${rating.toStringAsFixed(1)} Stars'),
-                          Slider(
-                            value: rating,
-                            min: 1.0,
-                            max: 5.0,
-                            divisions: 40,
-                            onChanged: (val) {
-                              setDialogState(() {
-                                rating = val;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancel'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState?.validate() ?? false) {
-                      formKey.currentState?.save();
-                      final newBean = Bean(
-                        id: DateTime.now().millisecondsSinceEpoch.toString(),
-                        name: name,
-                        brand: brand,
-                        grindSize: grindSize,
-                        origin: origin,
-                        roastLevel: roastLevel,
-                        description: description.isEmpty ? 'No description provided.' : description,
-                        rating: rating,
-                        grinder: grinder,
-                        machine: machine,
-                      );
-                      _viewModel.addBean(newBean);
-                      Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('$name added successfully!'),
-                          behavior: SnackBarBehavior.floating,
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text('Add'),
-                ),
-              ],
-            );
-          },
-        );
-      },
+      builder: (context) => const AddBeanDialog(),
     );
+
+    if (newProfile != null && mounted) {
+      _viewModel.addBrewProfile(newProfile);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${newProfile.bean.name} added successfully!'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
   }
 
   @override
@@ -342,7 +178,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
 
               // Bean List
               Expanded(
-                child: _viewModel.beans.isEmpty
+                child: _viewModel.brewProfiles.isEmpty
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -356,8 +192,8 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                             AppSizes.gap.medium,
                             Text(
                               _viewModel.searchQuery.trim().isNotEmpty
-                                  ? 'No beans matching your search'
-                                  : 'Your bean library is empty',
+                                  ? 'No profiles matching your search'
+                                  : 'Your profile library is empty',
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: colorScheme.outline,
                                   ),
@@ -391,15 +227,15 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                               top: AppSizes.spacing.medium, // Keep top padding matching the fade zone
                               bottom: pageContentBottomPadding,
                             ),
-                            itemCount: _viewModel.beans.length,
+                            itemCount: _viewModel.brewProfiles.length,
                             separatorBuilder: (context, index) => SizedBox(
                               height: AppSizes.spacing.medium,
                             ),
                             itemBuilder: (context, index) {
-                              final bean = _viewModel.beans[index];
+                              final profile = _viewModel.brewProfiles[index];
 
                               return Dismissible(
-                                key: Key(bean.id),
+                                key: Key(profile.id),
                                 direction: DismissDirection.endToStart,
                                 background: Container(
                                   alignment: Alignment.centerRight,
@@ -415,23 +251,23 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                                   ),
                                 ),
                                 onDismissed: (direction) {
-                                  _viewModel.removeBean(bean.id);
+                                  _viewModel.removeBrewProfile(profile.id);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('${bean.name} removed'),
+                                      content: Text('${profile.bean.name} removed'),
                                       action: SnackBarAction(
                                         label: 'Undo',
-                                        onPressed: () => _viewModel.addBean(bean),
+                                        onPressed: () => _viewModel.addBrewProfile(profile),
                                       ),
                                       behavior: SnackBarBehavior.floating,
                                     ),
                                   );
                                 },
                                 child: _BeanCard(
-                                  bean: bean,
+                                  profile: profile,
                                   isDarkTheme: isDarkTheme,
-                                  roastBgColor: _getRoastBgColor(bean.roastLevel, isDarkTheme),
-                                  roastTextColor: _getRoastTextColor(bean.roastLevel, isDarkTheme),
+                                  roastBgColor: _getRoastBgColor(profile.bean.roastLevel, isDarkTheme),
+                                  roastTextColor: _getRoastTextColor(profile.bean.roastLevel, isDarkTheme),
                                 ),
                               );
                             },
@@ -449,13 +285,13 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
 
 // TODO re-design cards
 class _BeanCard extends StatelessWidget {
-  final Bean bean;
+  final BrewProfile profile;
   final bool isDarkTheme;
   final Color roastBgColor;
   final Color roastTextColor;
 
   const _BeanCard({
-    required this.bean,
+    required this.profile,
     required this.isDarkTheme,
     required this.roastBgColor,
     required this.roastTextColor,
@@ -487,7 +323,7 @@ class _BeanCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          bean.name,
+                          profile.bean.name,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: colorScheme.onSurface,
@@ -495,13 +331,34 @@ class _BeanCard extends StatelessWidget {
                         ),
                         AppSizes.gap.extraSmall,
                         Text(
-                          '${bean.brand} • ${bean.origin}',
+                          '${profile.bean.brand} • ${profile.bean.origin}',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 color: colorScheme.outline,
                               ),
                         ),
                       ],
                     ),
+                  ),
+                  AppSizes.gap.small,
+                  // Strength Meter
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(5, (index) {
+                      final isActive = index < profile.strength;
+                      final activeColor = isDarkTheme
+                          ? const Color(0xFFEDDDD4) // Light warm cream/brown
+                          : const Color(0xFF5D544F); // Dark espresso brown
+                      final inactiveColor = colorScheme.onSurface.withValues(alpha: 0.12);
+
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 3.0),
+                        child: Icon(
+                          SocoIcons.coffeeBean,
+                          size: 14,
+                          color: isActive ? activeColor : inactiveColor,
+                        ),
+                      );
+                    }),
                   ),
                 ],
               ),
@@ -513,7 +370,7 @@ class _BeanCard extends StatelessWidget {
                   AppSizes.gap.extraSmall,
                   Expanded(
                     child: Text(
-                      'Grinder: ${bean.grinder}',
+                      'Grinder: ${profile.grinder.displayName}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                           ),
@@ -526,7 +383,7 @@ class _BeanCard extends StatelessWidget {
                   AppSizes.gap.extraSmall,
                   Expanded(
                     child: Text(
-                      'Machine: ${bean.machine}',
+                      'Machine: ${profile.machine.displayName}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                           ),
@@ -539,7 +396,7 @@ class _BeanCard extends StatelessWidget {
               AppSizes.gap.small,
               // Description
               Text(
-                bean.description,
+                profile.description,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -563,7 +420,7 @@ class _BeanCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(AppSizes.radius.small),
                         ),
                         child: Text(
-                          bean.roastLevel.displayName,
+                          profile.bean.roastLevel.displayName,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 color: roastTextColor,
                                 fontWeight: FontWeight.bold,
@@ -577,7 +434,7 @@ class _BeanCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(AppSizes.radius.small),
                         ),
                         child: Text(
-                          'Grind: ${bean.grindSize.toStringAsFixed(2)}',
+                          'Grind: ${profile.grindSize.toStringAsFixed(2)}',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 color: colorScheme.onSurfaceVariant,
                                 fontWeight: FontWeight.bold,
@@ -596,7 +453,7 @@ class _BeanCard extends StatelessWidget {
                       ),
                       AppSizes.gap.extraSmall,
                       Text(
-                        bean.rating.toStringAsFixed(1),
+                        profile.rating.toStringAsFixed(1),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: colorScheme.onSurface,
