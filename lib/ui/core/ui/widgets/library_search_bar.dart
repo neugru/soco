@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:soco/utils/constants/assets.dart';
-import 'package:soco/ui/core/styles/sizes.dart';
+
 import 'package:soco/ui/core/styles/elevation.dart';
+import 'package:soco/ui/core/styles/sizes.dart';
+import 'package:soco/ui/core/styles/soco_icons.dart';
 
 class LibrarySearchBar extends StatelessWidget {
   final TextEditingController controller;
@@ -33,15 +33,9 @@ class LibrarySearchBar extends StatelessWidget {
         onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: SvgPicture.asset(
-              AppAssets.icons.search,
-              colorFilter: ColorFilter.mode(
-                colorScheme.outline,
-                BlendMode.srcIn,
-              ),
-            ),
+          prefixIcon: Icon(
+            SocoIcons.search,
+            color: colorScheme.outline,
           ),
           suffixIcon: ListenableBuilder(
             listenable: controller,

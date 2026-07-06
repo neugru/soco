@@ -23,23 +23,23 @@ class _ElevationShadows {
   /// Subtle elevation shadow suitable for cards and small components
   List<BoxShadow> get low => [
     BoxShadow(
-      color: const Color(0xFF000000).withValues(alpha: 0.06),
+      color: const Color(0xFF000000).withValues(alpha: 0.15),
       blurRadius: 4,
-      offset: const Offset(0, 2),
+      offset: const Offset(0, 3),
     ),
   ];
 
   /// Medium elevation shadow suitable for floating elements or dialogs
   List<BoxShadow> get mid => [
     BoxShadow(
-      color: const Color(0xFF000000).withValues(alpha: 0.08),
-      blurRadius: 10,
+      color: const Color(0xFF000000).withValues(alpha: 0.15),
+      blurRadius: 6,
       offset: const Offset(0, 4),
     ),
     BoxShadow(
-      color: const Color(0xFF000000).withValues(alpha: 0.04),
-      blurRadius: 3,
-      offset: const Offset(0, 1),
+      color: const Color(0xFF000000).withValues(alpha: 0.25),
+      blurRadius: 4,
+      offset: const Offset(0, 2),
     ),
   ];
 
@@ -47,13 +47,13 @@ class _ElevationShadows {
   List<BoxShadow> get high => [
     BoxShadow(
       color: const Color(0xFF000000).withValues(alpha: 0.12),
-      blurRadius: 18,
-      offset: const Offset(0, 8),
+      blurRadius: 8,
+      offset: const Offset(0, 6),
     ),
     BoxShadow(
-      color: const Color(0xFF000000).withValues(alpha: 0.06),
+      color: const Color(0xFF000000).withValues(alpha: 0.25),
       blurRadius: 6,
-      offset: const Offset(0, 2),
+      offset: const Offset(0, 4),
     ),
   ];
 }

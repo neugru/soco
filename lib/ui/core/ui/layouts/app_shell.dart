@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:soco/ui/features/bean_library/views/bean_library_view.dart';
 
-import 'package:soco/utils/constants/assets.dart';
+import 'package:soco/ui/features/bean_library/views/bean_library_view.dart';
+import 'package:soco/ui/core/styles/soco_icons.dart';
+import 'package:soco/ui/core/ui/widgets/outer_shadow.dart';
 import 'package:soco/ui/core/styles/sizes.dart';
 import 'package:soco/ui/core/styles/elevation.dart';
 
@@ -19,7 +19,7 @@ class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   // ── Pages ─────────────────────────────────────────────────────────────────
   // Replace placeholders with your real screen widgets as you build them.
@@ -33,66 +33,74 @@ class _AppShellState extends State<AppShell> {
   // ── Build ─────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
-    final iconColor = IconTheme.of(context).color ?? Colors.black;
-
-    final destinations = [
+    const destinations = [
       NavigationDestination(
-        icon: SvgPicture.asset(
-          AppAssets.icons.home,
-          colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-        ),
+        icon: Icon(SocoIcons.home),
         label: 'Home',
       ),
       NavigationDestination(
-        icon: SvgPicture.asset(
-          AppAssets.icons.coffeeBean,
-          colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-        ),
+        icon: Icon(SocoIcons.coffeeBean),
         label: 'Beans',
       ),
       NavigationDestination(
-        icon: SvgPicture.asset(
-          AppAssets.icons.coffeeMaker,
-          colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-        ),
+        icon: Icon(SocoIcons.coffeeMaker),
         label: 'Machines',
       ),
       NavigationDestination(
-        icon: SvgPicture.asset(
-          AppAssets.icons.person,
-          colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-        ),
+        icon: Icon(SocoIcons.person),
         label: 'Profile',
       ),
     ];
 
-    // TODO check NavBar design
-    return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppSizes.spacing.medium,
-            vertical: AppSizes.spacing.medium,
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainer,
-              borderRadius: BorderRadius.circular(AppSizes.radius.round),
-              boxShadow: AppElevation.shadows.mid,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppSizes.radius.round),
-              child: NavigationBar(
-                selectedIndex: _currentIndex,
-                labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-                onDestinationSelected: (index) => setState(() => _currentIndex = index),
-                destinations: destinations,
-              ),
+    final Widget bottomNavBar = SafeArea(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSizes.spacing.medium,
+          vertical: AppSizes.spacing.medium,
+        ),
+        child: OuterShadow(
+          shadows: AppElevation.shadows.mid,
+          borderRadius: BorderRadius.circular(AppSizes.radius.round),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppSizes.radius.round),
+            child: NavigationBar(
+              selectedIndex: _currentIndex,
+              labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+              onDestinationSelected: (index) => setState(() => _currentIndex = index),
+              destinations: destinations,
             ),
           ),
         ),
       ),
+    );
+
+    return Scaffold(
+      extendBody: true,
+      body: ShaderMask(
+        shaderCallback: (Rect bounds) {
+          final navBarHeight = NavigationBarTheme.of(context).height ?? 64.0;
+          final bottomSpacing = AppSizes.spacing.medium * 2; // vertical padding is applied top and bottom
+          final safeAreaBottom = MediaQuery.paddingOf(context).bottom;
+          final navBarZoneHeight = navBarHeight + bottomSpacing + safeAreaBottom;
+
+          // Convert absolute pixels to a relative stop value (0.0 to 1.0)
+          final fadeStart = (bounds.height - navBarZoneHeight).clamp(0.0, bounds.height) / bounds.height;
+          final fadeEnd = (bounds.height - (safeAreaBottom * 0.5)).clamp(0.0, bounds.height) / bounds.height;
+
+          return LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: const [
+              Colors.black,
+              Colors.transparent,
+            ],
+            stops: [fadeStart, fadeEnd],
+          ).createShader(bounds);
+        },
+        blendMode: BlendMode.dstIn,
+        child: _pages[_currentIndex],
+      ),
+      bottomNavigationBar: bottomNavBar,
     );
   }
 }

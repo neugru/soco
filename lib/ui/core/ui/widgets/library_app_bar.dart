@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:soco/ui/core/styles/sizes.dart';
 
 class LibraryAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final String iconPath;
+  final IconData icon;
   final List<Widget>? actions;
 
   const LibraryAppBar({
     super.key,
     required this.title,
-    required this.iconPath,
+    required this.icon,
     this.actions,
   });
 
@@ -21,14 +21,10 @@ class LibraryAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Row(
         children: [
-          SvgPicture.asset(
-            iconPath,
-            height: 24,
-            width: 24,
-            colorFilter: ColorFilter.mode(
-              colorScheme.primary,
-              BlendMode.srcIn,
-            ),
+          Icon(
+            icon,
+            size: 24,
+            color: colorScheme.primary,
           ),
           AppSizes.gap.small,
           Text(
