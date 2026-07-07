@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:soco/core/models/roast_level.dart';
+
 class AppColors {
   AppColors._();
 
@@ -106,4 +108,96 @@ class AppColors {
   static const Color darkSurfaceContainer = Color(0xFF201F1F);
   static const Color darkSurfaceContainerHigh = Color(0xFF2B2A2A);
   static const Color darkSurfaceContainerHighest = Color(0xFF353434);
+
+  // ===================
+  // ROAST LEVEL PALETTES
+  // ===================
+  // Light Mode
+  static const Color roastLightBgLight = Color(0xFFF5EBE6);
+  static const Color roastLightTextLight = Color(0xFF8D5B4C);
+  static const Color roastMediumBgLight = Color(0xFFEDDDD4);
+  static const Color roastMediumTextLight = Color(0xFF9E4B28);
+  static const Color roastDarkBgLight = Color(0xFFE2D4C9);
+  static const Color roastDarkTextLight = Color(0xFF5E463E);
+
+  // Dark Mode
+  static const Color roastLightBgDark = Color(0xFF5C4E43);
+  static const Color roastLightTextDark = Color(0xFFFBECE2);
+  static const Color roastMediumBgDark = Color(0xFF6B4B32);
+  static const Color roastMediumTextDark = Color(0xFFFFE0CC);
+  static const Color roastDarkBgDark = Color(0xFF382F2D);
+  static const Color roastDarkTextDark = Color(0xFFE6D6D2);
 }
+
+class RoastColors extends ThemeExtension<RoastColors> {
+  final Color lightBg;
+  final Color lightText;
+  final Color mediumBg;
+  final Color mediumText;
+  final Color darkBg;
+  final Color darkText;
+
+  const RoastColors({
+    required this.lightBg,
+    required this.lightText,
+    required this.mediumBg,
+    required this.mediumText,
+    required this.darkBg,
+    required this.darkText,
+  });
+
+  Color getBgColor(RoastLevel level) {
+    switch (level) {
+      case RoastLevel.light:
+        return lightBg;
+      case RoastLevel.medium:
+        return mediumBg;
+      case RoastLevel.dark:
+        return darkBg;
+    }
+  }
+
+  Color getTextColor(RoastLevel level) {
+    switch (level) {
+      case RoastLevel.light:
+        return lightText;
+      case RoastLevel.medium:
+        return mediumText;
+      case RoastLevel.dark:
+        return darkText;
+    }
+  }
+
+  @override
+  RoastColors copyWith({
+    Color? lightBg,
+    Color? lightText,
+    Color? mediumBg,
+    Color? mediumText,
+    Color? darkBg,
+    Color? darkText,
+  }) {
+    return RoastColors(
+      lightBg: lightBg ?? this.lightBg,
+      lightText: lightText ?? this.lightText,
+      mediumBg: mediumBg ?? this.mediumBg,
+      mediumText: mediumText ?? this.mediumText,
+      darkBg: darkBg ?? this.darkBg,
+      darkText: darkText ?? this.darkText,
+    );
+  }
+
+  @override
+  RoastColors lerp(ThemeExtension<RoastColors>? other, double t) {
+    if (other is! RoastColors) return this;
+    return RoastColors(
+      lightBg: Color.lerp(lightBg, other.lightBg, t)!,
+      lightText: Color.lerp(lightText, other.lightText, t)!,
+      mediumBg: Color.lerp(mediumBg, other.mediumBg, t)!,
+      mediumText: Color.lerp(mediumText, other.mediumText, t)!,
+      darkBg: Color.lerp(darkBg, other.darkBg, t)!,
+      darkText: Color.lerp(darkText, other.darkText, t)!,
+    );
+  }
+}
+

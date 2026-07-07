@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 
 import 'package:soco/core/models/brew_profile.dart';
+import 'package:soco/ui/core/styles/colors.dart';
 import 'package:soco/ui/core/styles/elevation.dart';
 import 'package:soco/ui/core/styles/sizes.dart';
 import 'package:soco/ui/core/styles/soco_icons.dart';
 
 class BeanCard extends StatelessWidget {
   final BrewProfile profile;
-  final bool isDarkTheme;
-  final Color roastBgColor;
-  final Color roastTextColor;
 
   const BeanCard({
     super.key,
     required this.profile,
-    required this.isDarkTheme,
-    required this.roastBgColor,
-    required this.roastTextColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final roastColors = Theme.of(context).extension<RoastColors>()!;
+    final roastBgColor = roastColors.getBgColor(profile.bean.roastLevel);
+    final roastTextColor = roastColors.getTextColor(profile.bean.roastLevel);
 
     return Container(
       decoration: BoxDecoration(
@@ -68,10 +66,8 @@ class BeanCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: List.generate(5, (index) {
                       final isActive = index < profile.strength;
-                      final activeColor = isDarkTheme
-                          ? const Color(0xFFEDDDD4) // Light warm cream/brown
-                          : const Color(0xFF5D544F); // Dark espresso brown
-                      final inactiveColor = colorScheme.onSurface.withValues(alpha: 0.12);
+                      final activeColor = colorScheme.primary;
+                      final inactiveColor = colorScheme.primary.withValues(alpha: 0.16);
 
                       return Padding(
                         padding: const EdgeInsets.only(left: 3.0),

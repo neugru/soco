@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:soco/core/models/brew_profile.dart';
-import 'package:soco/core/models/roast_level.dart';
 import 'package:soco/ui/core/styles/sizes.dart';
 import 'package:soco/ui/core/styles/soco_icons.dart';
 import 'package:soco/ui/core/ui/widgets/library_app_bar.dart';
@@ -41,52 +40,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
     super.dispose();
   }
 
-  // Helper for roast level colors
-  // TODO change colors
-  Color _getRoastBgColor(RoastLevel level, bool isDarkTheme) {
-    if (isDarkTheme) {
-      switch (level) {
-        case RoastLevel.light:
-          return const Color(0xFF5C4E43);
-        case RoastLevel.medium:
-          return const Color(0xFF6B4B32);
-        case RoastLevel.dark:
-          return const Color(0xFF382F2D);
-      }
-    } else {
-      switch (level) {
-        case RoastLevel.light:
-          return const Color(0xFFF5EBE6);
-        case RoastLevel.medium:
-          return const Color(0xFFEDDDD4);
-        case RoastLevel.dark:
-          return const Color(0xFFE2D4C9);
-      }
-    }
-  }
 
-  // TODO change colors
-  Color _getRoastTextColor(RoastLevel level, bool isDarkTheme) {
-    if (isDarkTheme) {
-      switch (level) {
-        case RoastLevel.light:
-          return const Color(0xFFFBECE2);
-        case RoastLevel.medium:
-          return const Color(0xFFFFE0CC);
-        case RoastLevel.dark:
-          return const Color(0xFFE6D6D2);
-      }
-    } else {
-      switch (level) {
-        case RoastLevel.light:
-          return const Color(0xFF8D5B4C);
-        case RoastLevel.medium:
-          return const Color(0xFF9E4B28);
-        case RoastLevel.dark:
-          return const Color(0xFF5E463E);
-      }
-    }
-  }
 
   void _showAddBeanDialog() async {
     final newProfile = await showDialog<BrewProfile>(
@@ -107,7 +61,6 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
 
     final navBarVerticalSpacing = AppSizes.spacing.medium; // spacing above the BottomNavBar
@@ -265,9 +218,6 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                                 },
                                 child: BeanCard(
                                   profile: profile,
-                                  isDarkTheme: isDarkTheme,
-                                  roastBgColor: _getRoastBgColor(profile.bean.roastLevel, isDarkTheme),
-                                  roastTextColor: _getRoastTextColor(profile.bean.roastLevel, isDarkTheme),
                                 ),
                               );
                             },

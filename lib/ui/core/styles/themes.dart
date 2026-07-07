@@ -7,11 +7,20 @@ import 'package:soco/ui/core/styles/typography.dart';
 class AppTheme {
   AppTheme._();
 
-  /// Light Theme Definition
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      extensions: const <ThemeExtension<dynamic>>[
+        RoastColors(
+          lightBg: AppColors.roastLightBgLight,
+          lightText: AppColors.roastLightTextLight,
+          mediumBg: AppColors.roastMediumBgLight,
+          mediumText: AppColors.roastMediumTextLight,
+          darkBg: AppColors.roastDarkBgLight,
+          darkText: AppColors.roastDarkTextLight,
+        ),
+      ],
       colorScheme: const ColorScheme.light(
         primary: AppColors.lightPrimary,
         onPrimary: AppColors.lightOnPrimary,
@@ -157,11 +166,20 @@ class AppTheme {
     );
   }
 
-  /// Dark Theme Definition
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
+      extensions: const <ThemeExtension<dynamic>>[
+        RoastColors(
+          lightBg: AppColors.roastLightBgDark,
+          lightText: AppColors.roastLightTextDark,
+          mediumBg: AppColors.roastMediumBgDark,
+          mediumText: AppColors.roastMediumTextDark,
+          darkBg: AppColors.roastDarkBgDark,
+          darkText: AppColors.roastDarkTextDark,
+        ),
+      ],
       colorScheme: const ColorScheme.dark(
         primary: AppColors.darkPrimary,
         onPrimary: AppColors.darkOnPrimary,
