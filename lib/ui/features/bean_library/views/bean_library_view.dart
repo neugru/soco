@@ -110,7 +110,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
 
-    final navBarVerticalSpacing = AppSizes.spacing.medium;  // spacing above the BottomNavBar
+    final navBarVerticalSpacing = AppSizes.spacing.medium; // spacing above the BottomNavBar
     final safeAreaBottom = MediaQuery.paddingOf(context).bottom;
     // The "fabPadding" will level the FAB with the top of the BottomNavBar.
     // The FAB has 16px (additional) bottom padding by default (defined in
@@ -133,7 +133,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
           onPressed: _showAddBeanDialog,
           icon: Icon(SocoIcons.add),
           label: const Text('Add Bean'),
-          foregroundColor: colorScheme.onPrimaryContainer,  // will be used by text and icon
+          foregroundColor: colorScheme.onPrimaryContainer, // will be used by text and icon
         ),
       ),
       body: ListenableBuilder(
@@ -149,8 +149,8 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                   Text(
                     'Loading beans...',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.outline,
-                        ),
+                      color: colorScheme.outline,
+                    ),
                   ),
                 ],
               ),
@@ -195,8 +195,8 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                                   ? 'No profiles matching your search'
                                   : 'Your profile library is empty',
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: colorScheme.outline,
-                                  ),
+                                color: colorScheme.outline,
+                              ),
                             ),
                           ],
                         ),
@@ -325,16 +325,16 @@ class _BeanCard extends StatelessWidget {
                         Text(
                           profile.bean.name,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onSurface,
-                              ),
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
                         ),
                         AppSizes.gap.extraSmall,
                         Text(
                           '${profile.bean.brand} • ${profile.bean.origin}',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: colorScheme.outline,
-                              ),
+                            color: colorScheme.outline,
+                          ),
                         ),
                       ],
                     ),
@@ -372,8 +372,8 @@ class _BeanCard extends StatelessWidget {
                     child: Text(
                       'Grinder: ${profile.grinder.displayName}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurfaceVariant,
-                          ),
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -385,8 +385,8 @@ class _BeanCard extends StatelessWidget {
                     child: Text(
                       'Machine: ${profile.machine.displayName}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurfaceVariant,
-                          ),
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -398,8 +398,8 @@ class _BeanCard extends StatelessWidget {
               Text(
                 profile.description,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                    ),
+                  color: colorScheme.onSurfaceVariant,
+                ),
               ),
               AppSizes.gap.medium,
               // Footer: roast badge, grind size badge & star rating
@@ -422,9 +422,9 @@ class _BeanCard extends StatelessWidget {
                         child: Text(
                           profile.bean.roastLevel.displayName,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: roastTextColor,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            color: roastTextColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       Container(
@@ -436,9 +436,9 @@ class _BeanCard extends StatelessWidget {
                         child: Text(
                           'Grind: ${profile.grindSize.toStringAsFixed(2)}',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: colorScheme.onSurfaceVariant,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            color: colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -455,9 +455,9 @@ class _BeanCard extends StatelessWidget {
                       Text(
                         profile.rating.toStringAsFixed(1),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: colorScheme.onSurface,
-                            ),
+                          fontWeight: FontWeight.bold,
+                          color: colorScheme.onSurface,
+                        ),
                       ),
                     ],
                   ),

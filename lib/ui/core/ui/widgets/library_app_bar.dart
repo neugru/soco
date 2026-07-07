@@ -30,8 +30,8 @@ class LibraryAppBar extends StatelessWidget implements PreferredSizeWidget {
           Text(
             title,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
