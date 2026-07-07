@@ -113,19 +113,19 @@ class AppColors {
   // ROAST LEVEL PALETTES
   // ===================
   // Light Mode
-  static const Color roastLightBgLight = Color(0xFFF5EBE6);
+  static const Color roastLightBgLight = Color(0xFFE9DED6);
   static const Color roastLightTextLight = Color(0xFF8D5B4C);
-  static const Color roastMediumBgLight = Color(0xFFEDDDD4);
-  static const Color roastMediumTextLight = Color(0xFF9E4B28);
-  static const Color roastDarkBgLight = Color(0xFFE2D4C9);
+  static const Color roastMediumBgLight = Color(0xFFECD7CA);
+  static const Color roastMediumTextLight = Color(0xFF7E4B35);
+  static const Color roastDarkBgLight = Color(0xFFD8CBC1);
   static const Color roastDarkTextLight = Color(0xFF5E463E);
 
   // Dark Mode
-  static const Color roastLightBgDark = Color(0xFF5C4E43);
-  static const Color roastLightTextDark = Color(0xFFFBECE2);
+  static const Color roastLightBgDark = Color(0xFF8F7A6B);
+  static const Color roastLightTextDark = Color(0xFFFBF0E8);
   static const Color roastMediumBgDark = Color(0xFF6B4B32);
   static const Color roastMediumTextDark = Color(0xFFFFE0CC);
-  static const Color roastDarkBgDark = Color(0xFF382F2D);
+  static const Color roastDarkBgDark = Color(0xFF433835);
   static const Color roastDarkTextDark = Color(0xFFE6D6D2);
 }
 
