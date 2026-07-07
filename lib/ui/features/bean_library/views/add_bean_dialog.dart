@@ -17,7 +17,7 @@ class AddBeanDialog extends StatefulWidget {
 
 class _AddBeanDialogState extends State<AddBeanDialog> {
   final _formKey = GlobalKey<FormState>();
-  
+
   String _name = '';
   String _brand = '';
   double _grindSize = 14.00;
@@ -190,9 +190,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                           child: Icon(
                             SocoIcons.coffeeBean,
                             size: 26,
-                            color: isActive
-                                ? colorScheme.primary
-                                : colorScheme.onSurface.withValues(alpha: 0.15),
+                            color: isActive ? colorScheme.primary : colorScheme.onSurface.withValues(alpha: 0.15),
                           ),
                         ),
                       );
@@ -232,7 +230,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
           onPressed: () {
             if (_formKey.currentState?.validate() ?? false) {
               _formKey.currentState?.save();
-              
+
               final newBean = Bean.create(
                 name: _name,
                 brand: _brand,
@@ -249,7 +247,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                 grinder: _parseGrinder(_grinder),
                 machine: _parseMachine(_machine),
               );
-              
+
               Navigator.of(context).pop(newProfile);
             }
           },
