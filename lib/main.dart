@@ -16,7 +16,7 @@ class MainApp extends StatelessWidget {
       title: 'soco',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system, // Automatically matches device theme
+      themeMode: ThemeMode.system,
       home: const AppShell(),
     );
   }
