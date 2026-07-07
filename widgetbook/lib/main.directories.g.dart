@@ -11,8 +11,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
-import 'package:widgetbook_workspace/bean_card.usecase.dart'
-    as _widgetbook_workspace_bean_card_usecase;
+import 'package:widgetbook_workspace/ui/features/bean_library/views/widgets/bean_card.usecase.dart'
+    as _widgetbook_workspace_ui_features_bean_library_views_widgets_bean_card_usecase;
 
 final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookFolder(
@@ -35,8 +35,9 @@ final directories = <_widgetbook.WidgetbookNode>[
                         useCases: [
                           _widgetbook.WidgetbookUseCase(
                             name: 'Default',
-                            builder: _widgetbook_workspace_bean_card_usecase
-                                .buildBeanCardUseCase,
+                            builder:
+                                _widgetbook_workspace_ui_features_bean_library_views_widgets_bean_card_usecase
+                                    .buildBeanCardUseCase,
                           ),
                         ],
                       ),

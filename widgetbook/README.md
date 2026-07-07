@@ -42,7 +42,7 @@ Widgetbook uses code generation via `build_runner` to scan annotations (`@UseCas
 
 **Whenever you add, remove, or rename a component preview, run this command in the `widgetbook/` directory:**
 ```bash
-dart run build_runner build -d
+dart run build_runner build
 ```
 *(This updates the generated `lib/main.directories.g.dart` file).*
 

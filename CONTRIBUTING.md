@@ -22,7 +22,7 @@ The Widgetbook app is structured as a separate package inside the `widgetbook/` 
    ```
 3. **Regenerate the navigation tree registry** (after adding, removing, or renaming usecases):
    ```bash
-   dart run build_runner build -d
+   dart run build_runner build
    ```
 
 ## Updating Custom Icons
