@@ -27,86 +27,109 @@ class BeanLibraryViewModel extends ChangeNotifier {
   }
 
   /// Simulates fetching recipes from a repository or API
-  Future<void> fetchBeans() async {
-    if (_allBrewProfiles.isNotEmpty) return; // Prevent double loading if already loaded
+  Future<void> fetchBeans({bool forceRefresh = false}) async {
+    // Prevent double loading if a fetch is already in progress
+    if (_isLoading) return;
+
+    // Skip if already loaded and refresh is not forced
+    if (_allBrewProfiles.isNotEmpty && !forceRefresh) return;
 
     _isLoading = true;
     if (!_isDisposed) notifyListeners();
 
-    // Simulate network delay
-    // await Future.delayed(const Duration(milliseconds: 1000));
+    try {
+      // Simulate network delay
+      // TODO: implement real data fetching
+      // await Future.delayed(const Duration(milliseconds: 1000));
 
-    // Populate with mockup recipes matching the new BrewProfile model
-    _allBrewProfiles.addAll([
-      const BrewProfile(
-        id: '1',
-        bean: Bean(
-          id: 'b1',
-          name: 'Ethiopia Yirgacheffe',
-          brand: 'Sey Coffee',
-          origin: 'Ethiopia (Single Origin)',
-          roastLevel: RoastLevel.light,
-        ),
-        grindSize: 12.50,
-        description: 'Floral jasmine aroma with bright bergamot acidity and peach sweetness. High clarity.',
-        rating: 4.9,
-        strength: 2,
-        grinder: Grinder(id: 'g1', brand: 'Comandante', name: 'C40'),
-        machine: Machine(id: 'm1', brand: 'La Marzocco', name: 'Linea Micra'),
-      ),
-      const BrewProfile(
-        id: '2',
-        bean: Bean(
-          id: 'b2',
-          name: 'Bella Vista Bourbon',
-          brand: 'Intelligentsia',
-          origin: 'Guatemala',
-          roastLevel: RoastLevel.medium,
-        ),
-        grindSize: 14.20,
-        description: 'Smooth honey processing yields tasting notes of red apple, sweet plum, and rich caramel.',
-        rating: 4.7,
-        strength: 3,
-        grinder: Grinder(id: 'g2', brand: 'Fellow', name: 'Ode Gen 2'),
-        machine: Machine(id: 'm2', brand: 'Sage', name: 'Barista Express'),
-      ),
-      const BrewProfile(
-        id: '3',
-        bean: Bean(
-          id: 'b3',
-          name: 'Three Mules Blend',
-          brand: 'Blue Bottle',
-          origin: 'Colombia & Sumatra',
-          roastLevel: RoastLevel.dark,
-        ),
-        grindSize: 18.00,
-        description: 'Heavy body with robust notes of dark chocolate, peat moss, toasted marshmallow, and spice.',
-        rating: 4.5,
-        strength: 5,
-        grinder: Grinder(id: 'g3', brand: 'Mahlkönig', name: 'EK43'),
-        machine: Machine(id: 'm3', brand: 'Slayer', name: 'Espresso Single Group'),
-      ),
-      const BrewProfile(
-        id: '4',
-        bean: Bean(
-          id: 'b4',
-          name: 'Pacamara Natural',
-          brand: 'Onyx Coffee Lab',
-          origin: 'El Salvador',
-          roastLevel: RoastLevel.light,
-        ),
-        grindSize: 11.55,
-        description: 'Complex tropical fruit acidity, dried mango, red wine notes, and a velvety chocolate finish.',
-        rating: 4.8,
-        strength: 2,
-        grinder: Grinder(id: 'g4', brand: 'Lagom', name: 'P64'),
-        machine: Machine(id: 'm4', brand: 'Decent', name: 'DE1PRO'),
-      ),
-    ]);
+      // Clear existing records to avoid duplicating list items on reload
+      _allBrewProfiles.clear();
 
-    _applyFilterAndSort();
-    _isLoading = false;
-    if (!_isDisposed) notifyListeners();
+      // Populate with mockup recipes matching the new BrewProfile model
+      _allBrewProfiles.addAll([
+        const BrewProfile(
+          id: '1',
+          bean: Bean(
+            id: 'b1',
+            name: 'Ethiopia Yirgacheffe',
+            brand: 'Sey Coffee',
+            origin: 'Ethiopia (Single Origin)',
+            roastLevel: RoastLevel.light,
+            strength: 2,
+          ),
+          machine: Machine(id: 'm1', brand: 'La Marzocco', name: 'Linea Micra'),
+          grinder: Grinder(id: 'g1', brand: 'Comandante', name: 'C40'),
+          dose: 18.0,
+          grindSize: 12.50,
+          brewYield: 42.0,
+          brewTimeSeconds: 28,
+          description: 'Floral jasmine aroma with bright bergamot acidity and peach sweetness. High clarity.',
+          rating: 4.9,
+        ),
+        const BrewProfile(
+          id: '2',
+          bean: Bean(
+            id: 'b2',
+            name: 'Bella Vista Bourbon',
+            brand: 'Intelligentsia',
+            origin: 'Guatemala',
+            roastLevel: RoastLevel.medium,
+            strength: 3,
+          ),
+          machine: Machine(id: 'm2', brand: 'Sage', name: 'Barista Express'),
+          grinder: Grinder(id: 'g2', brand: 'Fellow', name: 'Ode Gen 2'),
+          dose: 18.0,
+          grindSize: 14.20,
+          brewYield: 36.0,
+          brewTimeSeconds: 30,
+          description: 'Smooth honey processing yields tasting notes of red apple, sweet plum, and rich caramel.',
+          rating: 4.7,
+        ),
+        const BrewProfile(
+          id: '3',
+          bean: Bean(
+            id: 'b3',
+            name: 'Three Mules Blend',
+            brand: 'Blue Bottle',
+            origin: 'Colombia & Sumatra',
+            roastLevel: RoastLevel.dark,
+            strength: 5,
+          ),
+          machine: Machine(id: 'm3', brand: 'Slayer', name: 'Espresso Single Group'),
+          grinder: Grinder(id: 'g3', brand: 'Mahlkönig', name: 'EK43'),
+          dose: 20.0,
+          grindSize: 18.00,
+          brewYield: 40.0,
+          brewTimeSeconds: 32,
+          description: 'Heavy body with robust notes of dark chocolate, peat moss, toasted marshmallow, and spice.',
+          rating: 4.5,
+        ),
+        const BrewProfile(
+          id: '4',
+          bean: Bean(
+            id: 'b4',
+            name: 'Pacamara Natural',
+            brand: 'Onyx Coffee Lab',
+            origin: 'El Salvador',
+            roastLevel: RoastLevel.light,
+            strength: 2,
+          ),
+          machine: Machine(id: 'm4', brand: 'Decent', name: 'DE1PRO'),
+          grinder: Grinder(id: 'g4', brand: 'Lagom', name: 'P64'),
+          dose: 19.0,
+          grindSize: 11.55,
+          brewYield: 45.0,
+          brewTimeSeconds: 27,
+          description: 'Complex tropical fruit acidity, dried mango, red wine notes, and a velvety chocolate finish.',
+          rating: 4.8,
+        ),
+      ]);
+
+      _applyFilterAndSort();
+    } finally {
+      _isLoading = false;
+      if (!_isDisposed) notifyListeners();
+    }
   }
 
   /// Filters the recipe list based on the search query

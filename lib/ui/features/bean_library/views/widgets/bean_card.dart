@@ -8,10 +8,12 @@ import 'package:soco/ui/core/styles/soco_icons.dart';
 
 class BeanCard extends StatelessWidget {
   final BrewProfile profile;
+  final bool isCompact;
 
   const BeanCard({
     super.key,
     required this.profile,
+    this.isCompact = false,
   });
 
   @override
@@ -100,7 +102,7 @@ class BeanCard extends StatelessWidget {
                   Wrap(
                     spacing: 2.0,
                     children: List.generate(5, (index) {
-                      final isActive = index < profile.strength;
+                      final isActive = index < profile.bean.strength;
                       final activeColor = colorScheme.primary;
                       final inactiveColor = activeColor.withValues(alpha: 0.16);
 
@@ -130,96 +132,93 @@ class BeanCard extends StatelessWidget {
                   ),
                 ],
               ),
-              AppSizes.gap.small,
-              // Equipment Details (Grinder & Machine)
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final textStyle = textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  );
+              if (!isCompact) ...[
+                AppSizes.gap.small,
+                // Equipment Details (Grinder & Machine)
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final textStyle = textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    );
 
-                  // Calculate intrinsic widths
-                  final machineTextWidth = _calculateTextWidth(
-                    profile.machine.displayName,
-                    textStyle,
-                  );
-                  final grinderTextWidth = _calculateTextWidth(
-                    profile.grinder.displayName,
-                    textStyle,
-                  );
+                    // Calculate intrinsic widths
+                    final machineNaturalWidth = _EquipmentBadge.calculateWidth(
+                      profile.machine.displayName,
+                      textStyle,
+                    );
+                    final grinderNaturalWidth = _EquipmentBadge.calculateWidth(
+                      profile.grinder.displayName,
+                      textStyle,
+                    );
+                    final gapWidth = AppSizes.spacing.small;
+                    final contentAvailableWidth = (constraints.maxWidth - gapWidth).clamp(0.0, double.infinity);
 
-                  final gapWidth = AppSizes.spacing.small;
-                  final contentAvailableWidth = (constraints.maxWidth - gapWidth).clamp(0.0, double.infinity);
+                    final sizes = _EquipmentLayoutHelper.calculateWidths(
+                      machineNaturalWidth: machineNaturalWidth,
+                      grinderNaturalWidth: grinderNaturalWidth,
+                      contentAvailableWidth: contentAvailableWidth,
+                    );
 
-                  final sizes = _EquipmentLayoutHelper.calculateWidths(
-                    machineNaturalWidth: machineTextWidth + _EquipmentBadge.extraWidth,
-                    grinderNaturalWidth: grinderTextWidth + _EquipmentBadge.extraWidth,
-                    contentAvailableWidth: contentAvailableWidth,
-                  );
-
-                  return Row(
-                    children: [
-                      // Machine Badge
-                      SizedBox(
-                        width: sizes.machineWidth,
-                        child: _EquipmentBadge(
-                          icon: SocoIcons.coffeeMaker,
-                          label: profile.machine.displayName,
-                        ),
-                      ),
-                      SizedBox(width: gapWidth),
-                      // Grinder Badge
-                      SizedBox(
-                        width: sizes.grinderWidth,
-                        child: _EquipmentBadge(
-                          icon: SocoIcons.grinder,
-                          label: profile.grinder.displayName,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-              AppSizes.gap.small,
-              // Description
-              Text(
-                profile.description,
-                style: textTheme.bodyMedium?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              AppSizes.gap.medium,
-              // Grind Size
-              Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: AppSizes.spacing.small,
-                runSpacing: AppSizes.spacing.small,
-                children: [
-                  Wrap(
-                    spacing: AppSizes.spacing.small,
-                    runSpacing: AppSizes.spacing.small,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(AppSizes.radius.small),
-                        ),
-                        child: Text(
-                          'Grind: ${profile.grindSize.toStringAsFixed(2)}',
-                          style: textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurfaceVariant,
-                            fontWeight: FontWeight.bold,
+                    return Row(
+                      children: [
+                        // Machine Badge
+                        SizedBox(
+                          width: sizes.machineWidth,
+                          child: _EquipmentBadge(
+                            icon: SocoIcons.coffeeMaker,
+                            label: profile.machine.displayName,
                           ),
                         ),
-                      ),
-                    ],
+                        SizedBox(width: gapWidth),
+                        // Grinder Badge
+                        SizedBox(
+                          width: sizes.grinderWidth,
+                          child: _EquipmentBadge(
+                            icon: SocoIcons.grinder,
+                            label: profile.grinder.displayName,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                AppSizes.gap.small,
+                // Description
+                Text(
+                  profile.description,
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
                   ),
-                ],
-              ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                AppSizes.gap.medium,
+                // Recipes/Brewing Metrics (Dose, Yield, Grind Size, Time)
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: AppSizes.spacing.extraLarge,
+                  runSpacing: AppSizes.spacing.medium,
+                  children: [
+                    _MetricColumn(
+                      label: 'Dose',
+                      value: '${profile.dose.toStringAsFixed(1).replaceAll('.0', '')}g',
+                    ),
+                    _MetricColumn(
+                      label: 'Yield',
+                      value: '${profile.brewYield.toStringAsFixed(1).replaceAll('.0', '')}g',
+                    ),
+                    _MetricColumn(
+                      label: 'Grind',
+                      value: profile.grindSize.toStringAsFixed(1).replaceAll('.0', ''),
+                    ),
+                    _MetricColumn(
+                      label: 'Time',
+                      value: '${profile.brewTimeSeconds}s',
+                    ),
+                  ],
+                ),
+              ],
             ],
           ),
         ),
@@ -227,14 +226,6 @@ class BeanCard extends StatelessWidget {
     );
   }
 
-  double _calculateTextWidth(String text, TextStyle? style) {
-    final textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
-      maxLines: 1,
-      textDirection: TextDirection.ltr,
-    )..layout();
-    return textPainter.width;
-  }
 }
 
 class _EquipmentBadge extends StatelessWidget {
@@ -250,7 +241,19 @@ class _EquipmentBadge extends StatelessWidget {
   static const double verticalPadding = 4.0;
   static const double iconSize = 14.0;
   static const double gapWidth = 4.0;
+
+  /// The total width of all non-text layout components (padding, icon, and gap).
   static const double extraWidth = (horizontalPadding * 2) + iconSize + gapWidth;
+
+  /// Calculates the total unconstrained width needed to display the badge with a given [text] and [style].
+  static double calculateWidth(String text, TextStyle? style) {
+    final textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout();
+    return textPainter.width + extraWidth;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -302,6 +305,14 @@ class _BadgeSizingResult {
 }
 
 class _EquipmentLayoutHelper {
+  /// Calculates the final layout widths for the machine and grinder badges.
+  ///
+  /// * [machineNaturalWidth] represents the full, unconstrained (intrinsic) width
+  ///   needed to render the machine badge without any text truncation.
+  /// * [grinderNaturalWidth] represents the full, unconstrained (intrinsic) width
+  ///   needed to render the grinder badge without any text truncation.
+  /// * [contentAvailableWidth] is the total horizontal layout space available
+  ///   for both badges combined.
   static _BadgeSizingResult calculateWidths({
     required double machineNaturalWidth,
     required double grinderNaturalWidth,
@@ -339,5 +350,42 @@ class _EquipmentLayoutHelper {
         grinderWidth: grinderWidth,
       );
     }
+  }
+}
+
+class _MetricColumn extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _MetricColumn({
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          style: textTheme.labelMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        AppSizes.gap.extraSmall,
+        Text(
+          value,
+          style: textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurface,
+          ),
+        ),
+      ],
+    );
   }
 }
