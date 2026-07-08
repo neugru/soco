@@ -7,64 +7,76 @@ import 'package:soco/core/models/machine.dart';
 class BrewProfile {
   final String id;
   final Bean bean;
+  final Machine machine;
+  final Grinder grinder;
+  final double dose;
   final double grindSize;
+  final double brewYield;
+  final int brewTimeSeconds;
   final String description;
   final double rating;
-  final int strength;
-  final Grinder grinder;
-  final Machine machine;
 
   const BrewProfile({
     required this.id,
     required this.bean,
+    required this.machine,
+    required this.grinder,
+    required this.dose,
     required this.grindSize,
+    required this.brewYield,
+    required this.brewTimeSeconds,
     required this.description,
     required this.rating,
-    required this.strength,
-    required this.grinder,
-    required this.machine,
   });
 
   factory BrewProfile.create({
     required Bean bean,
+    required Machine machine,
+    required Grinder grinder,
+    required double dose,
     required double grindSize,
+    required double brewYield,
+    required int brewTimeSeconds,
     required String description,
     required double rating,
-    required int strength,
-    required Grinder grinder,
-    required Machine machine,
   }) {
     return BrewProfile(
       id: const Uuid().v4(),
       bean: bean,
+      machine: machine,
+      grinder: grinder,
+      dose: dose,
       grindSize: grindSize,
+      brewYield: brewYield,
+      brewTimeSeconds: brewTimeSeconds,
       description: description,
       rating: rating,
-      strength: strength,
-      grinder: grinder,
-      machine: machine,
     );
   }
 
   BrewProfile copyWith({
     String? id,
     Bean? bean,
+    Machine? machine,
+    Grinder? grinder,
+    double? dose,
     double? grindSize,
+    double? brewYield,
+    int? brewTimeSeconds,
     String? description,
     double? rating,
-    int? strength,
-    Grinder? grinder,
-    Machine? machine,
   }) {
     return BrewProfile(
       id: id ?? this.id,
       bean: bean ?? this.bean,
+      machine: machine ?? this.machine,
+      grinder: grinder ?? this.grinder,
+      dose: dose ?? this.dose,
       grindSize: grindSize ?? this.grindSize,
+      brewYield: brewYield ?? this.brewYield,
+      brewTimeSeconds: brewTimeSeconds ?? this.brewTimeSeconds,
       description: description ?? this.description,
       rating: rating ?? this.rating,
-      strength: strength ?? this.strength,
-      grinder: grinder ?? this.grinder,
-      machine: machine ?? this.machine,
     );
   }
 }

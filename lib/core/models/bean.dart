@@ -8,6 +8,7 @@ class Bean {
   final String brand;
   final String origin;
   final RoastLevel roastLevel;
+  final int strength;
 
   const Bean({
     required this.id,
@@ -15,6 +16,7 @@ class Bean {
     required this.brand,
     required this.origin,
     required this.roastLevel,
+    required this.strength,
   });
 
   factory Bean.create({
@@ -22,6 +24,7 @@ class Bean {
     required String brand,
     required String origin,
     required RoastLevel roastLevel,
+    required int strength,
   }) {
     return Bean(
       id: const Uuid().v4(),
@@ -29,6 +32,7 @@ class Bean {
       brand: brand,
       origin: origin,
       roastLevel: roastLevel,
+      strength: strength,
     );
   }
 
@@ -38,6 +42,7 @@ class Bean {
     String? brand,
     String? origin,
     RoastLevel? roastLevel,
+    int? strength,
   }) {
     return Bean(
       id: id ?? this.id,
@@ -45,6 +50,7 @@ class Bean {
       brand: brand ?? this.brand,
       origin: origin ?? this.origin,
       roastLevel: roastLevel ?? this.roastLevel,
+      strength: strength ?? this.strength,
     );
   }
 }

@@ -20,14 +20,17 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
 
   String _name = '';
   String _brand = '';
-  double _grindSize = 14.00;
   String _origin = '';
-  String _grinder = '';
-  String _machine = '';
-  String _description = '';
   RoastLevel _roastLevel = RoastLevel.medium;
-  double _rating = 4.5;
   int _strength = 3;
+  String _machine = '';
+  String _grinder = '';
+  double _dose = 18.0;
+  double _grindSize = 14.00;
+  double _brewYield = 36.0;
+  int _brewTime = 30;
+  String _description = '';
+  double _rating = 4.5;
 
   Grinder _parseGrinder(String text) {
     final trimmed = text.trim();
@@ -101,6 +104,51 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   return null;
                 },
                 onSaved: (v) => _grindSize = double.tryParse(v ?? '') ?? 14.00,
+              ),
+              AppSizes.gap.small,
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Dose (g)',
+                  hintText: 'e.g. 18.0',
+                ),
+                initialValue: '18.0',
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                validator: (v) {
+                  if (v == null || v.isEmpty) return 'Please enter dose';
+                  if (double.tryParse(v) == null) return 'Please enter a valid number';
+                  return null;
+                },
+                onSaved: (v) => _dose = double.tryParse(v ?? '') ?? 18.0,
+              ),
+              AppSizes.gap.small,
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Yield (g)',
+                  hintText: 'e.g. 36.0',
+                ),
+                initialValue: '36.0',
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                validator: (v) {
+                  if (v == null || v.isEmpty) return 'Please enter yield';
+                  if (double.tryParse(v) == null) return 'Please enter a valid number';
+                  return null;
+                },
+                onSaved: (v) => _brewYield = double.tryParse(v ?? '') ?? 36.0,
+              ),
+              AppSizes.gap.small,
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Brew Time (s)',
+                  hintText: 'e.g. 30',
+                ),
+                initialValue: '30',
+                keyboardType: TextInputType.number,
+                validator: (v) {
+                  if (v == null || v.isEmpty) return 'Please enter brew time';
+                  if (int.tryParse(v) == null) return 'Please enter a valid integer';
+                  return null;
+                },
+                onSaved: (v) => _brewTime = int.tryParse(v ?? '') ?? 30,
               ),
               AppSizes.gap.small,
               TextFormField(
@@ -236,16 +284,19 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                 brand: _brand,
                 origin: _origin,
                 roastLevel: _roastLevel,
+                strength: _strength,
               );
 
               final newProfile = BrewProfile.create(
                 bean: newBean,
+                machine: _parseMachine(_machine),
+                grinder: _parseGrinder(_grinder),
+                dose: _dose,
                 grindSize: _grindSize,
+                brewYield: _brewYield,
+                brewTimeSeconds: _brewTime,
                 description: _description.isEmpty ? 'No description provided.' : _description,
                 rating: _rating,
-                strength: _strength,
-                grinder: _parseGrinder(_grinder),
-                machine: _parseMachine(_machine),
               );
 
               Navigator.of(context).pop(newProfile);
