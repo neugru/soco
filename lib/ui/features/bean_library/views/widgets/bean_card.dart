@@ -132,71 +132,53 @@ class BeanCard extends StatelessWidget {
               ),
               AppSizes.gap.small,
               // Equipment Details (Grinder & Machine)
-              Wrap(
-                spacing: AppSizes.spacing.small,
-                runSpacing: AppSizes.spacing.small,
-                children: [
-                  // Machine Badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(AppSizes.radius.small),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          SocoIcons.coffeeMaker,
-                          size: 14,
-                          color: colorScheme.outline,
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final textStyle = textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  );
+
+                  // Calculate intrinsic widths
+                  final machineTextWidth = _calculateTextWidth(
+                    profile.machine.displayName,
+                    textStyle,
+                  );
+                  final grinderTextWidth = _calculateTextWidth(
+                    profile.grinder.displayName,
+                    textStyle,
+                  );
+
+                  final gapWidth = AppSizes.spacing.small;
+                  final contentAvailableWidth = (constraints.maxWidth - gapWidth).clamp(0.0, double.infinity);
+
+                  final sizes = _EquipmentLayoutHelper.calculateWidths(
+                    machineNaturalWidth: machineTextWidth + _EquipmentBadge.extraWidth,
+                    grinderNaturalWidth: grinderTextWidth + _EquipmentBadge.extraWidth,
+                    contentAvailableWidth: contentAvailableWidth,
+                  );
+
+                  return Row(
+                    children: [
+                      // Machine Badge
+                      SizedBox(
+                        width: sizes.machineWidth,
+                        child: _EquipmentBadge(
+                          icon: SocoIcons.coffeeMaker,
+                          label: profile.machine.displayName,
                         ),
-                        AppSizes.gap.extraSmall,
-                        Flexible(
-                          child: Text(
-                            profile.machine.displayName,
-                            style: textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                      ),
+                      SizedBox(width: gapWidth),
+                      // Grinder Badge
+                      SizedBox(
+                        width: sizes.grinderWidth,
+                        child: _EquipmentBadge(
+                          icon: SocoIcons.grinder,
+                          label: profile.grinder.displayName,
                         ),
-                      ],
-                    ),
-                  ),
-                  // Grinder Badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(AppSizes.radius.small),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          SocoIcons.grinder,
-                          size: 14,
-                          color: colorScheme.outline,
-                        ),
-                        AppSizes.gap.extraSmall,
-                        Flexible(
-                          child: Text(
-                            profile.grinder.displayName,
-                            style: textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                      ),
+                    ],
+                  );
+                },
               ),
               AppSizes.gap.small,
               // Description
@@ -243,5 +225,119 @@ class BeanCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  double _calculateTextWidth(String text, TextStyle? style) {
+    final textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout();
+    return textPainter.width;
+  }
+}
+
+class _EquipmentBadge extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _EquipmentBadge({
+    required this.icon,
+    required this.label,
+  });
+
+  static const double horizontalPadding = 8.0;
+  static const double verticalPadding = 4.0;
+  static const double iconSize = 14.0;
+  static const double gapWidth = 4.0;
+  static const double extraWidth = (horizontalPadding * 2) + iconSize + gapWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: verticalPadding,
+      ),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(AppSizes.radius.small),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: iconSize,
+            color: colorScheme.outline,
+          ),
+          const SizedBox(width: gapWidth),
+          Flexible(
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.bold,
+                  ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BadgeSizingResult {
+  final double machineWidth;
+  final double grinderWidth;
+
+  const _BadgeSizingResult({
+    required this.machineWidth,
+    required this.grinderWidth,
+  });
+}
+
+class _EquipmentLayoutHelper {
+  static _BadgeSizingResult calculateWidths({
+    required double machineNaturalWidth,
+    required double grinderNaturalWidth,
+    required double contentAvailableWidth,
+  }) {
+    if (machineNaturalWidth + grinderNaturalWidth <= contentAvailableWidth) {
+      // both badges fit with full size
+      return _BadgeSizingResult(
+        machineWidth: machineNaturalWidth,
+        grinderWidth: grinderNaturalWidth,
+      );
+    }
+
+    final halfWidth = contentAvailableWidth / 2;
+    if (machineNaturalWidth > halfWidth && grinderNaturalWidth > halfWidth) {
+      // both badges get exactly half the available space
+      return _BadgeSizingResult(
+        machineWidth: halfWidth,
+        grinderWidth: halfWidth,
+      );
+    } else if (machineNaturalWidth <= halfWidth) {
+      // grinder badge gets shrunk to available space
+      // machine badge is not shrunk
+      final machineWidth = machineNaturalWidth;
+      return _BadgeSizingResult(
+        machineWidth: machineWidth,
+        grinderWidth: contentAvailableWidth - machineWidth,
+      );
+    } else {
+      // machine badge gets shrunk to available space
+      // grinder badge is not shrunk
+      final grinderWidth = grinderNaturalWidth;
+      return _BadgeSizingResult(
+        machineWidth: contentAvailableWidth - grinderWidth,
+        grinderWidth: grinderWidth,
+      );
+    }
   }
 }
