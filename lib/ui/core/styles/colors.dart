@@ -202,4 +202,3 @@ class RoastColors extends ThemeExtension<RoastColors> {
     );
   }
 }
-

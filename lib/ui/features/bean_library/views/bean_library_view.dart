@@ -20,7 +20,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   late final BeanLibraryViewModel _viewModel;
   late final TextEditingController _searchController;
   late final ScrollController _scrollController;
-  bool _isExpanded = true;  // TODO remove after testing
+  bool _isExpanded = true; // TODO remove after testing
 
   @override
   void initState() {
@@ -40,8 +40,6 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
     _viewModel.dispose();
     super.dispose();
   }
-
-
 
   void _showAddBeanDialog() async {
     final newProfile = await showDialog<BrewProfile>(
@@ -249,7 +247,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                                 },
                                 child: BeanCard(
                                   profile: profile,
-                                  isCompact: !_isExpanded,  // TODO remove after testing
+                                  isCompact: !_isExpanded, // TODO remove after testing
                                 ),
                               );
                             },
@@ -264,4 +262,3 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
     );
   }
 }
-

@@ -219,7 +219,6 @@ class BeanCard extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class _EquipmentBadge extends StatelessWidget {
@@ -275,9 +274,9 @@ class _EquipmentBadge extends StatelessWidget {
             child: Text(
               label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.bold,
-                  ),
+                color: colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.bold,
+              ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
