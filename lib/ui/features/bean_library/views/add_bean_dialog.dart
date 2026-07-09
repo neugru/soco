@@ -240,9 +240,9 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                     dropdownMenuEntries: [
                       const DropdownMenuEntry<RoastLevel?>(
                         value: null,
-                        label: 'Not Specified',
+                        label: '-- Not Specified --',
                         labelWidget: Text(
-                          'Not Specified',
+                          '-- Not Specified --',
                           style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ),
