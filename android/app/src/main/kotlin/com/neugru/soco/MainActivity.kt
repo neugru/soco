@@ -1,4 +1,4 @@
-package com.example.soco
+package com.neugru.soco
 
 import io.flutter.embedding.android.FlutterActivity
 

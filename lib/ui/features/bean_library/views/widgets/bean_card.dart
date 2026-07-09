@@ -21,10 +21,11 @@ class BeanCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final roastColors = Theme.of(context).extension<RoastColors>()!;
-    final roastBgColor = roastColors.getBgColor(profile.bean.roastLevel);
-    final roastTextColor = roastColors.getTextColor(profile.bean.roastLevel);
+    final roastBgColor = profile.bean.roastLevel != null ? roastColors.getBgColor(profile.bean.roastLevel!) : null;
+    final roastTextColor = profile.bean.roastLevel != null ? roastColors.getTextColor(profile.bean.roastLevel!) : null;
 
     return Container(
+      width: double.infinity, // make the card fill the whole width of its parent
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(AppSizes.radius.large),
@@ -38,56 +39,28 @@ class BeanCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title, Brand, Star Rating
-              Row(
+              // Title, Brand
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title, Brand
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          profile.bean.name,
-                          style: textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: colorScheme.onSurface,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        AppSizes.gap.extraSmall,
-                        Text(
-                          profile.bean.brand,
-                          style: textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: colorScheme.onSurfaceVariant,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                  Text(
+                    profile.bean.name,
+                    style: textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  AppSizes.gap.small,
-                  // Star Rating
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        SocoIcons.starRate,
-                        color: Colors.amber,
-                        size: 16,
-                      ),
-                      AppSizes.gap.extraSmall,
-                      Text(
-                        profile.rating.toStringAsFixed(1),
-                        style: textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
+                  AppSizes.gap.extraSmall,
+                  Text(
+                    profile.bean.brand,
+                    style: textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -114,22 +87,23 @@ class BeanCard extends StatelessWidget {
                     }),
                   ),
                   // Roast Level Badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: roastBgColor,
-                      borderRadius: BorderRadius.circular(AppSizes.radius.small),
-                    ),
-                    child: Text(
-                      '${profile.bean.roastLevel.displayName} Roast',
-                      style: textTheme.bodySmall?.copyWith(
-                        color: roastTextColor,
-                        fontWeight: FontWeight.bold,
+                  if (profile.bean.roastLevel != null)
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: roastBgColor,
+                        borderRadius: BorderRadius.circular(AppSizes.radius.small),
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      child: Text(
+                        '${profile.bean.roastLevel!.displayName} Roast',
+                        style: textTheme.bodySmall?.copyWith(
+                          color: roastTextColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
                 ],
               ),
               if (!isCompact) ...[
@@ -141,13 +115,31 @@ class BeanCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     );
 
-                    // Calculate intrinsic widths
+                    // Calculate intrinsic width for machine
                     final machineNaturalWidth = _EquipmentBadge.calculateWidth(
                       profile.machine.displayName,
                       textStyle,
                     );
+
+                    // If grinder is null, only render the machine badge
+                    if (profile.grinder == null) {
+                      final machineWidth = machineNaturalWidth.clamp(0.0, constraints.maxWidth);
+                      return Row(
+                        children: [
+                          SizedBox(
+                            width: machineWidth,
+                            child: _EquipmentBadge(
+                              icon: SocoIcons.coffeeMaker,
+                              label: profile.machine.displayName,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+
+                    // Calculate intrinsic widths for grinder
                     final grinderNaturalWidth = _EquipmentBadge.calculateWidth(
-                      profile.grinder.displayName,
+                      profile.grinder!.displayName,
                       textStyle,
                     );
                     final gapWidth = AppSizes.spacing.small;
@@ -175,23 +167,25 @@ class BeanCard extends StatelessWidget {
                           width: sizes.grinderWidth,
                           child: _EquipmentBadge(
                             icon: SocoIcons.grinder,
-                            label: profile.grinder.displayName,
+                            label: profile.grinder!.displayName,
                           ),
                         ),
                       ],
                     );
                   },
                 ),
-                AppSizes.gap.small,
-                // Description
-                Text(
-                  profile.description,
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                if (profile.description != null && profile.description!.trim().isNotEmpty) ...[
+                  AppSizes.gap.small,
+                  // Description
+                  Text(
+                    profile.description!,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                ],
                 AppSizes.gap.medium,
                 // Recipes/Brewing Metrics (Dose, Yield, Grind Size, Time)
                 Wrap(

@@ -64,7 +64,6 @@ class BeanLibraryViewModel extends ChangeNotifier {
           brewYield: 42.0,
           brewTimeSeconds: 28,
           description: 'Floral jasmine aroma with bright bergamot acidity and peach sweetness. High clarity.',
-          rating: 4.9,
         ),
         const BrewProfile(
           id: '2',
@@ -83,7 +82,6 @@ class BeanLibraryViewModel extends ChangeNotifier {
           brewYield: 36.0,
           brewTimeSeconds: 30,
           description: 'Smooth honey processing yields tasting notes of red apple, sweet plum, and rich caramel.',
-          rating: 4.7,
         ),
         const BrewProfile(
           id: '3',
@@ -102,7 +100,6 @@ class BeanLibraryViewModel extends ChangeNotifier {
           brewYield: 40.0,
           brewTimeSeconds: 32,
           description: 'Heavy body with robust notes of dark chocolate, peat moss, toasted marshmallow, and spice.',
-          rating: 4.5,
         ),
         const BrewProfile(
           id: '4',
@@ -111,17 +108,16 @@ class BeanLibraryViewModel extends ChangeNotifier {
             name: 'Pacamara Natural',
             brand: 'Onyx Coffee Lab',
             origin: 'El Salvador',
-            roastLevel: RoastLevel.light,
             strength: 2,
+            roastLevel: null,
           ),
           machine: Machine(id: 'm4', brand: 'Decent', name: 'DE1PRO'),
-          grinder: Grinder(id: 'g4', brand: 'Lagom', name: 'P64'),
+          grinder: null,
           dose: 19.0,
           grindSize: 11.55,
           brewYield: 45.0,
           brewTimeSeconds: 27,
           description: 'Complex tropical fruit acidity, dried mango, red wine notes, and a velvety chocolate finish.',
-          rating: 4.8,
         ),
       ]);
 
@@ -163,9 +159,9 @@ class BeanLibraryViewModel extends ChangeNotifier {
         return profile.bean.name.toLowerCase().contains(query) ||
             profile.bean.brand.toLowerCase().contains(query) ||
             profile.bean.origin.toLowerCase().contains(query) ||
-            profile.grinder.displayName.toLowerCase().contains(query) ||
+            (profile.grinder?.displayName.toLowerCase().contains(query) ?? false) ||
             profile.machine.displayName.toLowerCase().contains(query) ||
-            profile.description.toLowerCase().contains(query);
+            (profile.description?.toLowerCase().contains(query) ?? false);
       }).toList();
     }
 
