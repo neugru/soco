@@ -5,6 +5,8 @@ import 'package:soco/core/models/roast_level.dart';
 class AppColors {
   AppColors._();
 
+  static const Color seed = Color(0xFFD7CCC8);
+
   // ===================
   // LIGHT MODE PALETTE
   // ===================

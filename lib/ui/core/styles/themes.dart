@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:soco/ui/core/styles/colors.dart';
+import 'package:soco/ui/core/styles/elevation.dart';
 import 'package:soco/ui/core/styles/sizes.dart';
 import 'package:soco/ui/core/styles/typography.dart';
 
@@ -9,8 +10,10 @@ class AppTheme {
 
   static ThemeData get lightTheme {
     return _buildTheme(
-      brightness: Brightness.light,
-      colorScheme: const ColorScheme.light(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.seed,
+        brightness: Brightness.light,
+      ).copyWith(
         primary: AppColors.lightPrimary,
         onPrimary: AppColors.lightOnPrimary,
         primaryContainer: AppColors.lightPrimaryContainer,
@@ -73,8 +76,10 @@ class AppTheme {
 
   static ThemeData get darkTheme {
     return _buildTheme(
-      brightness: Brightness.dark,
-      colorScheme: const ColorScheme.dark(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.seed,
+        brightness: Brightness.dark,
+      ).copyWith(
         primary: AppColors.darkPrimary,
         onPrimary: AppColors.darkOnPrimary,
         primaryContainer: AppColors.darkPrimaryContainer,
@@ -136,13 +141,12 @@ class AppTheme {
   }
 
   static ThemeData _buildTheme({
-    required Brightness brightness,
     required ColorScheme colorScheme,
     required RoastColors roastColors,
   }) {
     return ThemeData(
       useMaterial3: true,
-      brightness: brightness,
+      brightness: colorScheme.brightness,
       extensions: <ThemeExtension<dynamic>>[roastColors],
       colorScheme: colorScheme,
       scaffoldBackgroundColor: colorScheme.surface,
@@ -233,6 +237,19 @@ class AppTheme {
         ),
         labelStyle: TextStyle(color: colorScheme.outline),
         hintStyle: TextStyle(color: colorScheme.outline),
+      ),
+
+      dropdownMenuTheme: DropdownMenuThemeData(
+        menuStyle: MenuStyle(
+          backgroundColor: WidgetStatePropertyAll(colorScheme.surfaceContainer),
+          elevation: const WidgetStatePropertyAll(AppElevation.high),
+          surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+            ),
+          ),
+        ),
       ),
     );
   }
