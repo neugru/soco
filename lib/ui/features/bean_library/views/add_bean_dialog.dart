@@ -21,8 +21,8 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
   String _name = '';
   String _brand = '';
   String _origin = '';
-  RoastLevel _roastLevel = RoastLevel.medium;
   int _strength = 3;
+  RoastLevel? _roastLevel;
   String _machine = '';
   String _grinder = '';
   double _dose = 18.0;
@@ -30,7 +30,6 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
   double _brewYield = 36.0;
   int _brewTime = 30;
   String _description = '';
-  double _rating = 4.5;
 
   Grinder _parseGrinder(String text) {
     final trimmed = text.trim();
@@ -69,6 +68,12 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
     return AlertDialog(
       title: const Text('Add Bean to Library'),
       content: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          top: AppSizes.spacing.small,
+          bottom: AppSizes.spacing.large,
+          left: AppSizes.spacing.extraSmall,
+          right: AppSizes.spacing.extraSmall,
+        ),
         child: Form(
           key: _formKey,
           child: Column(
@@ -94,6 +99,76 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
               AppSizes.gap.small,
               TextFormField(
                 decoration: const InputDecoration(
+                  labelText: 'Origin',
+                  hintText: 'e.g. Panama (Single Origin)',
+                ),
+                onSaved: (v) => _origin = v ?? '',
+              ),
+              AppSizes.gap.small,
+              DropdownButtonFormField<RoastLevel?>(
+                initialValue: _roastLevel,
+                decoration: const InputDecoration(
+                  labelText: 'Roast Level',
+                ),
+                dropdownColor: colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+                items: [
+                  const DropdownMenuItem<RoastLevel?>(
+                    value: null,
+                    child: Text('Not Specified'),
+                  ),
+                  ...RoastLevel.values.map((level) {
+                    return DropdownMenuItem<RoastLevel?>(
+                      value: level,
+                      child: Text(level.displayName),
+                    );
+                  }),
+                ],
+                onChanged: (val) {
+                  setState(() {
+                    _roastLevel = val;
+                  });
+                },
+              ),
+              AppSizes.gap.small,
+              InputDecorator(
+                decoration: InputDecoration(
+                  labelText: 'Strength',
+                  border: InputBorder.none,
+                  filled: false,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(top: AppSizes.spacing.extraSmall),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(5, (index) {
+                      final beanValue = index + 1;
+                      final isActive = beanValue <= _strength;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _strength = beanValue;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(
+                            SocoIcons.coffeeBean,
+                            size: 24,
+                            color: isActive ? colorScheme.primary : colorScheme.onSurface.withValues(alpha: 0.15),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+              ),
+              AppSizes.gap.small,
+              Divider(),
+              AppSizes.gap.small,
+              // AppSizes.gap.large,
+              TextFormField(
+                decoration: const InputDecoration(
                   labelText: 'Grind Size',
                   hintText: 'e.g. 14.50',
                 ),
@@ -103,7 +178,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   if (double.tryParse(v) == null) return 'Please enter a valid number';
                   return null;
                 },
-                onSaved: (v) => _grindSize = double.tryParse(v ?? '') ?? 14.00,
+                onSaved: (v) => _grindSize = double.tryParse(v ?? '') ?? 14.5,
               ),
               AppSizes.gap.small,
               TextFormField(
@@ -111,7 +186,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   labelText: 'Dose (g)',
                   hintText: 'e.g. 18.0',
                 ),
-                initialValue: '18.0',
+                // initialValue: '18.0', // TODO set initial value through settings
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 validator: (v) {
                   if (v == null || v.isEmpty) return 'Please enter dose';
@@ -126,7 +201,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   labelText: 'Yield (g)',
                   hintText: 'e.g. 36.0',
                 ),
-                initialValue: '36.0',
+                // initialValue: '36.0', // TODO set initial value through settings
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 validator: (v) {
                   if (v == null || v.isEmpty) return 'Please enter yield';
@@ -141,7 +216,6 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   labelText: 'Brew Time (s)',
                   hintText: 'e.g. 30',
                 ),
-                initialValue: '30',
                 keyboardType: TextInputType.number,
                 validator: (v) {
                   if (v == null || v.isEmpty) return 'Please enter brew time';
@@ -151,23 +225,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                 onSaved: (v) => _brewTime = int.tryParse(v ?? '') ?? 30,
               ),
               AppSizes.gap.small,
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Origin',
-                  hintText: 'e.g. Panama (Single Origin)',
-                ),
-                validator: (v) => v == null || v.isEmpty ? 'Please enter origin' : null,
-                onSaved: (v) => _origin = v ?? '',
-              ),
-              AppSizes.gap.small,
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Grinder Used',
-                  hintText: 'e.g. Comandante C40',
-                ),
-                validator: (v) => v == null || v.isEmpty ? 'Please enter grinder' : null,
-                onSaved: (v) => _grinder = v ?? '',
-              ),
+              Divider(),
               AppSizes.gap.small,
               TextFormField(
                 decoration: const InputDecoration(
@@ -180,97 +238,28 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
               AppSizes.gap.small,
               TextFormField(
                 decoration: const InputDecoration(
+                  labelText: 'Grinder Used',
+                  hintText: 'e.g. Comandante C40',
+                ),
+                onSaved: (v) => _grinder = v ?? '',
+              ),
+              AppSizes.gap.small,
+              Divider(),
+              AppSizes.gap.small,
+              TextFormField(
+                decoration: const InputDecoration(
                   labelText: 'Description / Tasting Notes',
                   hintText: 'e.g. Bergamot, peach, black tea finish.',
                 ),
                 maxLines: 2,
                 onSaved: (v) => _description = v ?? '',
               ),
-              AppSizes.gap.medium,
-              // Roast Level selection
-              Row(
-                children: [
-                  const Text('Roast Level: '),
-                  AppSizes.gap.medium,
-                  Expanded(
-                    child: DropdownButton<RoastLevel>(
-                      value: _roastLevel,
-                      isExpanded: true,
-                      items: RoastLevel.values.map((level) {
-                        return DropdownMenuItem(
-                          value: level,
-                          child: Text(level.displayName),
-                        );
-                      }).toList(),
-                      onChanged: (val) {
-                        if (val != null) {
-                          setState(() {
-                            _roastLevel = val;
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              AppSizes.gap.medium,
-              // Strength meter picker
-              Row(
-                children: [
-                  Text(
-                    'Strength: ',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  AppSizes.gap.medium,
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: List.generate(5, (index) {
-                      final beanValue = index + 1;
-                      final isActive = beanValue <= _strength;
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _strength = beanValue;
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-                          child: Icon(
-                            SocoIcons.coffeeBean,
-                            size: 26,
-                            color: isActive ? colorScheme.primary : colorScheme.onSurface.withValues(alpha: 0.15),
-                          ),
-                        ),
-                      );
-                    }),
-                  ),
-                ],
-              ),
-              AppSizes.gap.medium,
-              // Rating slider
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Rating: ${_rating.toStringAsFixed(1)} Stars'),
-                  Slider(
-                    value: _rating,
-                    min: 1.0,
-                    max: 5.0,
-                    divisions: 40,
-                    onChanged: (val) {
-                      setState(() {
-                        _rating = val;
-                      });
-                    },
-                  ),
-                ],
-              ),
             ],
           ),
         ),
       ),
       actions: [
-        TextButton(
+        OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
@@ -283,20 +272,19 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                 name: _name,
                 brand: _brand,
                 origin: _origin,
-                roastLevel: _roastLevel,
                 strength: _strength,
+                roastLevel: _roastLevel,
               );
 
               final newProfile = BrewProfile.create(
                 bean: newBean,
-                machine: _parseMachine(_machine),
-                grinder: _parseGrinder(_grinder),
                 dose: _dose,
                 grindSize: _grindSize,
                 brewYield: _brewYield,
                 brewTimeSeconds: _brewTime,
-                description: _description.isEmpty ? 'No description provided.' : _description,
-                rating: _rating,
+                machine: _parseMachine(_machine),
+                grinder: _grinder.trim().isEmpty ? null : _parseGrinder(_grinder),
+                description: _description.trim().isEmpty ? null : _description.trim(),
               );
 
               Navigator.of(context).pop(newProfile);

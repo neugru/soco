@@ -34,7 +34,7 @@ class _Spacing {
 class _Button {
   const _Button();
 
-  final double height = 56.0;
+  final double height = 48.0;
   final double heightSmall = 40.0;
 }
 

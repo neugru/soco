@@ -20,6 +20,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   late final BeanLibraryViewModel _viewModel;
   late final TextEditingController _searchController;
   late final ScrollController _scrollController;
+  bool _isExpanded = true;  // TODO remove after testing
 
   @override
   void initState() {
@@ -129,6 +130,36 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                 ),
               ),
 
+              // TODO remove after testing
+              // Temporary Expanded Switch Row
+              Padding(
+                padding: EdgeInsets.only(
+                  left: AppSizes.spacing.medium,
+                  right: AppSizes.spacing.medium,
+                  bottom: AppSizes.spacing.small,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Expanded Card View',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    Switch(
+                      value: _isExpanded,
+                      onChanged: (val) {
+                        setState(() {
+                          _isExpanded = val;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
               // Bean List
               Expanded(
                 child: _viewModel.brewProfiles.isEmpty
@@ -218,6 +249,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                                 },
                                 child: BeanCard(
                                   profile: profile,
+                                  isCompact: !_isExpanded,  // TODO remove after testing
                                 ),
                               );
                             },

@@ -24,26 +24,18 @@ Widget buildBeanCardUseCase(BuildContext context) {
       name: context.knobs.string(label: 'Bean Name', initialValue: 'Espresso Roma'),
       brand: context.knobs.string(label: 'Brand', initialValue: 'Ettli'),
       origin: context.knobs.string(label: 'Origin', initialValue: 'South-/Central-America'),
-      roastLevel: context.knobs.object.dropdown<RoastLevel>(
-        label: 'Roast Level',
-        initialOption: RoastLevel.medium,
-        options: RoastLevel.values,
-        labelBuilder: (level) => level.displayName,
-      ),
       strength: context.knobs.int.slider(
         label: 'Strength',
         initialValue: 2,
         min: 1,
         max: 5,
       ),
-    ),
-    machine: Machine.create(
-      brand: context.knobs.string(label: 'Machine Brand', initialValue: 'Gaggia'),
-      name: context.knobs.string(label: 'Machine Model', initialValue: 'Classic Evo Pro 2023'),
-    ),
-    grinder: Grinder.create(
-      brand: context.knobs.string(label: 'Grinder Brand', initialValue: 'Varia'),
-      name: context.knobs.string(label: 'Grinder Model', initialValue: 'VS3'),
+      roastLevel: context.knobs.object.dropdown<RoastLevel?>(
+        label: 'Roast Level',
+        initialOption: RoastLevel.medium,
+        options: [null, ...RoastLevel.values],
+        labelBuilder: (level) => level?.displayName ?? 'Not Specified',
+      ),
     ),
     dose: context.knobs.double.slider(
       label: 'Dose (g)',
@@ -69,15 +61,19 @@ Widget buildBeanCardUseCase(BuildContext context) {
       min: 5,
       max: 120,
     ),
+    machine: Machine.create(
+      brand: context.knobs.string(label: 'Machine Brand', initialValue: 'Gaggia'),
+      name: context.knobs.string(label: 'Machine Model', initialValue: 'Classic Evo Pro 2023'),
+    ),
+    grinder: context.knobs.boolean(label: 'Has Grinder', initialValue: true)
+        ? Grinder.create(
+            brand: context.knobs.string(label: 'Grinder Brand', initialValue: 'Varia'),
+            name: context.knobs.string(label: 'Grinder Model', initialValue: 'VS3'),
+          )
+        : null,
     description: context.knobs.string(
       label: 'Description',
       initialValue: 'Soft, round aroma, mild',
-    ),
-    rating: context.knobs.double.slider(
-      label: 'Rating',
-      initialValue: 4.5,
-      min: 1.0,
-      max: 5.0,
     ),
   );
 

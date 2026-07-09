@@ -8,19 +8,8 @@ class AppTheme {
   AppTheme._();
 
   static ThemeData get lightTheme {
-    return ThemeData(
-      useMaterial3: true,
+    return _buildTheme(
       brightness: Brightness.light,
-      extensions: const <ThemeExtension<dynamic>>[
-        RoastColors(
-          lightBg: AppColors.roastLightBgLight,
-          lightText: AppColors.roastLightTextLight,
-          mediumBg: AppColors.roastMediumBgLight,
-          mediumText: AppColors.roastMediumTextLight,
-          darkBg: AppColors.roastDarkBgLight,
-          darkText: AppColors.roastDarkTextLight,
-        ),
-      ],
       colorScheme: const ColorScheme.light(
         primary: AppColors.lightPrimary,
         onPrimary: AppColors.lightOnPrimary,
@@ -71,115 +60,20 @@ class AppTheme {
         surfaceContainerHigh: AppColors.lightSurfaceContainerHigh,
         surfaceContainerHighest: AppColors.lightSurfaceContainerHighest,
       ),
-
-      // TODO
-      scaffoldBackgroundColor: AppColors.lightSurface,
-      textTheme: AppStyles.textTheme.apply(
-        bodyColor: AppColors.lightOnSurface,
-        displayColor: AppColors.lightOnSurface,
-      ),
-
-      // TODO check NavBar design
-      navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: AppColors.lightSurfaceContainer.withValues(alpha: 0.65),
-        height: 64,
-      ),
-
-      // FloatingActionButton Theme
-      // TODO
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        foregroundColor: AppColors.lightOnPrimaryContainer,
-        backgroundColor: AppColors.lightPrimaryContainer,
-      ),
-
-      // AppBar Theme
-      // TODO
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: IconThemeData(color: AppColors.lightOnSurface),
-        titleTextStyle: TextStyle(
-          color: AppColors.lightOnSurface,
-          fontSize: 20.0,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-
-      // Elevated Button Theme (Primary Buttons)
-      // TODO
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.lightPrimary,
-          foregroundColor: AppColors.lightOnPrimary,
-          minimumSize: Size.fromHeight(AppSizes.button.height),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radius.medium),
-          ),
-          elevation: 0,
-          textStyle: AppStyles.labelLarge,
-        ),
-      ),
-
-      // Outlined Button Theme (Secondary Buttons)
-      // TODO
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.lightPrimary,
-          minimumSize: Size.fromHeight(AppSizes.button.height),
-          side: const BorderSide(color: AppColors.lightPrimary, width: 1.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radius.medium),
-          ),
-          textStyle: AppStyles.labelLarge,
-        ),
-      ),
-
-      // Input Decoration Theme (Text Fields / Inputs)
-      // TODO
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: AppColors.lightSurfaceContainerHighest.withValues(alpha: 0.3),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: AppSizes.input.paddingHorizontal,
-          vertical: AppSizes.input.paddingVertical,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
-          borderSide: const BorderSide(color: AppColors.lightPrimary, width: 1.5),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
-          borderSide: const BorderSide(color: AppColors.lightError, width: 1.5),
-        ),
-        labelStyle: const TextStyle(color: AppColors.lightOutline),
-        hintStyle: const TextStyle(color: AppColors.lightOutline),
+      roastColors: const RoastColors(
+        lightBg: AppColors.roastLightBgLight,
+        lightText: AppColors.roastLightTextLight,
+        mediumBg: AppColors.roastMediumBgLight,
+        mediumText: AppColors.roastMediumTextLight,
+        darkBg: AppColors.roastDarkBgLight,
+        darkText: AppColors.roastDarkTextLight,
       ),
     );
   }
 
   static ThemeData get darkTheme {
-    return ThemeData(
-      useMaterial3: true,
+    return _buildTheme(
       brightness: Brightness.dark,
-      extensions: const <ThemeExtension<dynamic>>[
-        RoastColors(
-          lightBg: AppColors.roastLightBgDark,
-          lightText: AppColors.roastLightTextDark,
-          mediumBg: AppColors.roastMediumBgDark,
-          mediumText: AppColors.roastMediumTextDark,
-          darkBg: AppColors.roastDarkBgDark,
-          darkText: AppColors.roastDarkTextDark,
-        ),
-      ],
       colorScheme: const ColorScheme.dark(
         primary: AppColors.darkPrimary,
         onPrimary: AppColors.darkOnPrimary,
@@ -230,75 +124,93 @@ class AppTheme {
         surfaceContainerHigh: AppColors.darkSurfaceContainerHigh,
         surfaceContainerHighest: AppColors.darkSurfaceContainerHighest,
       ),
+      roastColors: const RoastColors(
+        lightBg: AppColors.roastLightBgDark,
+        lightText: AppColors.roastLightTextDark,
+        mediumBg: AppColors.roastMediumBgDark,
+        mediumText: AppColors.roastMediumTextDark,
+        darkBg: AppColors.roastDarkBgDark,
+        darkText: AppColors.roastDarkTextDark,
+      ),
+    );
+  }
 
-      // TODO
-      scaffoldBackgroundColor: AppColors.darkSurface,
+  static ThemeData _buildTheme({
+    required Brightness brightness,
+    required ColorScheme colorScheme,
+    required RoastColors roastColors,
+  }) {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: brightness,
+      extensions: <ThemeExtension<dynamic>>[roastColors],
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: colorScheme.surface,
       textTheme: AppStyles.textTheme.apply(
-        bodyColor: AppColors.darkOnSurface,
-        displayColor: AppColors.darkOnSurface,
+        bodyColor: colorScheme.onSurface,
+        displayColor: colorScheme.onSurface,
       ),
 
-      // TODO check NavBar design
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: AppColors.darkSurfaceContainer.withValues(alpha: 0.65),
+        backgroundColor: colorScheme.surfaceContainer.withValues(alpha: 0.65),
         height: 64,
       ),
 
-      // FloatingActionButton Theme
-      // TODO
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        foregroundColor: AppColors.darkOnPrimaryContainer,
-        backgroundColor: AppColors.darkPrimaryContainer,
+        foregroundColor: colorScheme.onPrimaryContainer,
+        backgroundColor: colorScheme.primaryContainer,
       ),
 
-      // AppBar Theme
-      // TODO
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(color: AppColors.darkOnSurface),
+        iconTheme: IconThemeData(color: colorScheme.onSurface),
         titleTextStyle: TextStyle(
-          color: AppColors.darkOnSurface,
+          color: colorScheme.onSurface,
           fontSize: 20.0,
           fontWeight: FontWeight.bold,
         ),
       ),
 
-      // Elevated Button Theme (Primary Buttons)
-      // TODO
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.darkPrimary,
-          foregroundColor: AppColors.darkOnPrimary,
-          minimumSize: Size.fromHeight(AppSizes.button.height),
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
+          minimumSize: Size(0, AppSizes.button.height),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+            borderRadius: BorderRadius.circular(AppSizes.radius.large),
           ),
           elevation: 0,
           textStyle: AppStyles.labelLarge,
         ),
       ),
 
-      // Outlined Button Theme (Secondary Buttons)
-      // TODO
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.darkPrimary,
-          minimumSize: Size.fromHeight(AppSizes.button.height),
-          side: const BorderSide(color: AppColors.darkPrimary, width: 1.5),
+          foregroundColor: colorScheme.primary,
+          minimumSize: Size(0, AppSizes.button.height),
+          side: BorderSide(color: colorScheme.primary, width: 1),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+            borderRadius: BorderRadius.circular(AppSizes.radius.large),
           ),
           textStyle: AppStyles.labelLarge,
         ),
       ),
 
-      // Input Decoration Theme (Text Fields / Inputs)
-      // TODO
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          minimumSize: Size(0, AppSizes.button.height),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSizes.radius.large),
+          ),
+          textStyle: AppStyles.labelLarge,
+        ),
+      ),
+
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.darkSurfaceContainerHighest.withValues(alpha: 0.15),
+        fillColor: colorScheme.surfaceContainerHighest,
         contentPadding: EdgeInsets.symmetric(
           horizontal: AppSizes.input.paddingHorizontal,
           vertical: AppSizes.input.paddingVertical,
@@ -313,14 +225,14 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.radius.medium),
-          borderSide: const BorderSide(color: AppColors.darkPrimary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.radius.medium),
-          borderSide: const BorderSide(color: AppColors.darkError, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.error, width: 1),
         ),
-        labelStyle: const TextStyle(color: AppColors.darkOutline),
-        hintStyle: const TextStyle(color: AppColors.darkOutline),
+        labelStyle: TextStyle(color: colorScheme.outline),
+        hintStyle: TextStyle(color: colorScheme.outline),
       ),
     );
   }
