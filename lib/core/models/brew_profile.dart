@@ -8,8 +8,8 @@ class BrewProfile {
   final String id;
   final Bean bean;
   final double dose;
-  final double grindSize;
   final double brewYield;
+  final double grindSize;
   final int brewTimeSeconds;
   final Machine machine;
   final Grinder? grinder;
@@ -19,8 +19,8 @@ class BrewProfile {
     required this.id,
     required this.bean,
     required this.dose,
-    required this.grindSize,
     required this.brewYield,
+    required this.grindSize,
     required this.brewTimeSeconds,
     required this.machine,
     this.grinder,
@@ -30,8 +30,8 @@ class BrewProfile {
   factory BrewProfile.create({
     required Bean bean,
     required double dose,
-    required double grindSize,
     required double brewYield,
+    required double grindSize,
     required int brewTimeSeconds,
     required Machine machine,
     Grinder? grinder,
@@ -41,8 +41,8 @@ class BrewProfile {
       id: const Uuid().v4(),
       bean: bean,
       dose: dose,
-      grindSize: grindSize,
       brewYield: brewYield,
+      grindSize: grindSize,
       brewTimeSeconds: brewTimeSeconds,
       machine: machine,
       grinder: grinder,
@@ -54,8 +54,8 @@ class BrewProfile {
     String? id,
     Bean? bean,
     double? dose,
-    double? grindSize,
     double? brewYield,
+    double? grindSize,
     int? brewTimeSeconds,
     Machine? machine,
     Grinder? grinder,
@@ -65,8 +65,8 @@ class BrewProfile {
       id: id ?? this.id,
       bean: bean ?? this.bean,
       dose: dose ?? this.dose,
-      grindSize: grindSize ?? this.grindSize,
       brewYield: brewYield ?? this.brewYield,
+      grindSize: grindSize ?? this.grindSize,
       brewTimeSeconds: brewTimeSeconds ?? this.brewTimeSeconds,
       machine: machine ?? this.machine,
       grinder: grinder ?? this.grinder,

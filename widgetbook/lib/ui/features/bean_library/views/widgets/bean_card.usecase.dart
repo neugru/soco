@@ -40,17 +40,17 @@ Widget buildBeanCardUseCase(BuildContext context) {
       min: 5.0,
       max: 30.0,
     ),
-    grindSize: context.knobs.double.slider(
-      label: 'Grind Size',
-      initialValue: 4.4,
-      min: 1.0,
-      max: 20.0,
-    ),
     brewYield: context.knobs.double.slider(
       label: 'Yield (g)',
       initialValue: 42.0,
       min: 5.0,
       max: 100.0,
+    ),
+    grindSize: context.knobs.double.slider(
+      label: 'Grind Size',
+      initialValue: 4.4,
+      min: 1.0,
+      max: 20.0,
     ),
     brewTimeSeconds: context.knobs.int.slider(
       label: 'Brew Time (s)',

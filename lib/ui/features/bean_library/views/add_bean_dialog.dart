@@ -21,7 +21,6 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
 
   // TODO: Load initial values from ViewModel
   final double _dose = 18;
-  final double _grindSize = 4.4;
   final double _yield = 42.0;
   final int _brewTimeSeconds = 30;
 
@@ -31,8 +30,8 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
   late final _originController = TextEditingController();
   late final _machineController = TextEditingController();
   late final _grinderController = TextEditingController();
+  late final _grindSizeController = TextEditingController();
   late final _doseController = TextEditingController(text: _formatDouble(_dose));
-  late final _grindSizeController = TextEditingController(text: _formatDouble(_grindSize));
   late final _yieldController = TextEditingController(text: _formatDouble(_yield));
   late final _brewTimeController = TextEditingController(text: _brewTimeSeconds.toString());
   late final _descriptionController = TextEditingController();
@@ -432,8 +431,8 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
               final newProfile = BrewProfile.create(
                 bean: newBean,
                 dose: double.parse(_doseController.text),
-                grindSize: double.parse(_grindSizeController.text),
                 brewYield: double.parse(_yieldController.text),
+                grindSize: double.parse(_grindSizeController.text),
                 brewTimeSeconds: int.parse(_brewTimeController.text),
                 machine: _parseMachine(_machineController.text),
                 grinder: _grinderController.text.trim().isEmpty ? null : _parseGrinder(_grinderController.text),
