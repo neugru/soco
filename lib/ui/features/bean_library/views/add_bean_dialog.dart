@@ -173,9 +173,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
   Widget _buildValidationIcon(bool isValid, ColorScheme colorScheme) {
     return Icon(
       isValid ? Icons.check_circle_rounded : Icons.info_outline_rounded,
-      color: isValid
-          ? Colors.green.withValues(alpha: 0.4)
-          : colorScheme.error.withValues(alpha: 0.4),
+      color: isValid ? Colors.green.withValues(alpha: 0.4) : colorScheme.error.withValues(alpha: 0.4),
       size: 20,
     );
   }
@@ -237,9 +235,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                     expandedInsets: EdgeInsets.zero,
                     requestFocusOnTap: false,
                     inputDecorationTheme: Theme.of(context).inputDecorationTheme,
-                    textStyle: state.value == null
-                        ? const TextStyle(fontStyle: FontStyle.italic)
-                        : null,
+                    textStyle: state.value == null ? const TextStyle(fontStyle: FontStyle.italic) : null,
                     label: const Text('Roast Level'),
                     errorText: state.errorText,
                     dropdownMenuEntries: [

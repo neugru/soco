@@ -9,11 +9,8 @@ import 'package:soco/core/models/machine.dart';
 import 'package:soco/core/models/roast_level.dart';
 import 'package:soco/ui/features/bean_library/views/widgets/bean_card.dart';
 
-
-
 @widgetbook.UseCase(name: 'Default', type: BeanCard)
 Widget buildBeanCardUseCase(BuildContext context) {
-
   final isCompact = context.knobs.boolean(
     label: 'Is Compact',
     initialValue: false,
