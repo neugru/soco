@@ -23,13 +23,13 @@ Widget buildBeanCardUseCase(BuildContext context) {
     bean: Bean.create(
       name: context.knobs.string(label: 'Bean Name', initialValue: 'Espresso Roma'),
       brand: context.knobs.string(label: 'Brand', initialValue: 'Ettli'),
-      origin: context.knobs.string(label: 'Origin', initialValue: 'South-/Central-America'),
       strength: context.knobs.int.slider(
         label: 'Strength',
         initialValue: 2,
         min: 1,
         max: 5,
       ),
+      origin: context.knobs.string(label: 'Origin', initialValue: 'South-/Central-America'),
       roastLevel: context.knobs.object.dropdown<RoastLevel?>(
         label: 'Roast Level',
         initialOption: RoastLevel.medium,

@@ -271,8 +271,8 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
               final newBean = Bean.create(
                 name: _name,
                 brand: _brand,
-                origin: _origin,
                 strength: _strength,
+                origin: _origin.trim().isEmpty ? null : _origin.trim(),
                 roastLevel: _roastLevel,
               );
 

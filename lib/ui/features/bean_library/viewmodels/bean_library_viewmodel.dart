@@ -53,9 +53,9 @@ class BeanLibraryViewModel extends ChangeNotifier {
             id: 'b1',
             name: 'Ethiopia Yirgacheffe',
             brand: 'Sey Coffee',
+            strength: 2,
             origin: 'Ethiopia (Single Origin)',
             roastLevel: RoastLevel.light,
-            strength: 2,
           ),
           machine: Machine(id: 'm1', brand: 'La Marzocco', name: 'Linea Micra'),
           grinder: Grinder(id: 'g1', brand: 'Comandante', name: 'C40'),
@@ -71,9 +71,9 @@ class BeanLibraryViewModel extends ChangeNotifier {
             id: 'b2',
             name: 'Bella Vista Bourbon',
             brand: 'Intelligentsia',
+            strength: 3,
             origin: 'Guatemala',
             roastLevel: RoastLevel.medium,
-            strength: 3,
           ),
           machine: Machine(id: 'm2', brand: 'Sage', name: 'Barista Express'),
           grinder: Grinder(id: 'g2', brand: 'Fellow', name: 'Ode Gen 2'),
@@ -89,9 +89,9 @@ class BeanLibraryViewModel extends ChangeNotifier {
             id: 'b3',
             name: 'Three Mules Blend',
             brand: 'Blue Bottle',
+            strength: 5,
             origin: 'Colombia & Sumatra',
             roastLevel: RoastLevel.dark,
-            strength: 5,
           ),
           machine: Machine(id: 'm3', brand: 'Slayer', name: 'Espresso Single Group'),
           grinder: Grinder(id: 'g3', brand: 'Mahlkönig', name: 'EK43'),
@@ -107,8 +107,8 @@ class BeanLibraryViewModel extends ChangeNotifier {
             id: 'b4',
             name: 'Pacamara Natural',
             brand: 'Onyx Coffee Lab',
-            origin: 'El Salvador',
             strength: 2,
+            origin: 'El Salvador',
             roastLevel: null,
           ),
           machine: Machine(id: 'm4', brand: 'Decent', name: 'DE1PRO'),
@@ -158,7 +158,7 @@ class BeanLibraryViewModel extends ChangeNotifier {
       _filteredBrewProfiles = _allBrewProfiles.where((profile) {
         return profile.bean.name.toLowerCase().contains(query) ||
             profile.bean.brand.toLowerCase().contains(query) ||
-            profile.bean.origin.toLowerCase().contains(query) ||
+            (profile.bean.origin?.toLowerCase().contains(query) ?? false) ||
             (profile.grinder?.displayName.toLowerCase().contains(query) ?? false) ||
             profile.machine.displayName.toLowerCase().contains(query) ||
             (profile.description?.toLowerCase().contains(query) ?? false);

@@ -6,32 +6,32 @@ class Bean {
   final String id;
   final String name;
   final String brand;
-  final String origin;
   final int strength;
+  final String? origin;
   final RoastLevel? roastLevel;
 
   const Bean({
     required this.id,
     required this.name,
     required this.brand,
-    required this.origin,
     required this.strength,
+    this.origin,
     this.roastLevel,
   });
 
   factory Bean.create({
     required String name,
     required String brand,
-    required String origin,
     required int strength,
+    String? origin,
     RoastLevel? roastLevel,
   }) {
     return Bean(
       id: const Uuid().v4(),
       name: name,
       brand: brand,
-      origin: origin,
       strength: strength,
+      origin: origin,
       roastLevel: roastLevel,
     );
   }
@@ -40,16 +40,16 @@ class Bean {
     String? id,
     String? name,
     String? brand,
-    String? origin,
     int? strength,
+    String? origin,
     RoastLevel? roastLevel,
   }) {
     return Bean(
       id: id ?? this.id,
       name: name ?? this.name,
       brand: brand ?? this.brand,
-      origin: origin ?? this.origin,
       strength: strength ?? this.strength,
+      origin: origin ?? this.origin,
       roastLevel: roastLevel ?? this.roastLevel,
     );
   }
