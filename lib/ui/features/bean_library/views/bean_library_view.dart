@@ -20,7 +20,8 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   late final BeanLibraryViewModel _viewModel;
   late final TextEditingController _searchController;
   late final ScrollController _scrollController;
-  bool _isExpanded = true; // TODO remove after testing
+  
+  bool _isCompact = false; // TODO remove after testing
 
   @override
   void initState() {
@@ -129,135 +130,229 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
               ),
 
               // TODO remove after testing
-              // Temporary Expanded Switch Row
-              Padding(
-                padding: EdgeInsets.only(
-                  left: AppSizes.spacing.medium,
-                  right: AppSizes.spacing.medium,
-                  bottom: AppSizes.spacing.small,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Expanded Card View',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    Switch(
-                      value: _isExpanded,
-                      onChanged: (val) {
-                        setState(() {
-                          _isExpanded = val;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              // // Temporary Expanded Switch Row
+              // Padding(
+              //   padding: EdgeInsets.only(
+              //     left: AppSizes.spacing.medium,
+              //     right: AppSizes.spacing.medium,
+              //     bottom: AppSizes.spacing.small,
+              //   ),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       Text(
+              //         'Compact Card View',
+              //         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              //           fontWeight: FontWeight.bold,
+              //           color: colorScheme.onSurfaceVariant,
+              //         ),
+              //       ),
+              //       Switch(
+              //         value: _isCompact,
+              //         onChanged: (val) {
+              //           setState(() {
+              //             _isCompact = val;
+              //           });
+              //         },
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
               // Bean List
               Expanded(
                 child: _viewModel.brewProfiles.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // TODO replace empty list icon
-                            Icon(
-                              SocoIcons.noImage,
-                              size: 64,
-                              color: colorScheme.outline.withValues(alpha: 0.5),
-                            ),
-                            AppSizes.gap.medium,
-                            Text(
-                              _viewModel.searchQuery.trim().isNotEmpty
-                                  ? 'No profiles matching your search'
-                                  : 'Your profile library is empty',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: colorScheme.outline,
-                              ),
-                            ),
-                          ],
-                        ),
+                    ? _EmptyLibraryView(
+                        searchQuery: _viewModel.searchQuery,
+                        bottomPadding: pageContentBottomPadding,// + 70.0,
                       )
-                    : Scrollbar(
-                        controller: _scrollController,
-                        child: ShaderMask(
-                          shaderCallback: (Rect bounds) {
-                            final topFadeHeight = AppSizes.spacing.medium;
-                            final fadeEnd = (topFadeHeight / bounds.height).clamp(0.0, 1.0);
-
-                            return LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: const [
-                                Colors.transparent,
-                                Colors.black,
-                              ],
-                              stops: [0, fadeEnd],
-                            ).createShader(bounds);
-                          },
-                          blendMode: BlendMode.dstIn,
-                          child: ListView.separated(
-                            controller: _scrollController,
-                            padding: EdgeInsets.only(
-                              left: AppSizes.spacing.medium,
-                              right: AppSizes.spacing.medium,
-                              top: AppSizes.spacing.medium, // Keep top padding matching the fade zone
-                              bottom: pageContentBottomPadding,
-                            ),
-                            itemCount: _viewModel.brewProfiles.length,
-                            separatorBuilder: (context, index) => SizedBox(
-                              height: AppSizes.spacing.medium,
-                            ),
-                            itemBuilder: (context, index) {
-                              final profile = _viewModel.brewProfiles[index];
-
-                              return Dismissible(
-                                key: Key(profile.id),
-                                direction: DismissDirection.endToStart,
-                                background: Container(
-                                  alignment: Alignment.centerRight,
-                                  padding: EdgeInsets.symmetric(horizontal: AppSizes.spacing.large),
-                                  decoration: BoxDecoration(
-                                    color: colorScheme.errorContainer,
-                                    borderRadius: BorderRadius.circular(AppSizes.radius.large),
-                                  ),
-                                  child: Icon(
-                                    Icons.delete_outline,
-                                    color: colorScheme.onErrorContainer,
-                                    size: 28,
-                                  ),
-                                ),
-                                onDismissed: (direction) {
-                                  _viewModel.removeBrewProfile(profile.id);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('${profile.bean.name} removed'),
-                                      action: SnackBarAction(
-                                        label: 'Undo',
-                                        onPressed: () => _viewModel.addBrewProfile(profile),
-                                      ),
-                                      behavior: SnackBarBehavior.floating,
-                                    ),
-                                  );
-                                },
-                                child: BeanCard(
-                                  profile: profile,
-                                  isCompact: !_isExpanded, // TODO remove after testing
-                                ),
-                              );
-                            },
-                          ),
-                        ),
+                    : _BeanProfileList(
+                        viewModel: _viewModel,
+                        scrollController: _scrollController,
+                        isCompact: _isCompact,
+                        bottomPadding: pageContentBottomPadding,
                       ),
               ),
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class _EmptyLibraryView extends StatelessWidget {
+  final String searchQuery;
+  final double bottomPadding;
+
+  const _EmptyLibraryView({
+    required this.searchQuery,
+    required this.bottomPadding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    Widget buildContent() {
+      if (searchQuery.trim().isNotEmpty) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.search_off_rounded,
+              size: 64,
+              color: colorScheme.outline.withValues(alpha: 0.5),
+            ),
+            AppSizes.gap.medium,
+            Text(
+              'No profiles matching your search',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: colorScheme.outline,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        );
+      }
+
+      final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+      final imagePath = isDarkMode
+          ? 'assets/images/sleepy_coffee_dark.png'
+          : 'assets/images/sleepy_coffee_light.png';
+
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(AppSizes.radius.large),
+            child: Image.asset(
+              imagePath,
+              width: 140,
+              height: 140,
+              fit: BoxFit.contain,
+            ),
+          ),
+          AppSizes.gap.medium,
+          Text(
+            "No beans? That's depresso.\nAdd some and start brewing!",
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: colorScheme.outline,
+                ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: (constraints.maxHeight - bottomPadding).clamp(0.0, double.infinity),
+            ),
+            child: Center(
+              child: buildContent(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _BeanProfileList extends StatelessWidget {
+  final BeanLibraryViewModel viewModel;
+  final ScrollController scrollController;
+  final bool isCompact;
+  final double bottomPadding;
+
+  const _BeanProfileList({
+    required this.viewModel,
+    required this.scrollController,
+    required this.isCompact,
+    required this.bottomPadding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Scrollbar(
+      controller: scrollController,
+      child: ShaderMask(
+        shaderCallback: (Rect bounds) {
+          final topFadeHeight = AppSizes.spacing.medium;
+          final fadeEnd = (topFadeHeight / bounds.height).clamp(0.0, 1.0);
+
+          return LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: const [
+              Colors.transparent,
+              Colors.black,
+            ],
+            stops: [0, fadeEnd],
+          ).createShader(bounds);
+        },
+        blendMode: BlendMode.dstIn,
+        child: ListView.separated(
+          controller: scrollController,
+          padding: EdgeInsets.only(
+            left: AppSizes.spacing.medium,
+            right: AppSizes.spacing.medium,
+            top: AppSizes.spacing.medium, // Keep top padding matching the fade zone
+            bottom: bottomPadding,
+          ),
+          itemCount: viewModel.brewProfiles.length,
+          separatorBuilder: (context, index) => SizedBox(
+            height: AppSizes.spacing.medium,
+          ),
+          itemBuilder: (context, index) {
+            final profile = viewModel.brewProfiles[index];
+
+            return Dismissible(
+              key: Key(profile.id),
+              direction: DismissDirection.endToStart,
+              background: Container(
+                alignment: Alignment.centerRight,
+                padding: EdgeInsets.symmetric(horizontal: AppSizes.spacing.large),
+                decoration: BoxDecoration(
+                  color: colorScheme.errorContainer,
+                  borderRadius: BorderRadius.circular(AppSizes.radius.large),
+                ),
+                child: Icon(
+                  Icons.delete_outline,
+                  color: colorScheme.onErrorContainer,
+                  size: 28,
+                ),
+              ),
+              onDismissed: (direction) {
+                viewModel.removeBrewProfile(profile.id);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('${profile.bean.name} removed'),
+                    duration: const Duration(seconds: 4),
+                    persist: false, // auto-dismiss after specified duration
+                    action: SnackBarAction(
+                      label: 'Undo',
+                      onPressed: () => viewModel.addBrewProfile(profile),
+                    ),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+              child: BeanCard(
+                profile: profile,
+                isCompact: isCompact,
+              ),
+            );
+          },
+        ),
       ),
     );
   }

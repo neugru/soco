@@ -98,7 +98,10 @@ class _AppShellState extends State<AppShell> {
           ).createShader(bounds);
         },
         blendMode: BlendMode.dstIn,
-        child: _pages[_currentIndex],
+        child: IndexedStack(
+          index: _currentIndex,
+          children: _pages,
+        ),
       ),
       bottomNavigationBar: bottomNavBar,
     );
