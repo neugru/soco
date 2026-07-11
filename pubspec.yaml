@@ -28,6 +28,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icons/
+    - assets/images/
   fonts:
     - family: Soco Icons
       fonts:

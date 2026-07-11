@@ -253,6 +253,19 @@ class AppTheme {
           ),
         ),
       ),
+
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: colorScheme.inverseSurface,
+        actionTextColor: colorScheme.inversePrimary,
+        elevation: 4.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+        ),
+        contentTextStyle: TextStyle(
+          color: colorScheme.onInverseSurface,
+        ),
+      ),
     );
   }
 }
