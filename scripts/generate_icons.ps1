@@ -1,5 +1,8 @@
 $ErrorActionPreference = "Stop"
 
+# Navigate to the project root (one level up from the script's location)
+Set-Location (Split-Path -Parent $PSScriptRoot)
+
 # Step 1: Run generator quietly
 $process = Start-Process dart -ArgumentList "run", "icon_font_generator:generator" -NoNewWindow -Wait -PassThru
 if ($process.ExitCode -ne 0) {

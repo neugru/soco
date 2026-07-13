@@ -4,7 +4,7 @@ icon_font:
   output_class_file: "lib/ui/core/styles/soco_icons.dart"
   class_name: "SocoIcons"
   font_name: "Soco Icons"
-  normalize: false
+  normalize: true
   # ignore_shapes: true
   recursive: true
   format: true

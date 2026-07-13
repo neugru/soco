@@ -185,7 +185,7 @@ class AppTheme {
           foregroundColor: colorScheme.onPrimary,
           minimumSize: Size(0, AppSizes.button.height),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radius.large),
+            borderRadius: BorderRadius.circular(AppSizes.radius.round),
           ),
           elevation: 0,
           textStyle: AppStyles.labelLarge,
@@ -198,7 +198,7 @@ class AppTheme {
           minimumSize: Size(0, AppSizes.button.height),
           side: BorderSide(color: colorScheme.primary, width: 1),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radius.large),
+            borderRadius: BorderRadius.circular(AppSizes.radius.round),
           ),
           textStyle: AppStyles.labelLarge,
         ),
@@ -208,7 +208,7 @@ class AppTheme {
         style: TextButton.styleFrom(
           minimumSize: Size(0, AppSizes.button.height),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radius.large),
+            borderRadius: BorderRadius.circular(AppSizes.radius.round),
           ),
           textStyle: AppStyles.labelLarge,
         ),
@@ -232,6 +232,10 @@ class AppTheme {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.radius.medium),
           borderSide: BorderSide(color: colorScheme.primary, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+          borderSide: BorderSide(color: colorScheme.error, width: 2),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.radius.medium),

@@ -8,6 +8,7 @@ class AppSizes {
   static const button = _Button();
   static const input = _Input();
   static const gap = _Gap();
+  static const icon = _Icon();
 }
 
 class _Radius {
@@ -34,8 +35,8 @@ class _Spacing {
 class _Button {
   const _Button();
 
-  final double height = 48.0;
-  final double heightSmall = 40.0;
+  final double height = 40.0;
+  final double heightSmall = 32.0;
 }
 
 class _Input {
@@ -54,4 +55,15 @@ class _Gap {
   final SizedBox large = const SizedBox(width: 24.0, height: 24.0);
   final SizedBox extraLarge = const SizedBox(width: 32.0, height: 32.0);
   final SizedBox extraLarge2 = const SizedBox(width: 48.0, height: 48.0);
+}
+
+class _Icon {
+  const _Icon();
+
+  final double extraSmall = 14.0;
+  final double small = 16.0;
+  final double medium = 20.0;
+  final double large = 24.0;
+  final double extraLarge = 32.0;
+  final double extraLarge2 = 64.0;
 }

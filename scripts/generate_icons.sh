@@ -1,8 +1,11 @@
 #!/bin/bash
 set -e
 
-# Run icon_font_generator quietly
-dart run icon_font_generator:generator > /dev/null
+# Navigate to the project root (one level up from the script's location)
+cd "$(dirname "$0")/.."
+
+# Run icon_font_generator
+dart run icon_font_generator:generator
 
 # Prepend lint ignore
 if [ -f lib/ui/core/styles/soco_icons.dart ]; then

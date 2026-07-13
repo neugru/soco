@@ -8,12 +8,12 @@ import 'package:soco/ui/core/styles/soco_icons.dart';
 
 class BeanCard extends StatelessWidget {
   final BrewProfile profile;
-  final bool isCompact;
+  final bool isExpanded;
 
   const BeanCard({
     super.key,
     required this.profile,
-    this.isCompact = false,
+    this.isExpanded = false,
   });
 
   @override
@@ -81,7 +81,7 @@ class BeanCard extends StatelessWidget {
 
                       return Icon(
                         SocoIcons.coffeeBean,
-                        size: 16,
+                        size: AppSizes.icon.small,
                         color: isActive ? activeColor : inactiveColor,
                       );
                     }),
@@ -106,7 +106,7 @@ class BeanCard extends StatelessWidget {
                     ),
                 ],
               ),
-              if (!isCompact) ...[
+            if (isExpanded) ...[
                 AppSizes.gap.small,
                 // Equipment Details (Grinder & Machine)
                 LayoutBuilder(
@@ -232,11 +232,11 @@ class _EquipmentBadge extends StatelessWidget {
 
   static const double horizontalPadding = 8.0;
   static const double verticalPadding = 4.0;
-  static const double iconSize = 14.0;
+  static final double iconSize = AppSizes.icon.extraSmall;
   static const double gapWidth = 4.0;
 
   /// The total width of all non-text layout components (padding, icon, and gap).
-  static const double extraWidth = (horizontalPadding * 2) + iconSize + gapWidth;
+  static final double extraWidth = (horizontalPadding * 2) + iconSize + gapWidth;
 
   /// Calculates the total unconstrained width needed to display the badge with a given [text] and [style].
   static double calculateWidth(String text, TextStyle? style) {
