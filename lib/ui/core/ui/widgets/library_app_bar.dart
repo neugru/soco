@@ -23,7 +23,7 @@ class LibraryAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Icon(
             icon,
-            size: 24,
+            size: AppSizes.icon.large,
             color: colorScheme.primary,
           ),
           AppSizes.gap.small,

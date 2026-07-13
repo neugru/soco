@@ -42,7 +42,10 @@ class LibrarySearchBar extends StatelessWidget {
             builder: (context, _) {
               return controller.text.isNotEmpty
                   ? IconButton(
-                      icon: const Icon(Icons.clear),
+                      icon: Icon(
+                        SocoIcons.clear,
+                        size: AppSizes.icon.small,
+                      ),
                       onPressed: onClear,
                     )
                   : const SizedBox.shrink();

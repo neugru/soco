@@ -81,7 +81,7 @@ Widget buildBeanCardUseCase(BuildContext context) {
         padding: const EdgeInsets.all(16.0),
         child: BeanCard(
           profile: profile,
-          isCompact: isCompact,
+          isExpanded: isCompact,
         ),
       ),
     ),

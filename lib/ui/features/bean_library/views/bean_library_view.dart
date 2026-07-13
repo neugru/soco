@@ -21,7 +21,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   late final TextEditingController _searchController;
   late final ScrollController _scrollController;
   
-  bool _isCompact = false; // TODO remove after testing
+  bool _isExpanded = false; // TODO remove after testing
 
   @override
   void initState() {
@@ -130,34 +130,34 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
               ),
 
               // TODO remove after testing
-              // // Temporary Expanded Switch Row
-              // Padding(
-              //   padding: EdgeInsets.only(
-              //     left: AppSizes.spacing.medium,
-              //     right: AppSizes.spacing.medium,
-              //     bottom: AppSizes.spacing.small,
-              //   ),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       Text(
-              //         'Compact Card View',
-              //         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              //           fontWeight: FontWeight.bold,
-              //           color: colorScheme.onSurfaceVariant,
-              //         ),
-              //       ),
-              //       Switch(
-              //         value: _isCompact,
-              //         onChanged: (val) {
-              //           setState(() {
-              //             _isCompact = val;
-              //           });
-              //         },
-              //       ),
-              //     ],
-              //   ),
-              // ),
+              // Temporary Expanded Switch Row
+              Padding(
+                padding: EdgeInsets.only(
+                  left: AppSizes.spacing.medium,
+                  right: AppSizes.spacing.medium,
+                  bottom: AppSizes.spacing.small,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Expanded Cards',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    Switch(
+                      value: _isExpanded,
+                      onChanged: (val) {
+                        setState(() {
+                          _isExpanded = val;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
 
               // Bean List
               Expanded(
@@ -169,7 +169,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                     : _BeanProfileList(
                         viewModel: _viewModel,
                         scrollController: _scrollController,
-                        isCompact: _isCompact,
+                        isExpanded: _isExpanded,
                         bottomPadding: pageContentBottomPadding,
                       ),
               ),
@@ -201,8 +201,8 @@ class _EmptyLibraryView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              Icons.search_off_rounded,
-              size: 64,
+              SocoIcons.searchOff,
+              size: AppSizes.icon.extraLarge2,
               color: colorScheme.outline.withValues(alpha: 0.5),
             ),
             AppSizes.gap.medium,
@@ -268,13 +268,13 @@ class _EmptyLibraryView extends StatelessWidget {
 class _BeanProfileList extends StatelessWidget {
   final BeanLibraryViewModel viewModel;
   final ScrollController scrollController;
-  final bool isCompact;
+  final bool isExpanded;
   final double bottomPadding;
 
   const _BeanProfileList({
     required this.viewModel,
     required this.scrollController,
-    required this.isCompact,
+    required this.isExpanded,
     required this.bottomPadding,
   });
 
@@ -315,41 +315,55 @@ class _BeanProfileList extends StatelessWidget {
           itemBuilder: (context, index) {
             final profile = viewModel.brewProfiles[index];
 
-            return Dismissible(
-              key: Key(profile.id),
-              direction: DismissDirection.endToStart,
-              background: Container(
-                alignment: Alignment.centerRight,
-                padding: EdgeInsets.symmetric(horizontal: AppSizes.spacing.large),
-                decoration: BoxDecoration(
-                  color: colorScheme.errorContainer,
-                  borderRadius: BorderRadius.circular(AppSizes.radius.large),
-                ),
-                child: Icon(
-                  Icons.delete_outline,
-                  color: colorScheme.onErrorContainer,
-                  size: 28,
-                ),
-              ),
-              onDismissed: (direction) {
-                viewModel.removeBrewProfile(profile.id);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${profile.bean.name} removed'),
-                    duration: const Duration(seconds: 4),
-                    persist: false, // auto-dismiss after specified duration
-                    action: SnackBarAction(
-                      label: 'Undo',
-                      onPressed: () => viewModel.addBrewProfile(profile),
+            return Stack(
+              // borderRadius: BorderRadius.circular(AppSizes.radius.large),
+              children: [
+                // Static background to fill the corner gaps during swipe
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: colorScheme.errorContainer,
+                      borderRadius: BorderRadius.circular(AppSizes.radius.large),
                     ),
-                    behavior: SnackBarBehavior.floating,
                   ),
-                );
-              },
-              child: BeanCard(
-                profile: profile,
-                isCompact: isCompact,
-              ),
+                ),
+                // Swipeable Bean Card
+                Dismissible(
+                  key: Key(profile.id),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.symmetric(horizontal: AppSizes.spacing.large),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(AppSizes.radius.large),
+                    ),
+                    child: Icon(
+                      SocoIcons.deleteOutline,
+                      color: colorScheme.onErrorContainer,
+                      size: AppSizes.icon.extraLarge,
+                    ),
+                  ),
+                  onDismissed: (direction) {
+                    viewModel.removeBrewProfile(profile.id);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('${profile.bean.name} removed'),
+                        behavior: SnackBarBehavior.floating,
+                        duration: const Duration(seconds: 4),
+                        persist: false, // auto-dismiss after specified duration
+                        action: SnackBarAction(
+                          label: 'Undo',
+                          onPressed: () => viewModel.addBrewProfile(profile),
+                        ),
+                      ),
+                    );
+                  },
+                  child: BeanCard(
+                    profile: profile,
+                    isExpanded: isExpanded,
+                  ),
+                ),
+              ],
             );
           },
         ),

@@ -47,6 +47,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
   // Non-text state fields
   int _strength = 3;
   RoastLevel? _roastLevel;
+  bool _submitted = false;
 
   /// Formates a double value as a string.
   ///
@@ -139,6 +140,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
     super.dispose();
   }
 
+  // TODO: replace with Grinder Data Object
   Grinder _parseGrinder(String text) {
     final trimmed = text.trim();
     final parts = trimmed.split(' ');
@@ -154,6 +156,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
     );
   }
 
+  // TODO: replace with Machine Data Object
   Machine _parseMachine(String text) {
     final trimmed = text.trim();
     final parts = trimmed.split(' ');
@@ -171,9 +174,9 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
 
   Widget _buildValidationIcon(bool isValid, ColorScheme colorScheme) {
     return Icon(
-      isValid ? Icons.check_circle_rounded : Icons.info_outline_rounded,
+      isValid ? SocoIcons.checkCircleOutline : SocoIcons.infoOutline,
       color: isValid ? Colors.green.withValues(alpha: 0.4) : colorScheme.error.withValues(alpha: 0.4),
-      size: 20,
+      size: AppSizes.icon.medium,
     );
   }
 
@@ -181,270 +184,301 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return AlertDialog(
-      title: const Text('Add Bean to Library'),
-      content: SingleChildScrollView(
-        padding: EdgeInsets.only(
-          top: AppSizes.spacing.small,
-          bottom: AppSizes.spacing.large,
-          left: AppSizes.spacing.extraSmall,
-          right: AppSizes.spacing.extraSmall,
-        ),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: _nameController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(
-                  labelText: 'Bean Name',
-                  hintText: 'e.g. Espresso Roma',
-                  suffixIcon: _buildValidationIcon(_nameController.text.trim().isNotEmpty, colorScheme),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: AlertDialog(
+        title: const Text('Add Bean to Library'),
+        content: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            top: AppSizes.spacing.small,
+            bottom: AppSizes.spacing.large,
+            left: AppSizes.spacing.extraSmall,
+            right: AppSizes.spacing.extraSmall,
+          ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: _nameController,
+                  autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                  decoration: InputDecoration(
+                    labelText: 'Bean Name',
+                    hintText: 'e.g. Espresso Roma',
+                    suffixIcon: _buildValidationIcon(_nameController.text.trim().isNotEmpty, colorScheme),
+                  ),
+                  validator: (v) => v == null || v.isEmpty ? 'Please enter a name' : null,
                 ),
-                validator: (v) => v == null || v.isEmpty ? 'Please enter a name' : null,
-              ),
-              AppSizes.gap.small,
-              TextFormField(
-                controller: _brandController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(
-                  labelText: 'Brand',
-                  hintText: 'e.g. Ettli',
-                  suffixIcon: _buildValidationIcon(_brandController.text.trim().isNotEmpty, colorScheme),
+
+                AppSizes.gap.small,
+
+                TextFormField(
+                  controller: _brandController,
+                  autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                  decoration: InputDecoration(
+                    labelText: 'Brand',
+                    hintText: 'e.g. Ettli',
+                    suffixIcon: _buildValidationIcon(_brandController.text.trim().isNotEmpty, colorScheme),
+                  ),
+                  validator: (v) => v == null || v.isEmpty ? 'Please enter a brand' : null,
                 ),
-                validator: (v) => v == null || v.isEmpty ? 'Please enter a brand' : null,
-              ),
-              AppSizes.gap.small,
-              TextFormField(
-                controller: _originController,
-                decoration: const InputDecoration(
-                  labelText: 'Origin',
-                  hintText: 'e.g. South-/Central-America',
-                ),
-              ),
-              AppSizes.gap.small,
-              FormField<RoastLevel?>(
-                initialValue: _roastLevel,
-                onSaved: (val) => _roastLevel = val,
-                builder: (FormFieldState<RoastLevel?> state) {
-                  return DropdownMenu<RoastLevel?>(
-                    initialSelection: state.value,
-                    expandedInsets: EdgeInsets.zero,
-                    requestFocusOnTap: false,
-                    inputDecorationTheme: Theme.of(context).inputDecorationTheme,
-                    textStyle: state.value == null ? const TextStyle(fontStyle: FontStyle.italic) : null,
-                    label: const Text('Roast Level'),
-                    errorText: state.errorText,
-                    dropdownMenuEntries: [
-                      const DropdownMenuEntry<RoastLevel?>(
-                        value: null,
-                        label: '-- Not Specified --',
-                        labelWidget: Text(
-                          '-- Not Specified --',
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                      ),
-                      ...RoastLevel.values.map((level) {
-                        return DropdownMenuEntry<RoastLevel?>(
-                          value: level,
-                          label: level.displayName,
-                        );
-                      }),
-                    ],
-                    onSelected: (val) {
-                      state.didChange(val);
-                      setState(() {
-                        _roastLevel = val;
-                      });
-                    },
-                  );
-                },
-              ),
-              AppSizes.gap.small,
-              InputDecorator(
-                decoration: const InputDecoration(
-                  labelText: 'Strength',
-                  border: InputBorder.none,
-                  filled: false,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(top: AppSizes.spacing.extraSmall),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: List.generate(5, (index) {
-                      final beanValue = index + 1;
-                      final isActive = beanValue <= _strength;
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _strength = beanValue;
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Icon(
-                            SocoIcons.coffeeBean,
-                            size: 24,
-                            color: isActive ? colorScheme.primary : colorScheme.onSurface.withValues(alpha: 0.15),
-                          ),
-                        ),
-                      );
-                    }),
+
+                AppSizes.gap.small,
+
+                TextFormField(
+                  controller: _originController,
+                  decoration: const InputDecoration(
+                    labelText: 'Origin',
+                    hintText: 'e.g. South-/Central-America',
                   ),
                 ),
-              ),
-              AppSizes.gap.small,
-              const Divider(),
-              AppSizes.gap.small,
-              TextFormField(
-                controller: _grindSizeController,
-                focusNode: _grindSizeFocusNode,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(
-                  labelText: 'Grind Size',
-                  hintText: 'e.g. 4.4',
-                  suffixIcon: _buildValidationIcon(double.tryParse(_grindSizeController.text) != null, colorScheme),
+
+                AppSizes.gap.small,
+
+                FormField<RoastLevel?>(
+                  initialValue: _roastLevel,
+                  onSaved: (val) => _roastLevel = val,
+                  builder: (FormFieldState<RoastLevel?> state) {
+                    return DropdownMenu<RoastLevel?>(
+                      initialSelection: state.value,
+                      expandedInsets: EdgeInsets.zero,
+                      requestFocusOnTap: false,
+                      inputDecorationTheme: Theme.of(context).inputDecorationTheme,
+                      textStyle: state.value == null ? const TextStyle(fontStyle: FontStyle.italic) : null,
+                      label: const Text('Roast Level'),
+                      errorText: state.errorText,
+                      dropdownMenuEntries: [
+                        const DropdownMenuEntry<RoastLevel?>(
+                          value: null,
+                          label: '-- Not Specified --',
+                          labelWidget: Text(
+                            '-- Not Specified --',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                        ...RoastLevel.values.map((level) {
+                          return DropdownMenuEntry<RoastLevel?>(
+                            value: level,
+                            label: level.displayName,
+                          );
+                        }),
+                      ],
+                      onSelected: (val) {
+                        state.didChange(val);
+                        setState(() {
+                          _roastLevel = val;
+                        });
+                      },
+                    );
+                  },
                 ),
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
-                ],
-                validator: (v) {
-                  if (v == null || v.isEmpty) return 'Please enter grind size';
-                  if (double.tryParse(v) == null) return 'Please enter a valid number';
-                  return null;
-                },
-              ),
-              AppSizes.gap.small,
-              TextFormField(
-                controller: _doseController,
-                focusNode: _doseFocusNode,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(
-                  labelText: 'Dose (g)',
-                  hintText: 'e.g. 18.0',
-                  suffixIcon: _buildValidationIcon(double.tryParse(_doseController.text) != null, colorScheme),
+
+                AppSizes.gap.small,
+
+                InputDecorator(
+                  decoration: const InputDecoration(
+                    labelText: 'Strength',
+                    border: InputBorder.none,
+                    filled: false,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(top: AppSizes.spacing.extraSmall),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 2,
+                      children: List.generate(5, (index) {
+                        final beanValue = index + 1;
+                        final isActive = beanValue <= _strength;
+                        return IconButton(
+                          style: IconButton.styleFrom(
+                            padding: const EdgeInsets.all(0),
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          icon: const Icon(SocoIcons.coffeeBean),
+                          iconSize: AppSizes.icon.extraLarge,
+                          color: isActive ? colorScheme.primary : colorScheme.onSurface.withValues(alpha: 0.15),
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            setState(() {
+                              _strength = beanValue;
+                            });
+                          },
+                        );
+                      }),
+                    ),
+                  ),
                 ),
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
-                ],
-                validator: (v) {
-                  if (v == null || v.isEmpty) return 'Please enter dose';
-                  if (double.tryParse(v) == null) return 'Please enter a valid number';
-                  return null;
-                },
-              ),
-              AppSizes.gap.small,
-              TextFormField(
-                controller: _yieldController,
-                focusNode: _yieldFocusNode,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(
-                  labelText: 'Yield (g)',
-                  hintText: 'e.g. 42.0',
-                  suffixIcon: _buildValidationIcon(double.tryParse(_yieldController.text) != null, colorScheme),
+
+                const Divider(),
+                AppSizes.gap.small,
+
+                TextFormField(
+                  controller: _grindSizeController,
+                  focusNode: _grindSizeFocusNode,
+                  autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                  decoration: InputDecoration(
+                    labelText: 'Grind Size',
+                    hintText: 'e.g. 4.4',
+                    suffixIcon: _buildValidationIcon(double.tryParse(_grindSizeController.text) != null, colorScheme),
+                  ),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                  ],
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Please enter grind size';
+                    if (double.tryParse(v) == null) return 'Please enter a valid number';
+                    return null;
+                  },
                 ),
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
-                ],
-                validator: (v) {
-                  if (v == null || v.isEmpty) return 'Please enter yield';
-                  if (double.tryParse(v) == null) return 'Please enter a valid number';
-                  return null;
-                },
-              ),
-              AppSizes.gap.small,
-              TextFormField(
-                controller: _brewTimeController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(
-                  labelText: 'Brew Time (s)',
-                  hintText: 'e.g. 25',
-                  suffixIcon: _buildValidationIcon(int.tryParse(_brewTimeController.text) != null, colorScheme),
+
+                AppSizes.gap.small,
+
+                TextFormField(
+                  controller: _doseController,
+                  focusNode: _doseFocusNode,
+                  autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                  decoration: InputDecoration(
+                    labelText: 'Dose (g)',
+                    hintText: 'e.g. 18.0',
+                    suffixIcon: _buildValidationIcon(double.tryParse(_doseController.text) != null, colorScheme),
+                  ),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                  ],
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Please enter dose';
+                    if (double.tryParse(v) == null) return 'Please enter a valid number';
+                    return null;
+                  },
                 ),
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                validator: (v) {
-                  if (v == null || v.isEmpty) return 'Please enter brew time';
-                  if (int.tryParse(v) == null) return 'Please enter a valid integer';
-                  return null;
-                },
-              ),
-              AppSizes.gap.small,
-              const Divider(),
-              AppSizes.gap.small,
-              TextFormField(
-                controller: _machineController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(
-                  labelText: 'Machine Used',
-                  hintText: 'e.g. Gaggia Classic Evo Pro 2023',
-                  suffixIcon: _buildValidationIcon(_machineController.text.trim().isNotEmpty, colorScheme),
+
+                AppSizes.gap.small,
+
+                TextFormField(
+                  controller: _yieldController,
+                  focusNode: _yieldFocusNode,
+                  autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                  decoration: InputDecoration(
+                    labelText: 'Yield (g)',
+                    hintText: 'e.g. 42.0',
+                    suffixIcon: _buildValidationIcon(double.tryParse(_yieldController.text) != null, colorScheme),
+                  ),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                  ],
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Please enter yield';
+                    if (double.tryParse(v) == null) return 'Please enter a valid number';
+                    return null;
+                  },
                 ),
-                validator: (v) => v == null || v.isEmpty ? 'Please choose a machine' : null,
-              ),
-              AppSizes.gap.small,
-              TextFormField(
-                controller: _grinderController,
-                decoration: const InputDecoration(
-                  labelText: 'Grinder Used',
-                  hintText: 'e.g. Varia VS3',
+
+                AppSizes.gap.small,
+
+                TextFormField(
+                  controller: _brewTimeController,
+                  autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                  decoration: InputDecoration(
+                    labelText: 'Brew Time (s)',
+                    hintText: 'e.g. 25',
+                    suffixIcon: _buildValidationIcon(int.tryParse(_brewTimeController.text) != null, colorScheme),
+                  ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Please enter brew time';
+                    if (int.tryParse(v) == null) return 'Please enter a valid integer';
+                    return null;
+                  },
                 ),
-              ),
-              AppSizes.gap.small,
-              const Divider(),
-              AppSizes.gap.small,
-              TextFormField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Description / Tasting Notes',
-                  hintText: 'e.g. Soft, round aroma, mild',
+
+                AppSizes.gap.small,
+                const Divider(),
+                AppSizes.gap.small,
+
+                // TODO: replace with Machine Data Object
+                TextFormField(
+                  controller: _machineController,
+                  autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                  decoration: InputDecoration(
+                    labelText: 'Machine Used',
+                    hintText: 'e.g. Gaggia Classic Evo Pro 2023',
+                    suffixIcon: _buildValidationIcon(_machineController.text.trim().isNotEmpty, colorScheme),
+                  ),
+                  validator: (v) => v == null || v.isEmpty ? 'Please choose a machine' : null,
                 ),
-                maxLines: 4,
-              ),
-            ],
+                AppSizes.gap.small,
+                // TODO: replace with Grinder Data Object
+                TextFormField(
+                  controller: _grinderController,
+                  decoration: const InputDecoration(
+                    labelText: 'Grinder Used',
+                    hintText: 'e.g. Varia VS3',
+                  ),
+                ),
+
+                AppSizes.gap.small,
+                const Divider(),
+                AppSizes.gap.small,
+
+                TextFormField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(
+                    labelText: 'Description / Tasting Notes',
+                    hintText: 'e.g. Soft, round aroma, mild',
+                  ),
+                  maxLines: 4,
+                ),
+              ],
+            ),
           ),
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                _submitted = true;
+              });
+              if (_formKey.currentState?.validate() ?? false) {
+                final newBean = Bean.create(
+                  name: _nameController.text.trim(),
+                  brand: _brandController.text.trim(),
+                  strength: _strength,
+                  origin: _originController.text.trim().isEmpty ? null : _originController.text.trim(),
+                  roastLevel: _roastLevel,
+                );
+
+                final newProfile = BrewProfile.create(
+                  bean: newBean,
+                  dose: double.parse(_doseController.text),
+                  brewYield: double.parse(_yieldController.text),
+                  grindSize: double.parse(_grindSizeController.text),
+                  brewTimeSeconds: int.parse(_brewTimeController.text),
+                  // TODO: replace with Machine Data Object
+                  machine: _parseMachine(_machineController.text),
+                  // TODO: replace with Grinder Data Object
+                  grinder: _grinderController.text.trim().isEmpty ? null : _parseGrinder(_grinderController.text),
+                  description: _descriptionController.text.trim().isEmpty ? null : _descriptionController.text.trim(),
+                );
+
+                Navigator.of(context).pop(newProfile);
+              }
+            },
+            child: const Text('Add'),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            if (_formKey.currentState?.validate() ?? false) {
-              final newBean = Bean.create(
-                name: _nameController.text.trim(),
-                brand: _brandController.text.trim(),
-                strength: _strength,
-                origin: _originController.text.trim().isEmpty ? null : _originController.text.trim(),
-                roastLevel: _roastLevel,
-              );
-
-              final newProfile = BrewProfile.create(
-                bean: newBean,
-                dose: double.parse(_doseController.text),
-                brewYield: double.parse(_yieldController.text),
-                grindSize: double.parse(_grindSizeController.text),
-                brewTimeSeconds: int.parse(_brewTimeController.text),
-                machine: _parseMachine(_machineController.text),
-                grinder: _grinderController.text.trim().isEmpty ? null : _parseGrinder(_grinderController.text),
-                description: _descriptionController.text.trim().isEmpty ? null : _descriptionController.text.trim(),
-              );
-
-              Navigator.of(context).pop(newProfile);
-            }
-          },
-          child: const Text('Add'),
-        ),
-      ],
     );
   }
 }
