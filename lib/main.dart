@@ -14,8 +14,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'soco',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      theme: SocoTheme.lightTheme,
+      darkTheme: SocoTheme.darkTheme,
       themeMode: ThemeMode.system,
       home: const AppShell(),
     );

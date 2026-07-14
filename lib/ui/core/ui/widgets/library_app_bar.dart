@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:soco/ui/core/styles/sizes.dart';
 
+/// A custom AppBar for the library section.
 class LibraryAppBar extends StatelessWidget implements PreferredSizeWidget {
+  /// The title to display in the app bar.
   final String title;
+
+  /// The icon to display in the app bar.
   final IconData icon;
+
+  /// Optional actions to display in the app bar.
   final List<Widget>? actions;
 
   const LibraryAppBar({
@@ -23,10 +29,10 @@ class LibraryAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Icon(
             icon,
-            size: AppSizes.icon.large,
+            size: SocoSizes.icon.large,
             color: colorScheme.primary,
           ),
-          AppSizes.gap.small,
+          SocoSizes.gap.small,
           Text(
             title,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(

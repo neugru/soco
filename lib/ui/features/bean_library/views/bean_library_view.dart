@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:soco/core/models/brew_profile.dart';
+import 'package:soco/ui/core/styles/assets.dart';
 import 'package:soco/ui/core/styles/sizes.dart';
-import 'package:soco/ui/core/styles/soco_icons.dart';
+import 'package:soco/ui/core/styles/icons.dart';
+import 'package:soco/ui/core/ui/widgets/empty_library_view.dart';
+import 'package:soco/ui/core/ui/widgets/fading_mask.dart';
 import 'package:soco/ui/core/ui/widgets/library_app_bar.dart';
 import 'package:soco/ui/core/ui/widgets/library_search_bar.dart';
 import 'package:soco/ui/features/bean_library/viewmodels/bean_library_viewmodel.dart';
@@ -20,7 +23,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   late final BeanLibraryViewModel _viewModel;
   late final TextEditingController _searchController;
   late final ScrollController _scrollController;
-  
+
   bool _isExpanded = false; // TODO remove after testing
 
   @override
@@ -63,7 +66,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    final navBarVerticalSpacing = AppSizes.spacing.medium; // spacing above the BottomNavBar
+    final navBarVerticalSpacing = SocoSizes.spacing.medium; // spacing above the BottomNavBar
     final safeAreaBottom = MediaQuery.paddingOf(context).bottom;
     // The "fabPadding" will level the FAB with the top of the BottomNavBar.
     // The FAB has 16px (additional) bottom padding by default (defined in
@@ -72,8 +75,8 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
     // To set a custom gap, replace the fabPadding with the code below:
     // final fabGap = 12.0;  // custom gap
     // final fabPadding = safeAreaBottom - navBarVerticalSpacing - kFloatingActionButtonMargin + fabGap;
-    final fabPadding = safeAreaBottom - navBarVerticalSpacing;
-    final pageContentBottomPadding = safeAreaBottom + AppSizes.spacing.medium;
+    final fabPadding = (safeAreaBottom - navBarVerticalSpacing).clamp(0.0, double.infinity);
+    final pageContentBottomPadding = safeAreaBottom + SocoSizes.spacing.medium;
 
     return Scaffold(
       appBar: const LibraryAppBar(
@@ -98,7 +101,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const CircularProgressIndicator(),
-                  AppSizes.gap.medium,
+                  SocoSizes.gap.medium,
                   Text(
                     'Loading beans...',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -115,8 +118,8 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
               // Search Bar Area
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: AppSizes.spacing.medium,
-                  vertical: AppSizes.spacing.small,
+                  horizontal: SocoSizes.spacing.medium,
+                  vertical: SocoSizes.spacing.small,
                 ),
                 child: LibrarySearchBar(
                   controller: _searchController,
@@ -133,9 +136,9 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
               // Temporary Expanded Switch Row
               Padding(
                 padding: EdgeInsets.only(
-                  left: AppSizes.spacing.medium,
-                  right: AppSizes.spacing.medium,
-                  bottom: AppSizes.spacing.small,
+                  left: SocoSizes.spacing.medium,
+                  right: SocoSizes.spacing.medium,
+                  bottom: SocoSizes.spacing.small,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,9 +165,13 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
               // Bean List
               Expanded(
                 child: _viewModel.brewProfiles.isEmpty
-                    ? _EmptyLibraryView(
+                    ? EmptyLibraryView(
+                        message: "No beans? That's depresso.\nAdd some and start brewing!",
+                        searchMessage: "No beans found matching your search",
+                        asset: SocoAssets.sleepyBean,
+                        searchIcon: SocoIcons.searchOff,
                         searchQuery: _viewModel.searchQuery,
-                        bottomPadding: pageContentBottomPadding,// + 70.0,
+                        bottomPadding: pageContentBottomPadding, 
                       )
                     : _BeanProfileList(
                         viewModel: _viewModel,
@@ -181,89 +188,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   }
 }
 
-class _EmptyLibraryView extends StatelessWidget {
-  final String searchQuery;
-  final double bottomPadding;
 
-  const _EmptyLibraryView({
-    required this.searchQuery,
-    required this.bottomPadding,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    Widget buildContent() {
-      if (searchQuery.trim().isNotEmpty) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              SocoIcons.searchOff,
-              size: AppSizes.icon.extraLarge2,
-              color: colorScheme.outline.withValues(alpha: 0.5),
-            ),
-            AppSizes.gap.medium,
-            Text(
-              'No profiles matching your search',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: colorScheme.outline,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        );
-      }
-
-      final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-      final imagePath = isDarkMode
-          ? 'assets/images/sleepy_coffee_dark.png'
-          : 'assets/images/sleepy_coffee_light.png';
-
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppSizes.radius.large),
-            child: Image.asset(
-              imagePath,
-              width: 140,
-              height: 140,
-              fit: BoxFit.contain,
-            ),
-          ),
-          AppSizes.gap.medium,
-          Text(
-            "No beans? That's depresso.\nAdd some and start brewing!",
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: colorScheme.outline,
-                ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      );
-    }
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return SingleChildScrollView(
-          padding: EdgeInsets.only(bottom: bottomPadding),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: (constraints.maxHeight - bottomPadding).clamp(0.0, double.infinity),
-            ),
-            child: Center(
-              child: buildContent(),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
 
 class _BeanProfileList extends StatelessWidget {
   final BeanLibraryViewModel viewModel;
@@ -284,33 +209,19 @@ class _BeanProfileList extends StatelessWidget {
 
     return Scrollbar(
       controller: scrollController,
-      child: ShaderMask(
-        shaderCallback: (Rect bounds) {
-          final topFadeHeight = AppSizes.spacing.medium;
-          final fadeEnd = (topFadeHeight / bounds.height).clamp(0.0, 1.0);
-
-          return LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: const [
-              Colors.transparent,
-              Colors.black,
-            ],
-            stops: [0, fadeEnd],
-          ).createShader(bounds);
-        },
-        blendMode: BlendMode.dstIn,
+      child: FadingMask(
+        fadeHeightTop: SocoSizes.spacing.medium,
         child: ListView.separated(
           controller: scrollController,
           padding: EdgeInsets.only(
-            left: AppSizes.spacing.medium,
-            right: AppSizes.spacing.medium,
-            top: AppSizes.spacing.medium, // Keep top padding matching the fade zone
+            left: SocoSizes.spacing.medium,
+            right: SocoSizes.spacing.medium,
+            top: SocoSizes.spacing.medium, // Keep top padding matching the fade zone
             bottom: bottomPadding,
           ),
           itemCount: viewModel.brewProfiles.length,
           separatorBuilder: (context, index) => SizedBox(
-            height: AppSizes.spacing.medium,
+            height: SocoSizes.spacing.medium,
           ),
           itemBuilder: (context, index) {
             final profile = viewModel.brewProfiles[index];
@@ -323,7 +234,7 @@ class _BeanProfileList extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       color: colorScheme.errorContainer,
-                      borderRadius: BorderRadius.circular(AppSizes.radius.large),
+                      borderRadius: BorderRadius.circular(SocoSizes.radius.large),
                     ),
                   ),
                 ),
@@ -333,14 +244,14 @@ class _BeanProfileList extends StatelessWidget {
                   direction: DismissDirection.endToStart,
                   background: Container(
                     alignment: Alignment.centerRight,
-                    padding: EdgeInsets.symmetric(horizontal: AppSizes.spacing.large),
+                    padding: EdgeInsets.symmetric(horizontal: SocoSizes.spacing.large),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppSizes.radius.large),
+                      borderRadius: BorderRadius.circular(SocoSizes.radius.large),
                     ),
                     child: Icon(
                       SocoIcons.deleteOutline,
                       color: colorScheme.onErrorContainer,
-                      size: AppSizes.icon.extraLarge,
+                      size: SocoSizes.icon.extraLarge,
                     ),
                   ),
                   onDismissed: (direction) {
