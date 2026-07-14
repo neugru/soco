@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:soco/core/models/roast_level.dart';
 
-class AppColors {
-  AppColors._();
+class SocoColors {
+  SocoColors._();
 
   static const Color seed = Color(0xFFD7CCC8);
 

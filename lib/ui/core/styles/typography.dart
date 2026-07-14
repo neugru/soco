@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AppStyles {
-  AppStyles._();
+class SocoStyles {
+  SocoStyles._();
 
   static final String? _fontLora = GoogleFonts.lora().fontFamily;
   static final String? _fontOutfit = GoogleFonts.outfit().fontFamily;
 
-  static final TextStyle displayLarge = TextStyle(
+  static final TextStyle _displayLarge = TextStyle(
     fontFamily: _fontLora,
     fontSize: 57,
     fontWeight: FontWeight.w400,
@@ -15,7 +15,7 @@ class AppStyles {
     height: 1.12,
   );
 
-  static final TextStyle displayMedium = TextStyle(
+  static final TextStyle _displayMedium = TextStyle(
     fontFamily: _fontLora,
     fontSize: 45,
     fontWeight: FontWeight.w400,
@@ -23,7 +23,7 @@ class AppStyles {
     height: 1.16,
   );
 
-  static final TextStyle displaySmall = TextStyle(
+  static final TextStyle _displaySmall = TextStyle(
     fontFamily: _fontLora,
     fontSize: 36,
     fontWeight: FontWeight.w400,
@@ -31,7 +31,7 @@ class AppStyles {
     height: 1.22,
   );
 
-  static final TextStyle headlineLarge = TextStyle(
+  static final TextStyle _headlineLarge = TextStyle(
     fontFamily: _fontLora,
     fontSize: 32,
     fontWeight: FontWeight.w400,
@@ -39,7 +39,7 @@ class AppStyles {
     height: 1.25,
   );
 
-  static final TextStyle headlineMedium = TextStyle(
+  static final TextStyle _headlineMedium = TextStyle(
     fontFamily: _fontLora,
     fontSize: 28,
     fontWeight: FontWeight.w400,
@@ -47,7 +47,7 @@ class AppStyles {
     height: 1.29,
   );
 
-  static final TextStyle headlineSmall = TextStyle(
+  static final TextStyle _headlineSmall = TextStyle(
     fontFamily: _fontLora,
     fontSize: 24,
     fontWeight: FontWeight.w400,
@@ -55,7 +55,7 @@ class AppStyles {
     height: 1.33,
   );
 
-  static final TextStyle bodyLarge = TextStyle(
+  static final TextStyle _bodyLarge = TextStyle(
     fontFamily: _fontOutfit,
     fontSize: 16,
     fontWeight: FontWeight.w400,
@@ -63,7 +63,7 @@ class AppStyles {
     height: 1.5,
   );
 
-  static final TextStyle bodyMedium = TextStyle(
+  static final TextStyle _bodyMedium = TextStyle(
     fontFamily: _fontOutfit,
     fontSize: 14,
     fontWeight: FontWeight.w400,
@@ -71,7 +71,7 @@ class AppStyles {
     height: 1.43,
   );
 
-  static final TextStyle bodySmall = TextStyle(
+  static final TextStyle _bodySmall = TextStyle(
     fontFamily: _fontOutfit,
     fontSize: 12,
     fontWeight: FontWeight.w400,
@@ -79,7 +79,7 @@ class AppStyles {
     height: 1.33,
   );
 
-  static final TextStyle labelLarge = TextStyle(
+  static final TextStyle _labelLarge = TextStyle(
     fontFamily: _fontOutfit,
     fontSize: 14,
     fontWeight: FontWeight.w500,
@@ -87,7 +87,7 @@ class AppStyles {
     height: 1.43,
   );
 
-  static final TextStyle labelMedium = TextStyle(
+  static final TextStyle _labelMedium = TextStyle(
     fontFamily: _fontOutfit,
     fontSize: 12,
     fontWeight: FontWeight.w500,
@@ -95,7 +95,7 @@ class AppStyles {
     height: 1.33,
   );
 
-  static final TextStyle labelSmall = TextStyle(
+  static final TextStyle _labelSmall = TextStyle(
     fontFamily: _fontOutfit,
     fontSize: 11,
     fontWeight: FontWeight.w500,
@@ -103,7 +103,7 @@ class AppStyles {
     height: 1.45,
   );
 
-  static final TextStyle titleLarge = TextStyle(
+  static final TextStyle _titleLarge = TextStyle(
     fontFamily: _fontLora,
     fontSize: 22,
     fontWeight: FontWeight.w400,
@@ -111,7 +111,7 @@ class AppStyles {
     height: 1.27,
   );
 
-  static final TextStyle titleMedium = TextStyle(
+  static final TextStyle _titleMedium = TextStyle(
     fontFamily: _fontOutfit,
     fontSize: 16,
     fontWeight: FontWeight.w500,
@@ -119,7 +119,7 @@ class AppStyles {
     height: 1.5,
   );
 
-  static final TextStyle titleSmall = TextStyle(
+  static final TextStyle _titleSmall = TextStyle(
     fontFamily: _fontOutfit,
     fontSize: 14,
     fontWeight: FontWeight.w500,
@@ -132,21 +132,21 @@ class AppStyles {
     // Using a getter instead of a static final field ensures that updates to the
     // text styles are correctly evaluated and applied during Hot Reload.
     return TextTheme(
-      displayLarge: displayLarge,
-      displayMedium: displayMedium,
-      displaySmall: displaySmall,
-      headlineLarge: headlineLarge,
-      headlineMedium: headlineMedium,
-      headlineSmall: headlineSmall,
-      bodyLarge: bodyLarge,
-      bodyMedium: bodyMedium,
-      bodySmall: bodySmall,
-      labelLarge: labelLarge,
-      labelMedium: labelMedium,
-      labelSmall: labelSmall,
-      titleLarge: titleLarge,
-      titleMedium: titleMedium,
-      titleSmall: titleSmall,
+      displayLarge: _displayLarge,
+      displayMedium: _displayMedium,
+      displaySmall: _displaySmall,
+      headlineLarge: _headlineLarge,
+      headlineMedium: _headlineMedium,
+      headlineSmall: _headlineSmall,
+      bodyLarge: _bodyLarge,
+      bodyMedium: _bodyMedium,
+      bodySmall: _bodySmall,
+      labelLarge: _labelLarge,
+      labelMedium: _labelMedium,
+      labelSmall: _labelSmall,
+      titleLarge: _titleLarge,
+      titleMedium: _titleMedium,
+      titleSmall: _titleSmall,
     );
   }
 }

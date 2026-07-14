@@ -7,7 +7,7 @@ import 'package:soco/core/models/grinder.dart';
 import 'package:soco/core/models/machine.dart';
 import 'package:soco/core/models/roast_level.dart';
 import 'package:soco/ui/core/styles/sizes.dart';
-import 'package:soco/ui/core/styles/soco_icons.dart';
+import 'package:soco/ui/core/styles/icons.dart';
 
 class AddBeanDialog extends StatefulWidget {
   const AddBeanDialog({super.key});
@@ -176,7 +176,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
     return Icon(
       isValid ? SocoIcons.checkCircleOutline : SocoIcons.infoOutline,
       color: isValid ? Colors.green.withValues(alpha: 0.4) : colorScheme.error.withValues(alpha: 0.4),
-      size: AppSizes.icon.medium,
+      size: SocoSizes.icon.medium,
     );
   }
 
@@ -190,10 +190,10 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
         title: const Text('Add Bean to Library'),
         content: SingleChildScrollView(
           padding: EdgeInsets.only(
-            top: AppSizes.spacing.small,
-            bottom: AppSizes.spacing.large,
-            left: AppSizes.spacing.extraSmall,
-            right: AppSizes.spacing.extraSmall,
+            top: SocoSizes.spacing.small,
+            bottom: SocoSizes.spacing.large,
+            left: SocoSizes.spacing.extraSmall,
+            right: SocoSizes.spacing.extraSmall,
           ),
           child: Form(
             key: _formKey,
@@ -211,7 +211,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   validator: (v) => v == null || v.isEmpty ? 'Please enter a name' : null,
                 ),
 
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
 
                 TextFormField(
                   controller: _brandController,
@@ -224,7 +224,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   validator: (v) => v == null || v.isEmpty ? 'Please enter a brand' : null,
                 ),
 
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
 
                 TextFormField(
                   controller: _originController,
@@ -234,7 +234,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   ),
                 ),
 
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
 
                 FormField<RoastLevel?>(
                   initialValue: _roastLevel,
@@ -274,7 +274,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
 
                 InputDecorator(
                   decoration: const InputDecoration(
@@ -283,7 +283,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                     filled: false,
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(top: AppSizes.spacing.extraSmall),
+                    padding: EdgeInsets.only(top: SocoSizes.spacing.extraSmall),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       spacing: 2,
@@ -297,7 +297,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
                           icon: const Icon(SocoIcons.coffeeBean),
-                          iconSize: AppSizes.icon.extraLarge,
+                          iconSize: SocoSizes.icon.extraLarge,
                           color: isActive ? colorScheme.primary : colorScheme.onSurface.withValues(alpha: 0.15),
                           onPressed: () {
                             FocusScope.of(context).unfocus();
@@ -312,7 +312,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                 ),
 
                 const Divider(),
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
 
                 TextFormField(
                   controller: _grindSizeController,
@@ -334,7 +334,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
 
                 TextFormField(
                   controller: _doseController,
@@ -356,7 +356,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
 
                 TextFormField(
                   controller: _yieldController,
@@ -378,7 +378,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
 
                 TextFormField(
                   controller: _brewTimeController,
@@ -399,9 +399,9 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
                 const Divider(),
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
 
                 // TODO: replace with Machine Data Object
                 TextFormField(
@@ -414,7 +414,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   ),
                   validator: (v) => v == null || v.isEmpty ? 'Please choose a machine' : null,
                 ),
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
                 // TODO: replace with Grinder Data Object
                 TextFormField(
                   controller: _grinderController,
@@ -424,9 +424,9 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   ),
                 ),
 
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
                 const Divider(),
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
 
                 TextFormField(
                   controller: _descriptionController,

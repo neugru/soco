@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 ///
 /// Contains both raw elevation values (for material widgets like [Card])
 /// and custom [BoxShadow] designs (for custom containers).
-class AppElevation {
-  AppElevation._();
+class SocoElevation {
+  SocoElevation._();
 
   // Raw elevation doubles
   static const double none = 0.0;

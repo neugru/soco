@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AppSizes {
-  AppSizes._();
+class SocoSizes {
+  SocoSizes._();
 
   static const radius = _Radius();
   static const spacing = _Spacing();

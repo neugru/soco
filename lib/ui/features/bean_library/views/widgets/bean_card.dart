@@ -4,7 +4,7 @@ import 'package:soco/core/models/brew_profile.dart';
 import 'package:soco/ui/core/styles/colors.dart';
 import 'package:soco/ui/core/styles/elevation.dart';
 import 'package:soco/ui/core/styles/sizes.dart';
-import 'package:soco/ui/core/styles/soco_icons.dart';
+import 'package:soco/ui/core/styles/icons.dart';
 
 class BeanCard extends StatelessWidget {
   final BrewProfile profile;
@@ -28,13 +28,13 @@ class BeanCard extends StatelessWidget {
       width: double.infinity, // make the card fill the whole width of its parent
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(AppSizes.radius.large),
-        boxShadow: AppElevation.shadows.low,
+        borderRadius: BorderRadius.circular(SocoSizes.radius.large),
+        boxShadow: SocoElevation.shadows.low,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppSizes.radius.large),
+        borderRadius: BorderRadius.circular(SocoSizes.radius.large),
         child: Padding(
-          padding: EdgeInsets.all(AppSizes.spacing.medium),
+          padding: EdgeInsets.all(SocoSizes.spacing.medium),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +52,7 @@ class BeanCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  AppSizes.gap.extraSmall,
+                  SocoSizes.gap.extraSmall,
                   Text(
                     profile.bean.brand,
                     style: textTheme.labelLarge?.copyWith(
@@ -64,11 +64,11 @@ class BeanCard extends StatelessWidget {
                   ),
                 ],
               ),
-              AppSizes.gap.small,
+              SocoSizes.gap.small,
               // Strength Meter, Roast Level
               Wrap(
-                spacing: AppSizes.spacing.large,
-                runSpacing: AppSizes.spacing.small,
+                spacing: SocoSizes.spacing.large,
+                runSpacing: SocoSizes.spacing.small,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   // Strength Meter
@@ -81,7 +81,7 @@ class BeanCard extends StatelessWidget {
 
                       return Icon(
                         SocoIcons.coffeeBean,
-                        size: AppSizes.icon.small,
+                        size: SocoSizes.icon.small,
                         color: isActive ? activeColor : inactiveColor,
                       );
                     }),
@@ -92,7 +92,7 @@ class BeanCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: roastBgColor,
-                        borderRadius: BorderRadius.circular(AppSizes.radius.small),
+                        borderRadius: BorderRadius.circular(SocoSizes.radius.small),
                       ),
                       child: Text(
                         '${profile.bean.roastLevel!.displayName} Roast',
@@ -107,7 +107,7 @@ class BeanCard extends StatelessWidget {
                 ],
               ),
             if (isExpanded) ...[
-                AppSizes.gap.small,
+                SocoSizes.gap.small,
                 // Equipment Details (Grinder & Machine)
                 LayoutBuilder(
                   builder: (context, constraints) {
@@ -142,7 +142,7 @@ class BeanCard extends StatelessWidget {
                       profile.grinder!.displayName,
                       textStyle,
                     );
-                    final gapWidth = AppSizes.spacing.small;
+                    final gapWidth = SocoSizes.spacing.small;
                     final contentAvailableWidth = (constraints.maxWidth - gapWidth).clamp(0.0, double.infinity);
 
                     final sizes = _EquipmentLayoutHelper.calculateWidths(
@@ -175,7 +175,7 @@ class BeanCard extends StatelessWidget {
                   },
                 ),
                 if (profile.description != null && profile.description!.trim().isNotEmpty) ...[
-                  AppSizes.gap.small,
+                  SocoSizes.gap.small,
                   // Description
                   Text(
                     profile.description!,
@@ -186,13 +186,13 @@ class BeanCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
-                AppSizes.gap.medium,
+                SocoSizes.gap.medium,
                 // Recipes/Brewing Metrics (Dose, Yield, Grind Size, Time)
                 Wrap(
                   alignment: WrapAlignment.spaceBetween,
                   crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: AppSizes.spacing.extraLarge,
-                  runSpacing: AppSizes.spacing.medium,
+                  spacing: SocoSizes.spacing.extraLarge,
+                  runSpacing: SocoSizes.spacing.medium,
                   children: [
                     _MetricColumn(
                       label: 'Dose',
@@ -232,7 +232,7 @@ class _EquipmentBadge extends StatelessWidget {
 
   static const double horizontalPadding = 8.0;
   static const double verticalPadding = 4.0;
-  static final double iconSize = AppSizes.icon.extraSmall;
+  static final double iconSize = SocoSizes.icon.extraSmall;
   static const double gapWidth = 4.0;
 
   /// The total width of all non-text layout components (padding, icon, and gap).
@@ -259,7 +259,7 @@ class _EquipmentBadge extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(AppSizes.radius.small),
+        borderRadius: BorderRadius.circular(SocoSizes.radius.small),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -371,7 +371,7 @@ class _MetricColumn extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        AppSizes.gap.extraSmall,
+        SocoSizes.gap.extraSmall,
         Text(
           value,
           style: textTheme.bodyMedium?.copyWith(
