@@ -152,6 +152,7 @@ class SocoTheme {
       extensions: <ThemeExtension<dynamic>>[roastColors],
       colorScheme: colorScheme,
       scaffoldBackgroundColor: colorScheme.surface,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
       textTheme: SocoStyles.textTheme.apply(
         bodyColor: colorScheme.onSurface,
         displayColor: colorScheme.onSurface,
@@ -169,6 +170,7 @@ class SocoTheme {
 
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0.0,
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: colorScheme.onSurface),
@@ -187,7 +189,18 @@ class SocoTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(SocoSizes.radius.round),
           ),
-          elevation: 0,
+          textStyle: SocoStyles.textTheme.labelLarge,
+        ),
+      ),
+
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
+          minimumSize: Size(0, SocoSizes.button.height),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(SocoSizes.radius.round),
+          ),
           textStyle: SocoStyles.textTheme.labelLarge,
         ),
       ),
@@ -196,7 +209,10 @@ class SocoTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: colorScheme.primary,
           minimumSize: Size(0, SocoSizes.button.height),
-          side: BorderSide(color: colorScheme.primary, width: 1),
+          side: BorderSide(
+            color: colorScheme.outline,
+            width: 1,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(SocoSizes.radius.round),
           ),
@@ -206,6 +222,7 @@ class SocoTheme {
 
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
+          foregroundColor: colorScheme.primary,
           minimumSize: Size(0, SocoSizes.button.height),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(SocoSizes.radius.round),
@@ -255,6 +272,16 @@ class SocoTheme {
               borderRadius: BorderRadius.circular(SocoSizes.radius.medium),
             ),
           ),
+        ),
+      ),
+
+      popupMenuTheme: PopupMenuThemeData(
+        color: colorScheme.surfaceContainerHigh,
+        elevation: SocoElevation.high,
+        surfaceTintColor: Colors.transparent,
+        position: PopupMenuPosition.under,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(SocoSizes.radius.medium),
         ),
       ),
 

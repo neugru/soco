@@ -211,7 +211,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   validator: (v) => v == null || v.isEmpty ? 'Please enter a name' : null,
                 ),
 
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
 
                 TextFormField(
                   controller: _brandController,
@@ -224,7 +224,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   validator: (v) => v == null || v.isEmpty ? 'Please enter a brand' : null,
                 ),
 
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
 
                 TextFormField(
                   controller: _originController,
@@ -234,7 +234,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   ),
                 ),
 
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
 
                 FormField<RoastLevel?>(
                   initialValue: _roastLevel,
@@ -274,7 +274,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
 
                 InputDecorator(
                   decoration: const InputDecoration(
@@ -312,7 +312,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                 ),
 
                 const Divider(),
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
 
                 TextFormField(
                   controller: _grindSizeController,
@@ -334,7 +334,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
 
                 TextFormField(
                   controller: _doseController,
@@ -356,7 +356,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
 
                 TextFormField(
                   controller: _yieldController,
@@ -378,7 +378,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
 
                 TextFormField(
                   controller: _brewTimeController,
@@ -399,9 +399,9 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
                 const Divider(),
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
 
                 // TODO: replace with Machine Data Object
                 TextFormField(
@@ -414,7 +414,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   ),
                   validator: (v) => v == null || v.isEmpty ? 'Please choose a machine' : null,
                 ),
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
                 // TODO: replace with Grinder Data Object
                 TextFormField(
                   controller: _grinderController,
@@ -424,9 +424,9 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   ),
                 ),
 
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
                 const Divider(),
-                SocoSizes.gap.small,
+                SocoSizes.gap.vertical.small,
 
                 TextFormField(
                   controller: _descriptionController,
@@ -445,7 +445,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Cancel'),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () {
               setState(() {
                 _submitted = true;
