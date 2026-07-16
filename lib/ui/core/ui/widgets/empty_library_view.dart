@@ -68,7 +68,7 @@ class EmptyLibraryView extends StatelessWidget {
               size: SocoSizes.icon.extraLarge2,
               color: colorScheme.outline.withValues(alpha: 0.5),
             ),
-            SocoSizes.gap.medium,
+            SocoSizes.gap.vertical.medium,
             Text(
               searchMessage,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -102,7 +102,7 @@ class EmptyLibraryView extends StatelessWidget {
               size: iconSize,
               color: colorScheme.outline,
             ),
-          SocoSizes.gap.small,
+          SocoSizes.gap.vertical.small,
           Text(
             message,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(

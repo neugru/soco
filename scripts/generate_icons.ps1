@@ -11,13 +11,16 @@ if ($process.ExitCode -ne 0) {
 }
 
 # Step 2: Prepend lint ignore
-$iconsFile = "lib/ui/core/styles/soco_icons.dart"
+$iconsFile = "lib/ui/core/styles/icons.dart"
 if (Test-Path $iconsFile) {
-    $content = Get-Content $iconsFile -Raw
-    $lintIgnore = "// ignore_for_file: unintended_html_in_doc_comment`r`n"
-    if (-not $content.StartsWith("// ignore_for_file: unintended_html_in_doc_comment")) {
-        Set-Content $iconsFile -Value ($lintIgnore + $content)
+    try {
+        $content = Get-Content $iconsFile -Raw
+        Set-Content $iconsFile -Value ("// ignore_for_file: unintended_html_in_doc_comment`r`n" + $content) -ErrorAction Stop
+    } catch {
+        Write-Warning "Failed to prepend lint ignore to $iconsFile: $_"
     }
+} else {
+    Write-Warning "File $iconsFile not found. Could not prepend lint ignore."
 }
 
 # Step 3: Copy output font to widgetbook workspace assets

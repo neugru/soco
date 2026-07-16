@@ -32,7 +32,7 @@ class LibraryAppBar extends StatelessWidget implements PreferredSizeWidget {
             size: SocoSizes.icon.large,
             color: colorScheme.primary,
           ),
-          SocoSizes.gap.small,
+          SocoSizes.gap.horizontal.small,
           Text(
             title,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(

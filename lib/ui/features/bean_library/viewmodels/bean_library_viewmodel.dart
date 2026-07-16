@@ -12,10 +12,16 @@ class BeanLibraryViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String _searchQuery = '';
 
+  bool _isSelectionMode = false;
+  final Set<String> _selectedProfileIds = {};
+
   // Getters
   bool get isLoading => _isLoading;
   List<BrewProfile> get brewProfiles => _filteredBrewProfiles;
   String get searchQuery => _searchQuery;
+  bool get isSelectionMode => _isSelectionMode;
+  Set<String> get selectedProfileIds => _selectedProfileIds;
+  int get selectedCount => _selectedProfileIds.length;
 
   // Track if VM is disposed to prevent notifyListeners() crashes
   bool _isDisposed = false;
@@ -24,6 +30,56 @@ class BeanLibraryViewModel extends ChangeNotifier {
   void dispose() {
     _isDisposed = true;
     super.dispose();
+  }
+
+  /// Enters selection mode and optionally selects an initial item
+  void enterSelectionMode(String? initialId) {
+    _isSelectionMode = true;
+    _selectedProfileIds.clear();
+    if (initialId != null) {
+      _selectedProfileIds.add(initialId);
+    }
+    if (!_isDisposed) notifyListeners();
+  }
+
+  /// Exits selection mode and clears the selection
+  void exitSelectionMode() {
+    _isSelectionMode = false;
+    _selectedProfileIds.clear();
+    if (!_isDisposed) notifyListeners();
+  }
+
+  /// Toggles selection of a brew profile by ID
+  void toggleSelection(String id) {
+    if (_selectedProfileIds.contains(id)) {
+      _selectedProfileIds.remove(id);
+    } else {
+      _selectedProfileIds.add(id);
+    }
+    if (!_isDisposed) notifyListeners();
+  }
+
+  /// Deletes all selected brew profiles and exits selection mode
+  void deleteSelected() {
+    removeBrewProfiles(_selectedProfileIds);
+    _isSelectionMode = false;
+    _selectedProfileIds.clear();
+    if (!_isDisposed) notifyListeners();
+  }
+
+  /// Formats the names of the currently selected beans as a comma-separated string.
+  // TODO: delete/refactor this once real sharing functionality is implemented.
+  String getSelectedBeansNamesString() {
+    return _allBrewProfiles
+        .where((p) => _selectedProfileIds.contains(p.id))
+        .map((p) => p.bean.name)
+        .join(', ');
+  }
+
+  /// Clears current selections without exiting selection mode
+  void clearSelection() {
+    _selectedProfileIds.clear();
+    if (!_isDisposed) notifyListeners();
   }
 
   /// Simulates fetching recipes from a repository or API
@@ -40,7 +96,7 @@ class BeanLibraryViewModel extends ChangeNotifier {
     try {
       // Simulate network delay
       // TODO: implement real data fetching
-      // await Future.delayed(const Duration(milliseconds: 1000));
+      await Future.delayed(const Duration(milliseconds: 1000));
 
       // Clear existing records to avoid duplicating list items on reload
       _allBrewProfiles.clear();
@@ -142,11 +198,11 @@ class BeanLibraryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Removes a recipe from the library
-  void removeBrewProfile(String id) {
-    _allBrewProfiles.removeWhere((p) => p.id == id);
+  /// Removes brew profiles from the library by their IDs
+  void removeBrewProfiles(Iterable<String> ids) {
+    _allBrewProfiles.removeWhere((p) => ids.contains(p.id));
     _applyFilterAndSort();
-    notifyListeners();
+    if (!_isDisposed) notifyListeners();
   }
 
   /// Helper to filter and sort recipes based on search query

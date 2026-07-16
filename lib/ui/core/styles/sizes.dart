@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+// --- Private constants for Gap classes ---
+const _gapExtraSmall = 4.0;
+const _gapSmall = 8.0;
+const _gapMedium = 16.0;
+const _gapLarge = 24.0;
+const _gapExtraLarge = 32.0;
+const _gapExtraLarge2 = 48.0;
+
 class SocoSizes {
   SocoSizes._();
 
@@ -49,12 +57,37 @@ class _Input {
 class _Gap {
   const _Gap();
 
-  final SizedBox extraSmall = const SizedBox(width: 4.0, height: 4.0);
-  final SizedBox small = const SizedBox(width: 8.0, height: 8.0);
-  final SizedBox medium = const SizedBox(width: 16.0, height: 16.0);
-  final SizedBox large = const SizedBox(width: 24.0, height: 24.0);
-  final SizedBox extraLarge = const SizedBox(width: 32.0, height: 32.0);
-  final SizedBox extraLarge2 = const SizedBox(width: 48.0, height: 48.0);
+  final SizedBox extraSmall = const SizedBox(width: _gapExtraSmall, height: _gapExtraSmall);
+  final SizedBox small = const SizedBox(width: _gapSmall, height: _gapSmall);
+  final SizedBox medium = const SizedBox(width: _gapMedium, height: _gapMedium);
+  final SizedBox large = const SizedBox(width: _gapLarge, height: _gapLarge);
+  final SizedBox extraLarge = const SizedBox(width: _gapExtraLarge, height: _gapExtraLarge);
+  final SizedBox extraLarge2 = const SizedBox(width: _gapExtraLarge2, height: _gapExtraLarge2);
+
+  final _VerticalGap vertical = const _VerticalGap();
+  final _HorizontalGap horizontal = const _HorizontalGap();
+}
+
+class _VerticalGap {
+  const _VerticalGap();
+
+  final SizedBox extraSmall = const SizedBox(height: _gapExtraSmall);
+  final SizedBox small = const SizedBox(height: _gapSmall);
+  final SizedBox medium = const SizedBox(height: _gapMedium);
+  final SizedBox large = const SizedBox(height: _gapLarge);
+  final SizedBox extraLarge = const SizedBox(height: _gapExtraLarge);
+  final SizedBox extraLarge2 = const SizedBox(height: _gapExtraLarge2);
+}
+
+class _HorizontalGap {
+  const _HorizontalGap();
+
+  final SizedBox extraSmall = const SizedBox(width: _gapExtraSmall);
+  final SizedBox small = const SizedBox(width: _gapSmall);
+  final SizedBox medium = const SizedBox(width: _gapMedium);
+  final SizedBox large = const SizedBox(width: _gapLarge);
+  final SizedBox extraLarge = const SizedBox(width: _gapExtraLarge);
+  final SizedBox extraLarge2 = const SizedBox(width: _gapExtraLarge2);
 }
 
 class _Icon {

@@ -24,7 +24,6 @@ class LibrarySearchBar extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(SocoSizes.radius.large),
         boxShadow: SocoElevation.shadows.low,
       ),

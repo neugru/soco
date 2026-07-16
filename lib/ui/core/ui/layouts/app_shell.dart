@@ -18,39 +18,10 @@ class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
-  int _currentIndex = 1;
+  int _currentIndex = 1;  // TODO: change to 0 after testing
 
-  // ── Pages ─────────────────────────────────────────────────────────────────
-  // Replace placeholders with your real screen widgets as you build them.
-  static const List<Widget> _pages = [
-    _PlaceholderPage(label: 'Group Libray'),
-    BeanLibraryView(),
-    _PlaceholderPage(label: 'Machine Library'),
-    _PlaceholderPage(label: 'Profile Page'),
-  ];
-
-  // ── Build ─────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
-    const destinations = [
-      NavigationDestination(
-        icon: Icon(SocoIcons.home),
-        label: 'Home',
-      ),
-      NavigationDestination(
-        icon: Icon(SocoIcons.coffeeBean),
-        label: 'Beans',
-      ),
-      NavigationDestination(
-        icon: Icon(SocoIcons.coffeeMaker),
-        label: 'Machines',
-      ),
-      NavigationDestination(
-        icon: Icon(SocoIcons.person),
-        label: 'Profile',
-      ),
-    ];
-
     final bottomNavBarPadding = SocoSizes.spacing.medium;
 
     return Scaffold(
@@ -59,20 +30,68 @@ class _AppShellState extends State<AppShell> {
         bottomNavBarPadding: bottomNavBarPadding * 2,
         child: IndexedStack(
           index: _currentIndex,
-          children: _pages,
+          children: AppTab.values.map((tab) => tab.page).toList(),
         ),
       ),
       bottomNavigationBar: FloatingBottomNavBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (index) => setState(() => _currentIndex = index),
-        destinations: destinations,
+        destinations: AppTab.values.map((tab) => tab.destination).toList(),
         padding: EdgeInsets.all(bottomNavBarPadding),
       ),
     );
   }
 }
 
-// TODO: delete placeholder
+/// The set of primary tabs available in the main app shell.
+enum AppTab {
+  home(
+    icon: SocoIcons.home,
+    label: 'Home',
+  ),
+  beans(
+    icon: SocoIcons.coffeeBean,
+    label: 'Beans',
+  ),
+  machines(
+    icon: SocoIcons.coffeeMaker,
+    label: 'Machines',
+  ),
+  profile(
+    icon: SocoIcons.person,
+    label: 'Profile',
+  );
+
+  final IconData icon;
+  final String label;
+
+  const AppTab({
+    required this.icon,
+    required this.label,
+  });
+
+  /// Instantiates the page widget corresponding to this tab.
+  Widget get page {
+    switch (this) {
+      case AppTab.home:
+        return const _PlaceholderPage(label: 'Group Library');
+      case AppTab.beans:
+        return const BeanLibraryView();
+      case AppTab.machines:
+        return const _PlaceholderPage(label: 'Machine Library');
+      case AppTab.profile:
+        return const _PlaceholderPage(label: 'Profile Page');
+    }
+  }
+
+  /// Generates the navigation destination bar item.
+  NavigationDestination get destination => NavigationDestination(
+    icon: Icon(icon),
+    label: label,
+  );
+}
+
+// TODO: delete placeholder page
 // ── Temporary placeholder ──────────────────────────────────────────────────
 // Delete this once you have real screen widgets.
 class _PlaceholderPage extends StatelessWidget {
@@ -89,6 +108,7 @@ class _PlaceholderPage extends StatelessWidget {
 
 class _BottomFadeMask extends StatelessWidget {
   final Widget child;
+
   /// The total vertical padding (top + bottom) applied to the bottomNavBar.
   final double bottomNavBarPadding;
 
@@ -101,22 +121,22 @@ class _BottomFadeMask extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShaderMask(
       shaderCallback: (Rect bounds) {
-        final navBarHeight = NavigationBarTheme.of(context).height ?? 0;
         final safeAreaBottom = MediaQuery.paddingOf(context).bottom;
-        final navBarZoneHeight = navBarHeight + bottomNavBarPadding + safeAreaBottom;
 
         // Convert absolute pixels to a relative stop value (0.0 to 1.0)
-        final fadeStart = (bounds.height - navBarZoneHeight).clamp(0.0, bounds.height) / bounds.height;
-        final fadeEnd = (bounds.height - (safeAreaBottom * 0.5)).clamp(0.0, bounds.height) / bounds.height;
+        final fadeStart = (bounds.height - (safeAreaBottom * 1.5)).clamp(0.0, bounds.height) / bounds.height;
+        final fadeEnd = (bounds.height - (safeAreaBottom * 0.05)).clamp(0.0, bounds.height) / bounds.height;
 
         return LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: const [
+          colors: [
+            Colors.black,
             Colors.black,
             Colors.transparent,
+            Colors.transparent,
           ],
-          stops: [fadeStart, fadeEnd],
+          stops: [0, fadeStart, fadeEnd, 1],
         ).createShader(bounds);
       },
       blendMode: BlendMode.dstIn,

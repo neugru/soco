@@ -16,6 +16,16 @@ Widget buildBeanCardUseCase(BuildContext context) {
     initialValue: false,
   );
 
+  final isSelectionMode = context.knobs.boolean(
+    label: 'Is Selection Mode',
+    initialValue: false,
+  );
+
+  final isSelected = context.knobs.boolean(
+    label: 'Is Selected',
+    initialValue: false,
+  );
+
   final profile = BrewProfile.create(
     bean: Bean.create(
       name: context.knobs.string(label: 'Bean Name', initialValue: 'Espresso Roma'),
@@ -82,6 +92,8 @@ Widget buildBeanCardUseCase(BuildContext context) {
         child: BeanCard(
           profile: profile,
           isExpanded: isCompact,
+          isSelectionMode: isSelectionMode,
+          isSelected: isSelected,
         ),
       ),
     ),
