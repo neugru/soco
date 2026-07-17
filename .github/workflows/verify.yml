@@ -28,5 +28,8 @@ jobs:
       - name: Run Static Analysis
         run: flutter analyze
 
+      - name: Run Custom Lint Analysis
+        run: dart run custom_lint
+
       # - name: Run Unit Tests
       #   run: flutter test

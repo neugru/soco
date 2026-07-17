@@ -1,0 +1,11 @@
+name: soco_lints
+description: Custom lint rules for the Soco app.
+version: 0.1.0
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  analyzer: ^8.0.0
+  custom_lint_builder: ^0.8.1
