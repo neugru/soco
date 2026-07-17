@@ -26,6 +26,7 @@ class LibraryAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             icon,
