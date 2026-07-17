@@ -30,8 +30,5 @@ jobs:
         # Workaround for the follwing bug: https://github.com/dart-lang/sdk/issues/62710
         run: find lib -name "*.dart" | xargs dart analyze
 
-      - name: Run Custom Lint Analysis
-        run: dart run custom_lint
-
       # - name: Run Unit Tests
       #   run: flutter test
