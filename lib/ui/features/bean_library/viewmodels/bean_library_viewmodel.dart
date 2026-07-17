@@ -82,6 +82,13 @@ class BeanLibraryViewModel extends ChangeNotifier {
     if (!_isDisposed) notifyListeners();
   }
 
+  /// Selects all currently visible brew profiles
+  void selectAll() {
+    _selectedProfileIds.clear();
+    _selectedProfileIds.addAll(_filteredBrewProfiles.map((p) => p.id));
+    if (!_isDisposed) notifyListeners();
+  }
+
   /// Simulates fetching recipes from a repository or API
   Future<void> fetchBeans({bool forceRefresh = false}) async {
     // Prevent double loading if a fetch is already in progress

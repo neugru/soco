@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:soco/ui/core/styles/colors.dart';
 import 'package:soco/ui/core/styles/elevation.dart';
-import 'package:soco/ui/core/styles/sizes.dart';
+import 'package:soco/ui/core/styles/sizes.dart' as soco_sizes;
 import 'package:soco/ui/core/styles/typography.dart';
 
 class SocoTheme {
@@ -185,9 +185,9 @@ class SocoTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: colorScheme.primary,
           foregroundColor: colorScheme.onPrimary,
-          minimumSize: Size(0, SocoSizes.button.height),
+          minimumSize: Size(0, soco_sizes.button.height),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SocoSizes.radius.round),
+            borderRadius: BorderRadius.circular(soco_sizes.radius.round),
           ),
           textStyle: SocoStyles.textTheme.labelLarge,
         ),
@@ -197,9 +197,9 @@ class SocoTheme {
         style: FilledButton.styleFrom(
           backgroundColor: colorScheme.primary,
           foregroundColor: colorScheme.onPrimary,
-          minimumSize: Size(0, SocoSizes.button.height),
+          minimumSize: Size(0, soco_sizes.button.height),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SocoSizes.radius.round),
+            borderRadius: BorderRadius.circular(soco_sizes.radius.round),
           ),
           textStyle: SocoStyles.textTheme.labelLarge,
         ),
@@ -208,13 +208,13 @@ class SocoTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: colorScheme.primary,
-          minimumSize: Size(0, SocoSizes.button.height),
+          minimumSize: Size(0, soco_sizes.button.height),
           side: BorderSide(
             color: colorScheme.outline,
             width: 1,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SocoSizes.radius.round),
+            borderRadius: BorderRadius.circular(soco_sizes.radius.round),
           ),
           textStyle: SocoStyles.textTheme.labelLarge,
         ),
@@ -223,9 +223,9 @@ class SocoTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: colorScheme.primary,
-          minimumSize: Size(0, SocoSizes.button.height),
+          minimumSize: Size(0, soco_sizes.button.height),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SocoSizes.radius.round),
+            borderRadius: BorderRadius.circular(soco_sizes.radius.round),
           ),
           textStyle: SocoStyles.textTheme.labelLarge,
         ),
@@ -235,27 +235,27 @@ class SocoTheme {
         filled: true,
         fillColor: colorScheme.surfaceContainerHighest,
         contentPadding: EdgeInsets.symmetric(
-          horizontal: SocoSizes.input.paddingHorizontal,
-          vertical: SocoSizes.input.paddingVertical,
+          horizontal: soco_sizes.input.paddingHorizontal,
+          vertical: soco_sizes.input.paddingVertical,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(SocoSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.radius.large),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(SocoSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.radius.large),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(SocoSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.radius.large),
           borderSide: BorderSide(color: colorScheme.primary, width: 1),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(SocoSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.radius.large),
           borderSide: BorderSide(color: colorScheme.error, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(SocoSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.radius.large),
           borderSide: BorderSide(color: colorScheme.error, width: 1),
         ),
         labelStyle: TextStyle(color: colorScheme.outline),
@@ -269,7 +269,7 @@ class SocoTheme {
           surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(SocoSizes.radius.medium),
+              borderRadius: BorderRadius.circular(soco_sizes.radius.medium),
             ),
           ),
         ),
@@ -281,7 +281,7 @@ class SocoTheme {
         surfaceTintColor: Colors.transparent,
         position: PopupMenuPosition.under,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(SocoSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.radius.medium),
         ),
       ),
 
@@ -291,7 +291,7 @@ class SocoTheme {
         actionTextColor: colorScheme.inversePrimary,
         elevation: 4.0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(SocoSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.radius.medium),
         ),
         contentTextStyle: TextStyle(
           color: colorScheme.onInverseSurface,

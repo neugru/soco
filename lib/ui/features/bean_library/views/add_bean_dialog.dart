@@ -6,7 +6,7 @@ import 'package:soco/core/models/brew_profile.dart';
 import 'package:soco/core/models/grinder.dart';
 import 'package:soco/core/models/machine.dart';
 import 'package:soco/core/models/roast_level.dart';
-import 'package:soco/ui/core/styles/sizes.dart';
+import 'package:soco/ui/core/styles/sizes.dart' as soco_sizes;
 import 'package:soco/ui/core/styles/icons.dart';
 
 class AddBeanDialog extends StatefulWidget {
@@ -176,7 +176,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
     return Icon(
       isValid ? SocoIcons.checkCircleOutline : SocoIcons.infoOutline,
       color: isValid ? Colors.green.withValues(alpha: 0.4) : colorScheme.error.withValues(alpha: 0.4),
-      size: SocoSizes.icon.medium,
+      size: soco_sizes.icon.medium,
     );
   }
 
@@ -190,10 +190,10 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
         title: const Text('Add Bean to Library'),
         content: SingleChildScrollView(
           padding: EdgeInsets.only(
-            top: SocoSizes.spacing.small,
-            bottom: SocoSizes.spacing.large,
-            left: SocoSizes.spacing.extraSmall,
-            right: SocoSizes.spacing.extraSmall,
+            top: soco_sizes.spacing.small,
+            bottom: soco_sizes.spacing.large,
+            left: soco_sizes.spacing.xSmall,
+            right: soco_sizes.spacing.xSmall,
           ),
           child: Form(
             key: _formKey,
@@ -211,7 +211,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   validator: (v) => v == null || v.isEmpty ? 'Please enter a name' : null,
                 ),
 
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
 
                 TextFormField(
                   controller: _brandController,
@@ -224,7 +224,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   validator: (v) => v == null || v.isEmpty ? 'Please enter a brand' : null,
                 ),
 
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
 
                 TextFormField(
                   controller: _originController,
@@ -234,7 +234,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   ),
                 ),
 
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
 
                 FormField<RoastLevel?>(
                   initialValue: _roastLevel,
@@ -274,7 +274,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
 
                 InputDecorator(
                   decoration: const InputDecoration(
@@ -283,7 +283,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                     filled: false,
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(top: SocoSizes.spacing.extraSmall),
+                    padding: EdgeInsets.only(top: soco_sizes.spacing.xSmall),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       spacing: 2,
@@ -297,7 +297,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
                           icon: const Icon(SocoIcons.coffeeBean),
-                          iconSize: SocoSizes.icon.extraLarge,
+                          iconSize: soco_sizes.icon.xLarge,
                           color: isActive ? colorScheme.primary : colorScheme.onSurface.withValues(alpha: 0.15),
                           onPressed: () {
                             FocusScope.of(context).unfocus();
@@ -312,7 +312,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                 ),
 
                 const Divider(),
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
 
                 TextFormField(
                   controller: _grindSizeController,
@@ -334,7 +334,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
 
                 TextFormField(
                   controller: _doseController,
@@ -356,7 +356,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
 
                 TextFormField(
                   controller: _yieldController,
@@ -378,7 +378,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
 
                 TextFormField(
                   controller: _brewTimeController,
@@ -399,9 +399,9 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   },
                 ),
 
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
                 const Divider(),
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
 
                 // TODO: replace with Machine Data Object
                 TextFormField(
@@ -414,7 +414,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   ),
                   validator: (v) => v == null || v.isEmpty ? 'Please choose a machine' : null,
                 ),
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
                 // TODO: replace with Grinder Data Object
                 TextFormField(
                   controller: _grinderController,
@@ -424,9 +424,9 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   ),
                 ),
 
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
                 const Divider(),
-                SocoSizes.gap.vertical.small,
+                soco_sizes.verticalBox.small,
 
                 TextFormField(
                   controller: _descriptionController,

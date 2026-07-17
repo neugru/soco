@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:soco/ui/core/styles/elevation.dart';
-import 'package:soco/ui/core/styles/sizes.dart';
+import 'package:soco/ui/core/styles/sizes.dart' as soco_sizes;
 import 'package:soco/ui/core/styles/icons.dart';
 
 class LibrarySearchBar extends StatelessWidget {
@@ -24,7 +24,7 @@ class LibrarySearchBar extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(SocoSizes.radius.large),
+        borderRadius: BorderRadius.circular(soco_sizes.radius.large),
         boxShadow: SocoElevation.shadows.low,
       ),
       child: TextField(
@@ -32,6 +32,10 @@ class LibrarySearchBar extends StatelessWidget {
         onChanged: onChanged,
         onTapOutside: (event) => FocusScope.of(context).unfocus(),
         decoration: InputDecoration(
+          // enabledBorder: OutlineInputBorder(
+          //   borderSide: BorderSide.none,
+          //   borderRadius: BorderRadius.circular(soco_sizes.radius.medium),
+          // ),
           hintText: hintText,
           prefixIcon: Icon(
             SocoIcons.search,
@@ -44,7 +48,7 @@ class LibrarySearchBar extends StatelessWidget {
                   ? IconButton(
                       icon: Icon(
                         SocoIcons.clear,
-                        size: SocoSizes.icon.small,
+                        size: soco_sizes.icon.small,
                       ),
                       onPressed: onClear,
                     )
