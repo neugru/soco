@@ -78,6 +78,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
       listenable: _viewModel,
       builder: (context, _) {
         return Scaffold(
+          backgroundColor: Colors.transparent,
           appBar: const LibraryAppBar(
             title: 'Bean Library',
             icon: SocoIcons.coffeeBean,

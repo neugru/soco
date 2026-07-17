@@ -554,41 +554,29 @@ class _MetricColumn extends StatelessWidget {
 
 /// Actions available in the context menu of a [BeanCard].
 enum BeanCardAction {
-  /// Shares the bean details.
-  share,
+  share(
+    icon: SocoIcons.share,
+    label: 'Share',
+  ),
+  select(
+    icon: SocoIcons.checkBox,
+    label: 'Select',
+  ),
+  delete(
+    icon: SocoIcons.deleteOutline,
+    label: 'Delete',
+  );
 
-  /// Enters selection mode with this bean selected.
-  select,
-
-  /// Deletes the bean.
-  delete,
-}
-
-/// Extension mapping icons, labels, and styles for [BeanCardAction].
-extension BeanCardActionExtension on BeanCardAction {
   /// The icon representing this action.
-  IconData get icon {
-    switch (this) {
-      case BeanCardAction.share:
-        return SocoIcons.share;
-      case BeanCardAction.select:
-        return SocoIcons.checkBox;
-      case BeanCardAction.delete:
-        return SocoIcons.deleteOutline;
-    }
-  }
+  final IconData icon;
 
   /// The localized label text for this action.
-  String get label {
-    switch (this) {
-      case BeanCardAction.share:
-        return 'Share';
-      case BeanCardAction.select:
-        return 'Select';
-      case BeanCardAction.delete:
-        return 'Delete';
-    }
-  }
+  final String label;
+
+  const BeanCardAction({
+    required this.icon,
+    required this.label,
+  });
 }
 
 /// Renders the context popup menu button for a [BeanCard] using strongly typed actions.

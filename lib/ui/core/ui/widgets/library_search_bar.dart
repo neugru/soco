@@ -30,6 +30,7 @@ class LibrarySearchBar extends StatelessWidget {
       child: TextField(
         controller: controller,
         onChanged: onChanged,
+        onTapOutside: (event) => FocusScope.of(context).unfocus(),
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: Icon(

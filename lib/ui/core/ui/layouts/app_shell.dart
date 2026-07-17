@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:soco/ui/features/bean_library/views/bean_library_view.dart';
 import 'package:soco/ui/core/styles/icons.dart';
-import 'package:soco/ui/core/styles/sizes.dart';
-import 'package:soco/ui/core/ui/widgets/floating_bottom_nav_bar.dart';
+import 'package:soco/ui/core/ui/widgets/bottom_nav_bar.dart';
 
 /// The main scaffold of the app. Wraps each top-level screen with
 /// a shared [BottomNavigationBar].
@@ -22,22 +21,16 @@ class _AppShellState extends State<AppShell> {
 
   @override
   Widget build(BuildContext context) {
-    final bottomNavBarPadding = SocoSizes.spacing.medium;
-
     return Scaffold(
       extendBody: true,
-      body: _BottomFadeMask(
-        bottomNavBarPadding: bottomNavBarPadding * 2,
-        child: IndexedStack(
-          index: _currentIndex,
-          children: AppTab.values.map((tab) => tab.page).toList(),
-        ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: AppTab.values.map((tab) => tab.page).toList(),
       ),
-      bottomNavigationBar: FloatingBottomNavBar(
+      bottomNavigationBar: BottomNavBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (index) => setState(() => _currentIndex = index),
         destinations: AppTab.values.map((tab) => tab.destination).toList(),
-        padding: EdgeInsets.all(bottomNavBarPadding),
       ),
     );
   }
@@ -106,41 +99,4 @@ class _PlaceholderPage extends StatelessWidget {
   }
 }
 
-class _BottomFadeMask extends StatelessWidget {
-  final Widget child;
 
-  /// The total vertical padding (top + bottom) applied to the bottomNavBar.
-  final double bottomNavBarPadding;
-
-  const _BottomFadeMask({
-    required this.child,
-    required this.bottomNavBarPadding,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (Rect bounds) {
-        final safeAreaBottom = MediaQuery.paddingOf(context).bottom;
-
-        // Convert absolute pixels to a relative stop value (0.0 to 1.0)
-        final fadeStart = (bounds.height - (safeAreaBottom * 1.5)).clamp(0.0, bounds.height) / bounds.height;
-        final fadeEnd = (bounds.height - (safeAreaBottom * 0.05)).clamp(0.0, bounds.height) / bounds.height;
-
-        return LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.black,
-            Colors.black,
-            Colors.transparent,
-            Colors.transparent,
-          ],
-          stops: [0, fadeStart, fadeEnd, 1],
-        ).createShader(bounds);
-      },
-      blendMode: BlendMode.dstIn,
-      child: child,
-    );
-  }
-}
