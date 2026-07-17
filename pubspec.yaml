@@ -17,12 +17,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-<<<<<<< HEAD
   soco_lints:
     path: ./soco_lints
-=======
   icon_font_generator: ^4.1.0
->>>>>>> 2263fd5 (adjust list format)
+  analyzer: ^8.0.0
+  custom_lint: ^0.8.1
+  soco_lints:
+    path: ./soco_lints
 
 flutter:
   uses-material-design: true

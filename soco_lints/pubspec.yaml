@@ -1,5 +1,9 @@
 name: soco_lints
+<<<<<<< HEAD
 description: Custom lint rules for Soco using analysis_server_plugin.
+=======
+description: Custom lint rules for the Soco app.
+>>>>>>> 6afc2a7 (add custom lint checks)
 version: 0.1.0
 publish_to: 'none'
 
@@ -7,9 +11,14 @@ environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
+<<<<<<< HEAD
   analyzer: any
   analyzer_plugin: any
   analysis_server_plugin: '>=0.3.8'
 
 dev_dependencies:
   lints: ^3.0.0
+=======
+  analyzer: ^8.0.0
+  custom_lint_builder: ^0.8.1
+>>>>>>> 6afc2a7 (add custom lint checks)

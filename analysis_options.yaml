@@ -1,10 +1,8 @@
 include: package:flutter_lints/flutter.yaml
 
-plugins:
-  soco_lints:
-    path: ./soco_lints
-    diagnostics:
-      require_sizes_prefix_import: true
+analyzer:
+  plugins:
+    - custom_lint
 
 formatter:
   page_width: 120
