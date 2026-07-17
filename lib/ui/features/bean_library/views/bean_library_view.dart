@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:soco/core/models/brew_profile.dart';
 import 'package:soco/ui/core/styles/assets.dart';
-import 'package:soco/ui/core/styles/sizes.dart';
+import 'package:soco/ui/core/styles/sizes.dart' as soco_sizes;
 import 'package:soco/ui/core/styles/icons.dart';
 import 'package:soco/ui/core/ui/widgets/empty_library_view.dart';
 import 'package:soco/ui/core/ui/widgets/fading_mask.dart';
 import 'package:soco/ui/core/ui/widgets/library_app_bar.dart';
 import 'package:soco/ui/core/ui/widgets/library_search_bar.dart';
 import 'package:soco/ui/core/ui/widgets/loading_view.dart';
+import 'package:soco/ui/core/ui/widgets/selection_app_bar.dart';
 import 'package:soco/ui/features/bean_library/viewmodels/bean_library_viewmodel.dart';
 import 'package:soco/ui/features/bean_library/views/add_bean_dialog.dart';
 import 'package:soco/ui/features/bean_library/views/widgets/bean_card.dart';
@@ -72,17 +73,25 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   Widget build(BuildContext context) {
     final safeAreaBottom = MediaQuery.paddingOf(context).bottom;
     // page scroll should end with extra spacing above the bottom navBar
-    final pageContentBottomPadding = safeAreaBottom + SocoSizes.spacing.medium;
+    final pageContentBottomPadding = safeAreaBottom + soco_sizes.spacing.medium;
 
     return ListenableBuilder(
       listenable: _viewModel,
       builder: (context, _) {
         return Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: const LibraryAppBar(
-            title: 'Bean Library',
-            icon: SocoIcons.coffeeBean,
-          ),
+          appBar: _viewModel.isSelectionMode
+              ? SelectionAppBar(
+                  selectedCount: _viewModel.selectedCount,
+                  totalCount: _viewModel.brewProfiles.length,
+                  onClear: () => _viewModel.exitSelectionMode(),
+                  onSelectAll: () => _viewModel.selectAll(),
+                  onDeselectAll: () => _viewModel.clearSelection(),
+                )
+              : const LibraryAppBar(
+                  title: 'Bean Library',
+                  icon: SocoIcons.coffeeBean,
+                ),
           body: _viewModel.isLoading
               // TODO: replace with skeleton
               ? LoadingView(
@@ -91,13 +100,13 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                 )
               : Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: SocoSizes.spacing.medium,
+                    horizontal: soco_sizes.spacing.medium,
                   ),
                   child: Column(
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(
-                          vertical: SocoSizes.spacing.small,
+                          vertical: soco_sizes.spacing.small,
                         ),
                         child: LibrarySearchBar(
                           controller: _searchController,
@@ -111,8 +120,6 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                       ),
                       if (_viewModel.isSelectionMode)
                         _SelectionActionBar(
-                          selectedCount: _viewModel.selectedCount,
-                          onClear: () => _viewModel.exitSelectionMode(),
                           onShare: () {
                             final selectedCount = _viewModel.selectedCount;
                             if (selectedCount == 0) return;
@@ -216,7 +223,7 @@ class _BeanProfileList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topFadeZoneHeight = SocoSizes.spacing.medium;
+    final topFadeZoneHeight = soco_sizes.spacing.medium;
 
     return Scrollbar(
       controller: scrollController,
@@ -230,9 +237,7 @@ class _BeanProfileList extends StatelessWidget {
             bottom: bottomPadding,
           ),
           itemCount: viewModel.brewProfiles.length,
-          separatorBuilder: (context, index) => SizedBox(
-            height: SocoSizes.spacing.medium,
-          ),
+          separatorBuilder: (context, index) => soco_sizes.verticalBox.medium,
           itemBuilder: (context, index) {
             final profile = viewModel.brewProfiles[index];
             final isSelected = viewModel.selectedProfileIds.contains(profile.id);
@@ -288,15 +293,8 @@ class _BeanProfileList extends StatelessWidget {
 
 /// An inline action bar displayed at the top of the bean list when in selection mode.
 ///
-/// Provides control actions to cancel selection, view the selected count, and execute
-/// batch actions such as share or delete on the selected profiles.
+/// Provides batch operations (Share, Delete) that apply to the selected items.
 class _SelectionActionBar extends StatelessWidget {
-  /// The number of currently selected profiles.
-  final int selectedCount;
-
-  /// Callback triggered when the clear/cancel selection action is pressed.
-  final VoidCallback onClear;
-
   /// Callback triggered when the batch share action is pressed.
   final VoidCallback onShare;
 
@@ -304,8 +302,6 @@ class _SelectionActionBar extends StatelessWidget {
   final VoidCallback onDelete;
 
   const _SelectionActionBar({
-    required this.selectedCount,
-    required this.onClear,
     required this.onShare,
     required this.onDelete,
   });
@@ -314,51 +310,29 @@ class _SelectionActionBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
+    return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: SocoSizes.spacing.extraSmall,
-      ),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(SocoSizes.radius.medium),
+        horizontal: soco_sizes.spacing.xSmall,
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           IconButton(
             icon: Icon(
-              SocoIcons.clear,
-              size: SocoSizes.icon.medium,
-            ),
-            onPressed: onClear,
-          ),
-          SocoSizes.gap.horizontal.small,
-          Text(
-            '$selectedCount Selected',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+              SocoIcons.share,
+              size: soco_sizes.icon.large,
               color: colorScheme.onSurfaceVariant,
             ),
+            onPressed: onShare,
           ),
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                icon: Icon(
-                  SocoIcons.share,
-                  size: SocoSizes.icon.medium,
-                ),
-                onPressed: onShare,
-              ),
-              IconButton(
-                icon: Icon(
-                  SocoIcons.deleteOutline,
-                  size: SocoSizes.icon.medium,
-                  color: colorScheme.error,
-                ),
-                onPressed: onDelete,
-              ),
-            ],
+          IconButton(
+            icon: Icon(
+              SocoIcons.deleteOutline,
+              size: soco_sizes.icon.large,
+              color: colorScheme.error,
+            ),
+            onPressed: onDelete,
           ),
         ],
       ),
@@ -403,7 +377,7 @@ class _UtilityHeaderBar extends StatelessWidget {
                 color: colorScheme.onSurfaceVariant,
               ),
             ),
-            const SizedBox(width: 8),
+            soco_sizes.horizontalBox.small,
             Switch(
               value: isExpanded,
               onChanged: onExpandedChanged,
@@ -414,7 +388,7 @@ class _UtilityHeaderBar extends StatelessWidget {
           onPressed: onAddPressed,
           icon: Icon(
             SocoIcons.add,
-            size: SocoSizes.icon.small,
+            size: soco_sizes.icon.small,
           ),
           label: const Text('New'),
         ),
