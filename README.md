@@ -81,11 +81,24 @@ final matrix = [
 
 ### 3. Code Analysis
 
-Ensure your code passes static analysis checks without any errors or warnings. You can analyze the repository locally by running:
-```bash
-flutter analyze
-```
-*(Note: The CI verification workflow runs `flutter analyze` on every Pull Request. Commits with warnings or errors will fail validation).*
+Ensure your code passes static analysis checks without any errors or warnings. 
+
+Due to a known Dart SDK bug ([#62710](https://github.com/dart-lang/sdk/issues/62710)) where analysis plugins (like `soco_lints`) are not executed correctly during root directory analysis, you must run the analysis on individual files.
+
+Depending on your operating system, use one of the following commands:
+
+* **macOS / Linux / Windows (Git Bash):**
+  ```bash
+  find lib -name "*.dart" | xargs dart analyze
+  ```
+
+* **Windows (PowerShell):**
+  ```powershell
+  Get-ChildItem -Path lib -Filter *.dart -Recurse | ForEach-Object { dart analyze $_.FullName }
+  ```
+
+*(Note: The CI verification workflow runs this individual file analysis on every Pull Request. Commits with warnings or errors will fail validation).*
+
 
 #### Disabling Linter Warnings
 

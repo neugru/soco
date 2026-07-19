@@ -27,17 +27,19 @@ class SizesImportRule extends AnalysisRule {
   SizesImportRule()
       : super(
           name: _name,
-          description: "Imports of 'sizes.dart' must be prefixed with 'as soco_sizes'.",
+          description:
+              "Imports of 'sizes.dart' must be prefixed with 'as soco_sizes'.",
         );
 
   @override
   DiagnosticCode get diagnosticCode => code;
 
   @override
-  void registerNodeProcessors(RuleVisitorRegistry registry, RuleContext context) {
-      var visitor = _Visitor(this);
-      registry.addImportDirective(this, visitor);
-    }
+  void registerNodeProcessors(
+      RuleVisitorRegistry registry, RuleContext context) {
+    var visitor = _Visitor(this);
+    registry.addImportDirective(this, visitor);
+  }
 }
 
 class _Visitor extends SimpleAstVisitor<void> {
@@ -64,7 +66,8 @@ class SizesImportFix extends ResolvedCorrectionProducer {
   SizesImportFix({required super.context});
 
   @override
-  CorrectionApplicability get applicability => CorrectionApplicability.singleLocation;
+  CorrectionApplicability get applicability =>
+      CorrectionApplicability.singleLocation;
 
   @override
   FixKind get fixKind => const FixKind(
@@ -139,7 +142,9 @@ class _IdentifierVisitor extends RecursiveAstVisitor<void> {
       }
 
       // Ignore if it's a method invocation member (e.g., `target.method()`)
-      if (parent is MethodInvocation && parent.methodName == node && parent.target != null) {
+      if (parent is MethodInvocation &&
+          parent.methodName == node &&
+          parent.target != null) {
         return;
       }
 
