@@ -1,6 +1,11 @@
 include: package:flutter_lints/flutter.yaml
 
+plugins:
+  soco_lints:
+    path: ./soco_lints
+    diagnostics:
+      require_sizes_prefix_import: true
+
 formatter:
   page_width: 120
   trailing_commas: preserve
-  
