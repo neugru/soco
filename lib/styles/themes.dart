@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:soco/styles/colors.dart';
-import 'package:soco/styles/sizes.dart';
+import 'package:soco/styles/sizes.dart' as soco_sizes;
 import 'package:soco/styles/typography.dart';
 
 class AppTheme {
@@ -95,9 +95,9 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.lightPrimary,
           foregroundColor: AppColors.lightOnPrimary,
-          minimumSize: Size.fromHeight(AppSizes.button.height),
+          minimumSize: Size.fromHeight(soco_sizes.AppSizes.button.height),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+            borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           ),
           elevation: 0,
           textStyle: AppStyles.labelLarge,
@@ -109,10 +109,10 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.lightPrimary,
-          minimumSize: Size.fromHeight(AppSizes.button.height),
+          minimumSize: Size.fromHeight(soco_sizes.AppSizes.button.height),
           side: const BorderSide(color: AppColors.lightPrimary, width: 1.5),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+            borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           ),
           textStyle: AppStyles.labelLarge,
         ),
@@ -124,23 +124,23 @@ class AppTheme {
         filled: true,
         fillColor: AppColors.lightSurfaceContainerHighest.withValues(alpha: 0.3),
         contentPadding: EdgeInsets.symmetric(
-          horizontal: AppSizes.input.paddingHorizontal,
-          vertical: AppSizes.input.paddingVertical,
+          horizontal: soco_sizes.AppSizes.input.paddingHorizontal,
+          vertical: soco_sizes.AppSizes.input.paddingVertical,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           borderSide: const BorderSide(color: AppColors.lightPrimary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           borderSide: const BorderSide(color: AppColors.lightError, width: 1.5),
         ),
         labelStyle: const TextStyle(color: AppColors.lightOutline),
@@ -237,9 +237,9 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.darkPrimary,
           foregroundColor: AppColors.darkOnPrimary,
-          minimumSize: Size.fromHeight(AppSizes.button.height),
+          minimumSize: Size.fromHeight(soco_sizes.AppSizes.button.height),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+            borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           ),
           elevation: 0,
           textStyle: AppStyles.labelLarge,
@@ -251,10 +251,10 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.darkPrimary,
-          minimumSize: Size.fromHeight(AppSizes.button.height),
+          minimumSize: Size.fromHeight(soco_sizes.AppSizes.button.height),
           side: const BorderSide(color: AppColors.darkPrimary, width: 1.5),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+            borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           ),
           textStyle: AppStyles.labelLarge,
         ),
@@ -266,23 +266,23 @@ class AppTheme {
         filled: true,
         fillColor: AppColors.darkSurfaceContainerHighest.withValues(alpha: 0.15),
         contentPadding: EdgeInsets.symmetric(
-          horizontal: AppSizes.input.paddingHorizontal,
-          vertical: AppSizes.input.paddingVertical,
+          horizontal: soco_sizes.AppSizes.input.paddingHorizontal,
+          vertical: soco_sizes.AppSizes.input.paddingVertical,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           borderSide: const BorderSide(color: AppColors.darkPrimary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.radius.medium),
+          borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.medium),
           borderSide: const BorderSide(color: AppColors.darkError, width: 1.5),
         ),
         labelStyle: const TextStyle(color: AppColors.darkOutline),

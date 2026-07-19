@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:soco/core/constants/assets.dart';
-import 'package:soco/styles/sizes.dart';
+import 'package:soco/styles/sizes.dart' as soco_sizes;
 import 'package:soco/styles/elevation.dart';
 
 /// The main scaffold of the app. Wraps each top-level screen with
@@ -71,17 +71,17 @@ class _AppShellState extends State<AppShell> {
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: AppSizes.spacing.medium,
-            vertical: AppSizes.spacing.medium,
+            horizontal: soco_sizes.AppSizes.spacing.medium,
+            vertical: soco_sizes.AppSizes.spacing.medium,
           ),
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surfaceContainer,
-              borderRadius: BorderRadius.circular(AppSizes.radius.round),
+              borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.round),
               boxShadow: AppElevation.shadows.mid,
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppSizes.radius.round),
+              borderRadius: BorderRadius.circular(soco_sizes.AppSizes.radius.round),
               child: NavigationBar(
                 selectedIndex: _currentIndex,
                 labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
