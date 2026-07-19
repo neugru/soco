@@ -10,3 +10,6 @@ dependencies:
   analyzer: any
   analyzer_plugin: any
   analysis_server_plugin: '>=0.3.8'
+
+dev_dependencies:
+  lints: ^3.0.0

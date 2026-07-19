@@ -87,7 +87,7 @@ Due to a known Dart SDK bug ([#62710](https://github.com/dart-lang/sdk/issues/62
 
 Depending on your operating system, use one of the following commands:
 
-* **macOS / Linux / Windows (Git Bash):**
+* **macOS / Linux:**
   ```bash
   find lib -name "*.dart" | xargs dart analyze
   ```
