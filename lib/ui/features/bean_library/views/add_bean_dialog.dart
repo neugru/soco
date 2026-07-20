@@ -140,23 +140,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
     super.dispose();
   }
 
-  // TODO: replace with Grinder Data Object
-  Grinder _parseGrinder(String text) {
-    final trimmed = text.trim();
-    final parts = trimmed.split(' ');
-    if (parts.length > 1) {
-      return Grinder.create(
-        brand: parts[0],
-        name: parts.sublist(1).join(' '),
-      );
-    }
-    return Grinder.create(
-      brand: '',
-      name: trimmed,
-    );
-  }
-
-  // TODO: replace with Machine Data Object
+  // TODO: replace with Machine Data Object (select machine from list)
   Machine _parseMachine(String text) {
     final trimmed = text.trim();
     final parts = trimmed.split(' ');
@@ -167,6 +151,22 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
       );
     }
     return Machine.create(
+      brand: '',
+      name: trimmed,
+    );
+  }
+
+  // TODO: replace with Grinder Data Object (select grinder from list)
+  Grinder _parseGrinder(String text) {
+    final trimmed = text.trim();
+    final parts = trimmed.split(' ');
+    if (parts.length > 1) {
+      return Grinder.create(
+        brand: parts[0],
+        name: parts.sublist(1).join(' '),
+      );
+    }
+    return Grinder.create(
       brand: '',
       name: trimmed,
     );
@@ -403,7 +403,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                 const Divider(),
                 soco_metrics.verticalBox.small,
 
-                // TODO: replace with Machine Data Object
+                // TODO: replace with Machine Data Object (select machine from list)
                 TextFormField(
                   controller: _machineController,
                   autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
@@ -415,7 +415,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   validator: (v) => v == null || v.isEmpty ? 'Please choose a machine' : null,
                 ),
                 soco_metrics.verticalBox.small,
-                // TODO: replace with Grinder Data Object
+                // TODO: replace with Grinder Data Object (select grinder from list)
                 TextFormField(
                   controller: _grinderController,
                   decoration: const InputDecoration(
@@ -465,9 +465,9 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
                   brewYield: double.parse(_yieldController.text),
                   grindSize: double.parse(_grindSizeController.text),
                   brewTimeSeconds: int.parse(_brewTimeController.text),
-                  // TODO: replace with Machine Data Object
+                  // TODO: replace with Machine Data Object (select machine from list)
                   machine: _parseMachine(_machineController.text),
-                  // TODO: replace with Grinder Data Object
+                  // TODO: replace with Grinder Data Object (select grinder from list)
                   grinder: _grinderController.text.trim().isEmpty ? null : _parseGrinder(_grinderController.text),
                   description: _descriptionController.text.trim().isEmpty ? null : _descriptionController.text.trim(),
                 );

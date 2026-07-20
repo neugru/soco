@@ -30,7 +30,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   late final TextEditingController _searchController;
   late final ScrollController _scrollController;
 
-  bool _isExpanded = false; // TODO remove after testing
+  bool _isExpanded = false; // TODO; move to settings page
 
   @override
   void initState() {
