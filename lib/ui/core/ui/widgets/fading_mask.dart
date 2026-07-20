@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 /// A widget that applies a smooth transparency fade to its child scrollable's edges.
 class FadingMask extends StatelessWidget {
   /// The scrollable child to be masked.
@@ -54,7 +53,7 @@ class FadingMask extends StatelessWidget {
         if (bottomHeight != null && bottomHeight > 0) {
           // percentage of screen height to start bottom fade
           final bottomStart = (1.0 - bottomHeight / bounds.height).clamp(0.0, 1.0);
-          
+
           // start opaque at bottomStart
           colors.add(Colors.black);
           stops.add(bottomStart);

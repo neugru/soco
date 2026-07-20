@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:soco/core/models/brew_profile.dart';
 import 'package:soco/ui/core/styles/colors.dart';
 import 'package:soco/ui/core/styles/elevation.dart';
-import 'package:soco/ui/core/styles/sizes.dart' as soco_sizes;
+import 'package:soco/ui/core/styles/metrics.dart' as soco_metrics;
 import 'package:soco/ui/core/styles/icons.dart';
 
 /// Renders a card display for a single brew profile.
@@ -57,18 +57,18 @@ class BeanCard extends StatelessWidget {
       width: double.infinity, // make the card fill the whole width of its parent
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(soco_sizes.radius.large),
+        borderRadius: BorderRadius.circular(soco_metrics.radius.large),
         boxShadow: SocoElevation.shadows.low,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(soco_sizes.radius.large),
+        borderRadius: BorderRadius.circular(soco_metrics.radius.large),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
             onTap: onTap,
             onLongPress: onLongPress,
             child: Padding(
-              padding: EdgeInsets.all(soco_sizes.spacing.medium),
+              padding: EdgeInsets.all(soco_metrics.spacing.medium),
               child: Row(
                 children: [
                   Expanded(
@@ -83,13 +83,13 @@ class BeanCard extends StatelessWidget {
                           onShare: onShare,
                           onSelect: onSelect,
                         ),
-                        soco_sizes.verticalBox.small,
+                        soco_metrics.verticalBox.small,
                         _RoastStrengthRow(profile: profile),
                         if (isExpanded) ...[
-                          soco_sizes.verticalBox.small,
+                          soco_metrics.verticalBox.small,
                           _EquipmentBadgesRow(profile: profile),
                           if (profile.description != null && profile.description!.trim().isNotEmpty) ...[
-                            soco_sizes.verticalBox.small,
+                            soco_metrics.verticalBox.small,
                             Text(
                               profile.description!,
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -99,18 +99,18 @@ class BeanCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],
-                          soco_sizes.verticalBox.medium,
+                          soco_metrics.verticalBox.medium,
                           _BrewMetricsRow(profile: profile),
                         ],
                       ],
                     ),
                   ),
                   if (isSelectionMode) ...[
-                    soco_sizes.horizontalBox.medium,
+                    soco_metrics.horizontalBox.medium,
                     Icon(
                       isSelected ? SocoIcons.checkBox : SocoIcons.checkBoxOutline,
                       color: isSelected ? colorScheme.primary : colorScheme.outline,
-                      size: soco_sizes.icon.large,
+                      size: soco_metrics.icon.large,
                     ),
                   ],
                 ],
@@ -170,7 +170,7 @@ class _CardHeader extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              soco_sizes.verticalBox.xSmall,
+              soco_metrics.verticalBox.xSmall,
               Text(
                 profile.bean.brand,
                 style: textTheme.labelLarge?.copyWith(
@@ -183,7 +183,7 @@ class _CardHeader extends StatelessWidget {
             ],
           ),
         ),
-        soco_sizes.horizontalBox.small,
+        soco_metrics.horizontalBox.small,
         if (!isSelectionMode) ...[
           _CardContextMenu(
             onShare: onShare,
@@ -214,7 +214,7 @@ class _RoastStrengthRow extends StatelessWidget {
     final roastTextColor = profile.bean.roastLevel != null ? roastColors.getTextColor(profile.bean.roastLevel!) : null;
 
     return Row(
-      spacing: soco_sizes.spacing.large,
+      spacing: soco_metrics.spacing.large,
       children: [
         // Strength Meter
         Row(
@@ -227,7 +227,7 @@ class _RoastStrengthRow extends StatelessWidget {
 
             return Icon(
               SocoIcons.coffeeBean,
-              size: soco_sizes.icon.small,
+              size: soco_metrics.icon.small,
               color: isActive ? activeColor : inactiveColor,
             );
           }),
@@ -236,12 +236,12 @@ class _RoastStrengthRow extends StatelessWidget {
         if (profile.bean.roastLevel != null)
           Container(
             padding: EdgeInsets.symmetric(
-              horizontal: soco_sizes.spacing.small,
-              vertical: soco_sizes.spacing.xSmall,
+              horizontal: soco_metrics.spacing.small,
+              vertical: soco_metrics.spacing.xSmall,
             ),
             decoration: BoxDecoration(
               color: roastBgColor,
-              borderRadius: BorderRadius.circular(soco_sizes.radius.small),
+              borderRadius: BorderRadius.circular(soco_metrics.radius.small),
             ),
             child: Text(
               '${profile.bean.roastLevel!.displayName} Roast',
@@ -304,7 +304,7 @@ class _EquipmentBadgesRow extends StatelessWidget {
           profile.grinder!.displayName,
           textStyle,
         );
-        final gapWidth = soco_sizes.spacing.small;
+        final gapWidth = soco_metrics.spacing.small;
         final contentAvailableWidth = (constraints.maxWidth - gapWidth).clamp(0.0, double.infinity);
 
         final sizes = _EquipmentLayoutHelper.calculateWidths(
@@ -353,8 +353,8 @@ class _BrewMetricsRow extends StatelessWidget {
     return Wrap(
       alignment: WrapAlignment.spaceBetween,
       crossAxisAlignment: WrapCrossAlignment.center,
-      spacing: soco_sizes.spacing.xLarge,
-      runSpacing: soco_sizes.spacing.medium,
+      spacing: soco_metrics.spacing.xLarge,
+      runSpacing: soco_metrics.spacing.medium,
       children: [
         _MetricColumn(
           label: 'Dose',
@@ -390,10 +390,10 @@ class _EquipmentBadge extends StatelessWidget {
     required this.label,
   });
 
-  static final double horizontalPadding = soco_sizes.spacing.small;
-  static final double verticalPadding = soco_sizes.spacing.xSmall;
-  static final double iconSize = soco_sizes.icon.xSmall;
-  static final double gapWidth = soco_sizes.spacing.xSmall;
+  static final double horizontalPadding = soco_metrics.spacing.small;
+  static final double verticalPadding = soco_metrics.spacing.xSmall;
+  static final double iconSize = soco_metrics.icon.xSmall;
+  static final double gapWidth = soco_metrics.spacing.xSmall;
 
   /// The total width of all non-text layout components (padding, icon, and gap).
   static final double extraWidth = (horizontalPadding * 2) + iconSize + gapWidth;
@@ -419,7 +419,7 @@ class _EquipmentBadge extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(soco_sizes.radius.small),
+        borderRadius: BorderRadius.circular(soco_metrics.radius.small),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -540,7 +540,7 @@ class _MetricColumn extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        soco_sizes.verticalBox.xSmall,
+        soco_metrics.verticalBox.xSmall,
         Text(
           value,
           style: textTheme.bodyMedium?.copyWith(
@@ -599,7 +599,7 @@ class _CardContextMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<BeanCardAction>(
-      icon: Icon(SocoIcons.moreVert, size: soco_sizes.icon.medium),
+      icon: Icon(SocoIcons.moreVert, size: soco_metrics.icon.medium),
       padding: EdgeInsets.zero,
       constraints: const BoxConstraints(),
       onSelected: (action) {
@@ -628,9 +628,9 @@ class _CardContextMenu extends StatelessWidget {
                   Icon(
                     action.icon,
                     color: iconColor,
-                    size: soco_sizes.icon.medium,
+                    size: soco_metrics.icon.medium,
                   ),
-                  soco_sizes.horizontalBox.small,
+                  soco_metrics.horizontalBox.small,
                   Text(
                     action.label,
                     style: TextStyle(color: textColor),

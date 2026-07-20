@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:soco/ui/core/styles/sizes.dart' as soco_sizes;
+import 'package:soco/ui/core/styles/metrics.dart' as soco_metrics;
 
 /// A full-width, translucent bottom navigation bar styled similarly to Spotify.
 ///
@@ -31,7 +31,7 @@ class BottomNavBar extends StatelessWidget {
     final surfaceColor = colorScheme.surface;
 
     return Container(
-      padding: EdgeInsets.only(top: soco_sizes.spacing.large),
+      padding: EdgeInsets.only(top: soco_metrics.spacing.xLarge),  // top padding, to give the fade more space
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,

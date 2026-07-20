@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:soco/ui/core/styles/assets.dart';
-import 'package:soco/ui/core/styles/sizes.dart' as soco_sizes;
+import 'package:soco/ui/core/styles/metrics.dart' as soco_metrics;
 import 'package:soco/ui/core/styles/icons.dart';
 
 class EmptyLibraryView extends StatelessWidget {
@@ -65,10 +65,10 @@ class EmptyLibraryView extends StatelessWidget {
           children: [
             Icon(
               searchIcon,
-              size: soco_sizes.icon.xxLarge,
+              size: soco_metrics.icon.xxLarge,
               color: colorScheme.outline.withValues(alpha: 0.5),
             ),
-            soco_sizes.verticalBox.medium,
+            soco_metrics.verticalBox.medium,
             Text(
               searchMessage,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -102,7 +102,7 @@ class EmptyLibraryView extends StatelessWidget {
               size: iconSize,
               color: colorScheme.outline,
             ),
-          soco_sizes.verticalBox.small,
+          soco_metrics.verticalBox.small,
           Text(
             message,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(

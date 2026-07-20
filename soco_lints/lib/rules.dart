@@ -11,23 +11,23 @@ import 'package:analyzer/source/source_range.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_core.dart';
 import 'package:analyzer_plugin/utilities/fixes/fixes.dart';
 
-const String _name = 'require_sizes_prefix_import';
+const String _name = 'require_metrics_prefix_import';
 
-class SizesImportRule extends AnalysisRule {
+class MetricsImportRule extends AnalysisRule {
   static const LintCode code = LintCode(
     _name,
-    "Imports of 'sizes.dart' must be prefixed with 'as soco_sizes'.",
-    correctionMessage: "Change the import to: import '{0}' as soco_sizes;",
+    "Imports of 'metrics.dart' must be prefixed with 'as soco_metrics'.",
+    correctionMessage: "Change the import to: import '{0}' as soco_metrics;",
     uniqueName: 'LintCode.$_name',
     // Sets diagnostic severity to WARNING so the file displays a warning in the IDE
     // and the rule appears in `flutter analyze` output.
     severity: DiagnosticSeverity.WARNING,
   );
 
-  SizesImportRule()
+  MetricsImportRule()
       : super(
           name: _name,
-          description: "Imports of 'sizes.dart' must be prefixed with 'as soco_sizes'.",
+          description: "Imports of 'metrics.dart' must be prefixed with 'as soco_metrics'.",
         );
 
   @override
@@ -48,20 +48,20 @@ class _Visitor extends SimpleAstVisitor<void> {
   @override
   void visitImportDirective(ImportDirective node) {
     final uriContent = node.uri.stringValue;
-    if (uriContent != null && uriContent.contains('styles/sizes.dart')) {
+    if (uriContent != null && uriContent.contains('styles/metrics.dart')) {
       final prefix = node.prefix?.name;
-      if (prefix != 'soco_sizes') {
+      if (prefix != 'soco_metrics') {
         rule.reportAtNode(node, arguments: [uriContent]);
       }
     }
   }
 }
 
-/// A quick fix that adds the prefix `as soco_sizes` to imports of `sizes.dart`
-/// and prepends `soco_sizes.` to all of its imported references within the file.
-class SizesImportFix extends ResolvedCorrectionProducer {
-  /// Creates a [SizesImportFix] with the given [context].
-  SizesImportFix({required super.context});
+/// A quick fix that adds the prefix `as soco_metrics` to imports of `metrics.dart`
+/// and prepends `soco_metrics.` to all of its imported references within the file.
+class MetricsImportFix extends ResolvedCorrectionProducer {
+  /// Creates a [MetricsImportFix] with the given [context].
+  MetricsImportFix({required super.context});
 
   @override
   CorrectionApplicability get applicability => CorrectionApplicability.singleLocation;
@@ -70,7 +70,7 @@ class SizesImportFix extends ResolvedCorrectionProducer {
   FixKind get fixKind => const FixKind(
         'soco_lints.fix.$_name',
         DartFixKindPriority.standard,
-        "Change import to use prefix 'as soco_sizes' and update references",
+        "Change import to use prefix 'as soco_metrics' and update references",
       );
 
   @override
@@ -78,11 +78,11 @@ class SizesImportFix extends ResolvedCorrectionProducer {
     final importDirective = node;
     if (importDirective is! ImportDirective) return;
 
-    // Get the semantic library element of sizes.dart
+    // Get the semantic library element of metrics.dart
     final importedLibrary = importDirective.libraryImport?.importedLibrary;
     if (importedLibrary == null) return;
 
-    // Find all usages of elements from sizes.dart in this file
+    // Find all usages of elements from metrics.dart in this file
     final visitor = _IdentifierVisitor(importedLibrary);
     unit.accept(visitor);
 
@@ -92,16 +92,16 @@ class SizesImportFix extends ResolvedCorrectionProducer {
       if (prefix != null) {
         builder.addSimpleReplacement(
           SourceRange(prefix.offset, prefix.length),
-          'soco_sizes',
+          'soco_metrics',
         );
       } else {
         final uriEnd = importDirective.uri.end;
-        builder.addSimpleInsertion(uriEnd, ' as soco_sizes');
+        builder.addSimpleInsertion(uriEnd, ' as soco_metrics');
       }
 
-      // 2. Prepend 'soco_sizes.' to all matching references
+      // 2. Prepend 'soco_metrics.' to all matching references
       for (final identifier in visitor.targetIdentifiers) {
-        builder.addSimpleInsertion(identifier.offset, 'soco_sizes.');
+        builder.addSimpleInsertion(identifier.offset, 'soco_metrics.');
       }
     });
   }

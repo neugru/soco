@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:soco/ui/core/styles/icons.dart';
-import 'package:soco/ui/core/styles/sizes.dart' as soco_sizes;
+import 'package:soco/ui/core/styles/metrics.dart' as soco_metrics;
 
 /// A premium, contextual AppBar shown during multi-selection mode.
 ///
@@ -42,7 +42,7 @@ class SelectionAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       leading: IconButton(
-        icon: Icon(SocoIcons.clear, size: soco_sizes.icon.medium),
+        icon: Icon(SocoIcons.clear, size: soco_metrics.icon.medium),
         onPressed: onClear,
       ),
       title: Text(

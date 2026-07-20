@@ -27,4 +27,3 @@ class SocoAssets {
   static const sleepyCoffeeDark = RasterAsset('assets/images/sleepy_coffee_dark.png');
   static const sleepyCoffeeLight = RasterAsset('assets/images/sleepy_coffee_light.png');
 }
-

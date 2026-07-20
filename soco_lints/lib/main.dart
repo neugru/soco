@@ -11,7 +11,7 @@ class SocoLintPlugin extends Plugin {
 
   @override
   void register(PluginRegistry registry) {
-    registry.registerWarningRule(SizesImportRule());
-    registry.registerFixForRule(SizesImportRule.code, SizesImportFix.new);
+    registry.registerWarningRule(MetricsImportRule());
+    registry.registerFixForRule(MetricsImportRule.code, MetricsImportFix.new);
   }
 }

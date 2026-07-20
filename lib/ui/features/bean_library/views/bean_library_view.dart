@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:soco/core/models/brew_profile.dart';
 import 'package:soco/ui/core/styles/assets.dart';
-import 'package:soco/ui/core/styles/sizes.dart' as soco_sizes;
+import 'package:soco/ui/core/styles/metrics.dart' as soco_metrics;
 import 'package:soco/ui/core/styles/icons.dart';
 import 'package:soco/ui/core/ui/widgets/empty_library_view.dart';
 import 'package:soco/ui/core/ui/widgets/fading_mask.dart';
@@ -73,7 +73,7 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
   Widget build(BuildContext context) {
     final safeAreaBottom = MediaQuery.paddingOf(context).bottom;
     // page scroll should end with extra spacing above the bottom navBar
-    final pageContentBottomPadding = safeAreaBottom + soco_sizes.spacing.medium;
+    final pageContentBottomPadding = safeAreaBottom + soco_metrics.spacing.medium;
 
     return ListenableBuilder(
       listenable: _viewModel,
@@ -100,13 +100,13 @@ class _BeanLibraryViewState extends State<BeanLibraryView> {
                 )
               : Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: soco_sizes.spacing.medium,
+                    horizontal: soco_metrics.spacing.medium,
                   ),
                   child: Column(
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(
-                          vertical: soco_sizes.spacing.small,
+                          vertical: soco_metrics.spacing.small,
                         ),
                         child: LibrarySearchBar(
                           controller: _searchController,
@@ -223,7 +223,7 @@ class _BeanProfileList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topFadeZoneHeight = soco_sizes.spacing.medium;
+    final topFadeZoneHeight = soco_metrics.spacing.medium;
 
     return Scrollbar(
       controller: scrollController,
@@ -237,7 +237,7 @@ class _BeanProfileList extends StatelessWidget {
             bottom: bottomPadding,
           ),
           itemCount: viewModel.brewProfiles.length,
-          separatorBuilder: (context, index) => soco_sizes.verticalBox.medium,
+          separatorBuilder: (context, index) => soco_metrics.verticalBox.medium,
           itemBuilder: (context, index) {
             final profile = viewModel.brewProfiles[index];
             final isSelected = viewModel.selectedProfileIds.contains(profile.id);
@@ -312,7 +312,7 @@ class _SelectionActionBar extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: soco_sizes.spacing.xSmall,
+        horizontal: soco_metrics.spacing.xSmall,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -321,7 +321,7 @@ class _SelectionActionBar extends StatelessWidget {
           IconButton(
             icon: Icon(
               SocoIcons.share,
-              size: soco_sizes.icon.large,
+              size: soco_metrics.icon.large,
               color: colorScheme.onSurfaceVariant,
             ),
             onPressed: onShare,
@@ -329,7 +329,7 @@ class _SelectionActionBar extends StatelessWidget {
           IconButton(
             icon: Icon(
               SocoIcons.deleteOutline,
-              size: soco_sizes.icon.large,
+              size: soco_metrics.icon.large,
               color: colorScheme.error,
             ),
             onPressed: onDelete,
@@ -377,7 +377,7 @@ class _UtilityHeaderBar extends StatelessWidget {
                 color: colorScheme.onSurfaceVariant,
               ),
             ),
-            soco_sizes.horizontalBox.small,
+            soco_metrics.horizontalBox.small,
             Switch(
               value: isExpanded,
               onChanged: onExpandedChanged,
@@ -388,7 +388,7 @@ class _UtilityHeaderBar extends StatelessWidget {
           onPressed: onAddPressed,
           icon: Icon(
             SocoIcons.add,
-            size: soco_sizes.icon.small,
+            size: soco_metrics.icon.small,
           ),
           label: const Text('New'),
         ),

@@ -24,11 +24,15 @@ jobs:
       
       - name: Check Formatting
         run: dart format -o none --set-exit-if-changed .
-
-      - name: Run Static Analysis
+  
+      - name: Run Custom Plugin Analysis
         # Analyze each file independently to ensure the analysis plugin is used
         # Workaround for the follwing bug: https://github.com/dart-lang/sdk/issues/62710
-        run: find lib -name "*.dart" | xargs dart analyze
-
+        run: find lib -name "*.dart" | xargs -r dart analyze
+        
+      - name: Run Standard Flutter Analysis
+        # 
+        run: flutter analyze
+        
       # - name: Run Unit Tests
       #   run: flutter test

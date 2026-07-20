@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:soco/ui/core/styles/sizes.dart' as soco_sizes;
+import 'package:soco/ui/core/styles/metrics.dart' as soco_metrics;
 import 'package:soco/ui/core/styles/elevation.dart';
 import 'package:soco/ui/core/ui/widgets/outer_shadow.dart';
 
@@ -16,7 +16,7 @@ class FloatingBottomNavBar extends StatelessWidget {
   final List<NavigationDestination> destinations;
 
   /// The spacing/padding applied around the floating bar.
-  /// Defaults to `EdgeInsets.all(soco_sizes.spacing.medium)`.
+  /// Defaults to `EdgeInsets.all(soco_metrics.spacing.medium)`.
   final EdgeInsetsGeometry? padding;
 
   const FloatingBottomNavBar({
@@ -31,12 +31,12 @@ class FloatingBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: padding ?? EdgeInsets.all(soco_sizes.spacing.medium),
+        padding: padding ?? EdgeInsets.all(soco_metrics.spacing.medium),
         child: OuterShadow(
           shadows: SocoElevation.shadows.mid,
-          borderRadius: BorderRadius.circular(soco_sizes.radius.round),
+          borderRadius: BorderRadius.circular(soco_metrics.radius.round),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(soco_sizes.radius.round),
+            borderRadius: BorderRadius.circular(soco_metrics.radius.round),
             child: NavigationBar(
               selectedIndex: selectedIndex,
               labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,

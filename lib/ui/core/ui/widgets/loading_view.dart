@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:soco/ui/core/styles/sizes.dart' as soco_sizes;
+import 'package:soco/ui/core/styles/metrics.dart' as soco_metrics;
 
 /// A shared widget that displays a centered loading indicator with an optional text message.
 class LoadingView extends StatelessWidget {
@@ -30,7 +30,7 @@ class LoadingView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const CircularProgressIndicator(),
-            soco_sizes.verticalBox.medium,
+            soco_metrics.verticalBox.medium,
             Text(
               message,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(

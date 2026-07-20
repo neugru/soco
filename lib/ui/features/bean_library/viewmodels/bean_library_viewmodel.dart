@@ -70,10 +70,7 @@ class BeanLibraryViewModel extends ChangeNotifier {
   /// Formats the names of the currently selected beans as a comma-separated string.
   // TODO: delete/refactor this once real sharing functionality is implemented.
   String getSelectedBeansNamesString() {
-    return _allBrewProfiles
-        .where((p) => _selectedProfileIds.contains(p.id))
-        .map((p) => p.bean.name)
-        .join(', ');
+    return _allBrewProfiles.where((p) => _selectedProfileIds.contains(p.id)).map((p) => p.bean.name).join(', ');
   }
 
   /// Clears current selections without exiting selection mode
