@@ -48,14 +48,22 @@ class _AppShellState extends State<AppShell> {
       bottomNavigationBar: BottomNavBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (index) {
+          final isAdjacent = (index - _currentIndex).abs() == 1;
+
           setState(() {
             _currentIndex = index;
           });
-          _pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
+
+          if (isAdjacent) {
+            _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          } else {
+            _pageController.jumpToPage(index);
+          }
+
         },
         destinations: AppTab.values.map((tab) => tab.destination).toList(),
       ),
@@ -66,27 +74,33 @@ class _AppShellState extends State<AppShell> {
 /// The set of primary tabs available in the main app shell.
 enum AppTab {
   home(
-    icon: SocoIcons.home,
+    icon: SocoIcons.homeOutlined,
+    selectedIcon: SocoIcons.home,
     label: 'Home',
   ),
   beans(
-    icon: SocoIcons.coffeeBean,
+    icon: SocoIcons.coffeeBeanOutlined,
+    selectedIcon: SocoIcons.coffeeBean,
     label: 'Beans',
   ),
   machines(
-    icon: SocoIcons.coffeeMaker,
+    icon: SocoIcons.coffeeMakerOutlined,
+    selectedIcon: SocoIcons.coffeeMaker,
     label: 'Machines',
   ),
   profile(
-    icon: SocoIcons.person,
+    icon: SocoIcons.personOutline,
+    selectedIcon: SocoIcons.person,
     label: 'Profile',
   );
 
   final IconData icon;
+  final IconData selectedIcon;
   final String label;
 
   const AppTab({
     required this.icon,
+    required this.selectedIcon,
     required this.label,
   });
 
@@ -107,6 +121,7 @@ enum AppTab {
   /// Generates the navigation destination bar item.
   NavigationDestination get destination => NavigationDestination(
     icon: Icon(icon),
+    selectedIcon: Icon(selectedIcon),
     label: label,
   );
 }

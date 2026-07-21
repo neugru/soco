@@ -174,7 +174,7 @@ class _AddBeanDialogState extends State<AddBeanDialog> {
 
   Widget _buildValidationIcon(bool isValid, ColorScheme colorScheme) {
     return Icon(
-      isValid ? SocoIcons.checkCircleOutline : SocoIcons.infoOutline,
+      isValid ? SocoIcons.checkCircleOutlined : SocoIcons.infoOutline,
       color: isValid ? Colors.green.withValues(alpha: 0.4) : colorScheme.error.withValues(alpha: 0.4),
       size: soco_metrics.icon.medium,
     );

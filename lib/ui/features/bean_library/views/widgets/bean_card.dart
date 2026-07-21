@@ -108,7 +108,7 @@ class BeanCard extends StatelessWidget {
                   if (isSelectionMode) ...[
                     soco_metrics.horizontalBox.medium,
                     Icon(
-                      isSelected ? SocoIcons.checkBox : SocoIcons.checkBoxOutline,
+                      isSelected ? SocoIcons.checkBox : SocoIcons.checkBoxOutlined,
                       color: isSelected ? colorScheme.primary : colorScheme.outline,
                       size: soco_metrics.icon.large,
                     ),

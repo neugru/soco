@@ -160,7 +160,14 @@ class SocoTheme {
 
       navigationBarTheme: NavigationBarThemeData(
         height: 64,
-        indicatorColor: colorScheme.secondaryContainer.withValues(alpha: 0.65),
+        // indicatorColor: colorScheme.secondaryContainer.withValues(alpha: 0.65),
+        indicatorColor: Colors.transparent,
+        iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((states) {
+          return IconThemeData(
+            color: colorScheme.onSurfaceVariant,
+            size: soco_metrics.icon.xLarge,
+          );
+        })
       ),
 
       floatingActionButtonTheme: FloatingActionButtonThemeData(
